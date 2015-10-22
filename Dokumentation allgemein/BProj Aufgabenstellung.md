@@ -1,4 +1,5 @@
-# Bachelorprojekt Quadrocopter-Tracking: Aufgabenstellung
+*Bachelorprojekt WS 2015/16 - HAW Hamburg - Quadrocopter-Tracking und Positionsregelung*
+# Auftrag
 **3D-Tracking und Positionsregelung eines Quadrocopters**
 
 

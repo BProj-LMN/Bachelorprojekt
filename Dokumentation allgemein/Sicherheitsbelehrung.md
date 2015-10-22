@@ -1,6 +1,5 @@
-# Bachelorprojekt Quadrocopter-Tracking: Sicherheitsbelehrung
-**Sicherheitsbelehrung zum Umgang mit Quadrocoptern**
-
+*Bachelorprojekt WS 2015/16 - HAW Hamburg - Quadrocopter-Tracking und Positionsregelung*
+# Sicherheitsbelehrung zum Umgang mit Quadrocoptern
 
 1. Der Raum, in dem der Quadrokopter gefolgen wird, besitzt einen mit einem Netz abgetrennten Flugbereich.
 2. Außerhalb dieses Flugbereichs wird der Qudarokopter NICHT geflogen.

@@ -1,4 +1,5 @@
-# Bachelorprojekt Readme
+*Bachelorprojekt WS 2015/16 - HAW Hamburg - Quadrocopter-Tracking und Positionsregelung*
+# Readme und allgemeine Vereinbarungen
 
 ## Git-Struktur
 
@@ -8,7 +9,7 @@
 +-- Recherche allgemein ??
 +-- TA{TA-Nr.}-{TA-Kurzname}
 |   +-- Dokumentation
-|   +-- {Code-Ordner und weitere speziele Dokumente}
+|   +-- {Code-Ordner und weitere spezielle Dokumente}
 +-- readme.md
 ```
 
@@ -55,10 +56,11 @@ Im Git:
 
 - alle Dokumentation, die nicht ausschließlich für GPM ist
 - alles an Code
-- eingetlich alles, was zum Projekt gehört (außer Dateien über 10MB !?)
+- eingetlich alles, was zum Projekt gehört
 
 
 In Dropbox:
 
+- GPM-Statusberichte und GPM-only Dokumente (Teammanagementbarometer und co.)
 - große Dateien, wie Filme
-- Bachelorarbeiten ?
+- Allgemeine Recherche

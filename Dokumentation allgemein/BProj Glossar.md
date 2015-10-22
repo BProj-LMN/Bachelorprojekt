@@ -1,4 +1,5 @@
-# Bachelorprojekt Quadrocopter-Tracking: Glossar
+*Bachelorprojekt WS 2015/16 - HAW Hamburg - Quadrocopter-Tracking und Positionsregelung*
+# Glossar
 
 - Quadrocopter oder Copter: beschreibt das Fluggerät
 - Not-Aus: sofortiger Stopp aller Motoren (als Hardware-Schalter)

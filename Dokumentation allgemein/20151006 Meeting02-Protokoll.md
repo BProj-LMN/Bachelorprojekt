@@ -1,4 +1,5 @@
-# 2. Treffen Protokoll
+*Bachelorprojekt WS 2015/16 - HAW Hamburg - Quadrocopter-Tracking und Positionsregelung*
+# Sitzungsprotokoll - Auftraggebertreffen Nr. 2
 
 ### Allgemeines und Planung
 - Kamera: FireWire Anschluss, voraussichtlich in Schwarz/Weiß
