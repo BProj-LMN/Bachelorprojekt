@@ -55,7 +55,7 @@ Im Git:
 
 - alle Dokumentation, die nicht ausschließlich für GPM ist
 - alles an Code
-- eingetlich alles, was zum Projekt gehört (außer Dateien über 10MB !?)
+- eigentlich alles, was zum Projekt gehört (außer Dateien über 10MB !?)
 
 
 In Dropbox:
