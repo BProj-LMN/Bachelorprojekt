@@ -20,11 +20,11 @@ development
 TA{TA-Nr.}/development
 TA{TA-Nr.}/{weitere Branches}
 ```
-Es gibt keine `TA{TA-Nr.}/master` Branch, die diese mit der `development` branch gleichzusetzen ist.
+Es gibt keine `TA{TA-Nr.}/master` Branch, da diese mit der `development` branch gleichzusetzen ist.
 
 ### Commit-Messages
 Commits sollten immer eine Sammlung von Code beinhalten, die eine Logische Einheit bildet. Die Commit-Meldung spiegelt dann wieder, was für Änderungen gemacht wurden.  
-Damit auf den ersten Blick klar ist, welche Art von Inhalt ein Commit hat, gibt es folgende Prefixes:
+Damit auf den ersten Blick klar ist, welche Art von Inhalt ein Commit hat, gibt es folgende Präfixes:
 
 - `[DOC]` für (reine) Arbeit an der Dokumentation
 - `[CODE]` für Arbeiten am Code
@@ -56,7 +56,7 @@ Im Git:
 
 - alle Dokumentation, die nicht ausschließlich für GPM ist
 - alles an Code
-- eingetlich alles, was zum Projekt gehört
+- eigentlich alles, was zum Projekt gehört
 
 
 In Dropbox:
