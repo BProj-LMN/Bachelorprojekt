@@ -1,4 +1,5 @@
-# 4. Treffen Protokoll
+*Bachelorprojekt WS 2015/16 - HAW Hamburg - Quadrocopter-Tracking und Positionsregelung*
+# Sitzungsprotokoll - Auftraggebertreffen Nr. 4
 
 - einheitliche Bezeichnungen bei der Dokumentation, bei Unsicherheiten auch gerne im ```Glossar``` nachsehen
 - Aufgabenstellungsdokument: 

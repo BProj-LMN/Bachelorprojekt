@@ -1,4 +1,5 @@
-# 3. Treffen Protokoll
+*Bachelorprojekt WS 2015/16 - HAW Hamburg - Quadrocopter-Tracking und Positionsregelung*
+# Sitzungsprotokoll - Auftraggebertreffen Nr. 3
 
 - Standup-Meeting jedes Mal zu Beginn mit folgenden Fragen:
 	- Was war die Aufgabe?
