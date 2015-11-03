@@ -1,0 +1,224 @@
+package Model.APPS.CLOCK_XMC1.v4_0_6;
+
+/*************** Revision History **********************************************
+ Version    Date          Description //Retain this format
+ 4.0.0     16-Feb-2015   Initial version for DAVEv4      
+ 4.0.2     30-Apr-2015   Tooltips and parameter descriptions are modified
+ 4.0.4     19-Jun-2015   Version check added for XMCLib dependency.             
+ 4.0.6     09-Jul-2015   Help doc updated.             
+ *******************************************************************************/
+
+// Import statements
+import ifx.davex.app.manifest.*
+
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+class  CLOCK_XMC1 extends CLOCK_XMC1_GUI {
+
+	/* Note  : Following App properties are mandatory and important */
+	/* Begin : App property section */
+
+	/**
+	 * App version
+	 * Format: a string with three digit separated by a dot.
+	 */
+	def version            = '4.0.6'
+
+	/**
+	 * App categories declaration. 
+	 * It is list of strings. Subcategories are separated by slash.
+	 * No limits on number of categories and subcategories depth.
+	 */
+	def categoriesDescription = ['System']
+
+	/** 
+	 * Minimum DAVE version required for this app.
+	 * 
+	 * It is string with three digit separated by a dot.
+	 */
+	def minDaveVersion           = '4.0.0'
+
+	/** 
+	 * Keywords used by search feature in Apps selection view
+	 * 
+	 * It is a list of string.
+	 */
+	def keywords      = ["System Clock", "PLL", "CLOCK", "Clock", "ALL"]
+	/** 
+	 * softwareIDs is used to declare which devices are compatible with this app.
+	 * It is a map with key a string containing a pattern that shall match the SW id of
+	 * the device and as value the minimal version of the app.
+	 * 
+	 * 
+	 */
+
+	def softwareIDs       = [
+		"XMC1.3.*.*.*":"1.0.0",
+		"XMC1.2.*.*.*":"1.0.0",
+		"XMC1.1.*.*.*":"1.0.0"
+	]
+
+	/**
+	 * Singleton property:
+	 * When it is true the app can be instantiated only once. 
+	 */
+	def singleton     = true
+
+
+	/**
+	 * initProvider property
+	 * It shall be true to add a call to <AppName>_Init() 
+	 */
+	def initProvider  = false
+
+	/**
+	 * Deprecated app
+	 * Set it to true to indicate that the app shall be not used for new projects.
+	 */
+	def deprecated    = false
+	/**
+	 * Sharable property.
+	 * It shall be true to allows multiple apps to require the same instance of this app.
+	 */
+	def sharable      = true
+	/* This APP consumes direct HW pin resource */
+	def ioApp         = false
+
+	/**
+	 *  App function description.
+	 */
+	def description = "APP to configure System and Peripheral Clocks."
+	/* End   : App property section */
+
+	/* Begin : User app property section */
+	/* Object to point virtual resource groups/ functional blocks */
+	MVirtualResourceGroup hwres_dco
+	MVirtualResourceGroup hwres_clkcntrlunit
+	/* Object to point virtual signals */
+	MVirtualSignal vs_dco_clkout
+	MVirtualSignal vs_frtc
+
+	/* Variable to hold divider fraction of (IDIV + FDIV/256) */
+	GFloat divider_fraction = GFloat(widgetName:"divider_fraction")
+	/* Variable to hold fraction divider value */
+	GFloat fdiv_value =GFloat(widgetName:"fdiv_value")
+	/* Variable to hold integer divider value */
+	GFloat idiv_value =GFloat(widgetName:"idiv_value")
+	/* End   : User app property section */
+
+
+	/* App Constructor */
+	public CLOCK_XMC1(DaveEnv daveEnv) {
+		// Target based variables for resource consumption, UI dependency etc.
+		String family = daveEnv.project.selectedDevice.deviceId.family 	//ex:XMC4 or XMC1
+		String series = (daveEnv.project.selectedDevice.deviceId.family + daveEnv.project.selectedDevice.deviceId.series) //ex:XMC45, 44..
+		String device = daveEnv.project.selectedDevice.deviceId.device 	// 00, 02, 04, 06
+		String device_name = daveEnv.project.selectedDevice.deviceId.deviceName 	//XMC4500-F144x1024-AB...
+		String step = daveEnv.project.selectedDevice.deviceId.step 		// AA, AB, AC....
+		String device_package = daveEnv.project.selectedDevice.deviceId.icPackage //F144, E144..
+		String sofware_id  = daveEnv.project.selectedDevice.deviceId.softwareId   //XMC4.5.00.F144.AB
+		//		String family = "XMC1"
+		//		String series = "XMC13"
+		//		String device = "02"
+		//		String device_name = "XMC4500-F144x1024-AB"
+		//		String step = "AA"
+		//		String device_package = "F144"
+		//		String sofware_id  = "XMC4.5.00.F144.AB"
+
+		/* Constants */
+		float dco_clock = 64 //64MHz
+
+		/*----------------------------------------------------------------------------------------------------------------------
+		 GUI Actions
+		 ----------------------------------------------------------------------------------------------------------------------*/
+		divider_fraction.value = MF ({
+			float userfreq = 2* (gfloat_mclkdesfrq.value)
+			(dco_clock / userfreq)
+		}, Float)
+
+		idiv_value.value = MF ({
+			float i_div = Math.floor(divider_fraction.value)
+			/* if IDIV >8bit value then decrement by 1 */
+			if (i_div == 256.0)
+			{
+				(i_div - 1)
+			}
+			else
+			{
+				(i_div)
+			}
+		}, Float)
+
+		fdiv_value.value = MF ({
+			float i_div = Math.floor(idiv_value.value)
+			/* temp_FDIV =  ((IDIV + FDIV/256) - IDIV) * 256 */
+			float temp_f_div = (divider_fraction.value - i_div ) * 256
+			float f_div
+
+			if (i_div == 255.0)
+			{
+				temp_f_div = 0.0
+			}
+
+			if ((i_div == 255.0) || (temp_f_div == 0.0))
+			{
+				f_div = 0
+				(f_div)
+			}
+			else
+			{
+				f_div = Math.floor(temp_f_div)
+				(f_div)
+			}
+		}, Float)
+
+		gfloat_mclkactfrq.value = MF ({
+			/* MCLK = DCO_CLK / (2 * (IDIV + (FDIV/256))) */
+			float mclk_actfreq = (dco_clock / (2 * (idiv_value.value + (fdiv_value.value / 256))))
+
+			(mclk_actfreq)
+		}, Float)
+
+		gfloat_pclkactfrq.value = MF ({
+			float mclk_actfreq = gfloat_mclkactfrq.value
+			if(gcombo_pclkdesfrq.value == "MCLK")
+			{
+				(mclk_actfreq)
+			}
+			else if(gcombo_pclkdesfrq.value == "2 x MCLK")
+			{
+				(2 * mclk_actfreq)
+			}
+			else
+			{
+				(32.0)
+			}
+
+		}, Float)
+
+		gfloat_dia_pclkactfrq.value = MF({gfloat_pclkactfrq.value}, Float)
+		gfloat_dia_mclkactfrq.value = MF({gfloat_mclkactfrq.value}, Float)
+
+		/*--------------------------------------------------------------------------------------------------------------
+		 Consumed Resource Groups
+		 -------------------------------------------------------------------------------------------------------------*/
+		hwres_dco =  MVirtualResourceGroup("DCO CLOCK", ["peripheral", "scu", "0", "dco", "*"])
+		hwres_clkcntrlunit =  MVirtualResourceGroup("CLOCK CONTROL UNIT", ["peripheral", "scu", "0", "ccu", "config"])
+		/*--------------------------------------------------------------------------------------------------------------
+		 Virtual Signals Definitions
+		 --------------------------------------------------------------------------------------------------------------*/
+		vs_dco_clkout =  MVirtualSignal(hwres_dco, "clk_dco2_output", "clkout", true, false) /* required{}, exposeToUser{} */
+		vs_frtc =  MVirtualSignal(hwres_clkcntrlunit, "clk_rtc", "frtc", true, MF({gcombo_rtcclksrc.value == "External Clock"}, Boolean)) /* required{}, exposeToUser{} */
+		addConnectionConstraint(vs_dco_clkout, vs_frtc, MF({gcombo_rtcclksrc.value == "DCO2"}, Boolean))
+	}
+
+	/* File Generation */
+	def generateFiles(){
+		copy("clock_xmc1.c", "clock_xmc1.c")
+		copy("clock_xmc1.h", "clock_xmc1.h")
+		generate("clock_xmc1_confc.tmpl", "clock_xmc1_conf.c")
+		generate("clock_xmc1_confh.tmpl", "clock_xmc1_conf.h")
+		generate("clock_xmc1_extern.tmpl", "clock_xmc1_extern.h")
+	}
+
+}
