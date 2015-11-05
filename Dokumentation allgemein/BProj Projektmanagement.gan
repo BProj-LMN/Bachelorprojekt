@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Bachelorprojekt Quadrokopter-3D-Tracking" company="HAW Hamburg, LMN" webLink="http://" view-date="2015-10-05" view-index="0" gantt-divider-location="488" resource-divider-location="300" version="2.7.1" locale="de">
+<?xml version="1.0" encoding="UTF-8"?><project name="Bachelorprojekt Quadrokopter-3D-Tracking" company="HAW Hamburg, LMN" webLink="http://" view-date="2015-10-01" view-index="0" gantt-divider-location="488" resource-divider-location="300" version="2.7.1" locale="de">
     <description/>
-    <view zooming-state="default:7" id="gantt-chart">
+    <view zooming-state="default:8" id="gantt-chart">
         <field id="tpd3" name="Vorgang" width="49" order="0"/>
         <field id="tpd4" name="Anfang" width="16" order="1"/>
         <field id="tpd5" name="Ende" width="16" order="2"/>
@@ -38,8 +38,8 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="1" name="1 Projektmanagement" color="#8cb6ce" meeting="false" start="2015-10-09" duration="41" complete="0" expand="true">
-            <task id="28" name="1.1 GPM Bericht 1" color="#8cb6ce" meeting="false" start="2015-10-09" duration="21" complete="0" expand="true">
+        <task id="1" name="1 Projektmanagement" color="#8cb6ce" meeting="false" start="2015-10-09" duration="41" complete="58" expand="true">
+            <task id="28" name="1.1 GPM Bericht 1" color="#8cb6ce" meeting="false" start="2015-10-09" duration="21" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Die vollständige geforderte Dokumentation des Status Quo ist vorhanden und in korrekter Form abgegeben worden.]]></notes>
             </task>
@@ -48,14 +48,14 @@ Die vollständige geforderte Dokumentation des Status Quo ist vorhanden und in k
 Die vollständige geforderte Dokumentation des Status Quo ist vorhanden und in korrekter Form abgegeben worden.]]></notes>
             </task>
         </task>
-        <task id="105" name="2 Integration" color="#000000" meeting="false" start="2015-10-19" duration="70" complete="0" expand="true">
+        <task id="105" name="2 Integration" color="#000000" meeting="false" start="2015-10-19" duration="70" complete="10" expand="true">
             <notes><![CDATA[Ziel:
 Das Hauptziel des Bachelorprojekts ist erfüllt. ]]></notes>
             <task id="106" name="2.1 alle HW und SW zusammenführen" color="#8cb6ce" meeting="false" start="2015-10-19" duration="70" complete="0" expand="true">
                 <notes><![CDATA[Ziel:
 Hardware und Software arbeitet zusammen. Die Schnittstelle funktioniert. Endergebnis ist, dass die Aufgabenstellung erfüllt ist.]]></notes>
             </task>
-            <task id="107" name="2.2 Dokumentation Gesamtprojekt" color="#8cb6ce" meeting="false" start="2015-10-19" duration="70" complete="0" expand="true">
+            <task id="107" name="2.2 Dokumentation Gesamtprojekt" color="#8cb6ce" meeting="false" start="2015-10-19" duration="70" complete="20" expand="true">
                 <notes><![CDATA[Alle Teilschritte sind detailliert dokumentiert und begründet.]]></notes>
             </task>
         </task>
@@ -110,7 +110,7 @@ Die erforderlichen Schritte wurden dokumentiert.
             <notes><![CDATA[Der Meilenstein ist erreicht, sobald die Aufgabenpakete 4.1, 4.2 und 4.3 vollständig erfüllt sind. Das Ergebnis derer ist, dass der PC über die Schnittstelle mit dem Quadrocopter kommunizieren kann, diesem somit alle nötigen Steuerbefehle für den Flug übermittelt. Ferner ist ein NOT-AUS implementiert. ]]></notes>
             <depend id="58" type="2" difference="1" hardness="Strong"/>
         </task>
-        <task id="3" name="5 optisches Tracking" color="#8cb6ce" meeting="false" start="2015-10-09" duration="31" complete="21" expand="true">
+        <task id="3" name="5 optisches Tracking" color="#8cb6ce" meeting="false" start="2015-10-09" duration="31" complete="36" expand="true">
             <notes><![CDATA[Ziel:
 Die Ist-Position kann über eine Software-Schnittstelle abgerufen werden.]]></notes>
             <depend id="112" type="2" difference="4" hardness="Strong"/>
@@ -118,7 +118,7 @@ Die Ist-Position kann über eine Software-Schnittstelle abgerufen werden.]]></no
                 <notes><![CDATA[Ziel:
 Es wurde eine Software ausgewählt die zum Tracking genutzt werden soll. Sowie Grundkenntnisse zu deren Nutzung gesammelt.]]></notes>
             </task>
-            <task id="60" name="5.2 Objekt im Bild erkennen" color="#8cb6ce" meeting="false" start="2015-10-23" duration="16" complete="0" expand="true">
+            <task id="60" name="5.2 Objekt im Bild erkennen" color="#8cb6ce" meeting="false" start="2015-10-23" duration="16" complete="50" expand="true">
                 <notes><![CDATA[Ziel:
 Es ist ein Programm vorhanden das den Quadrocopter auf Bildern erkennt und dessen Position im Bild bestimmt.
 Die Softwareschnittstelle ist definiert und dokumentiert.
