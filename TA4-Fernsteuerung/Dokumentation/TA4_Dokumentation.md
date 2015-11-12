@@ -26,18 +26,22 @@ Um die Fernsteuerung vom Computer aus steuern zu können, wird ein kleiner Mikro
 - Datenformat:
 
 ```
-0xFF
+0xFF                  // start byte
 {8-Bit unsigned int}  // throttle: 0x00 - 0xFE -> aus   - voll
 {8-Bit unsigned int}  // pitch:    0x00 - 0xFE -> rück  - vor
 {8-Bit unsigned int}  // roll:     0x00 - 0xFE -> links - rechts
 {8-Bit unsigned int}  // yaw:      0x00 - 0xFE -> links - rechts
 
 Kommentare: - Schwebeflug bei throttle von ca. 150 (dezimal)
-            - Der Mittelpunkt der Steuerelemente ist nicht genau bei 127 (dezimal)
 ```
 
 - der gültige Bereich für die Ansteuerungswerte ist: `0x00 bis 0xFE`
+- die Mittelstellung liegt nominell bei 127 (dezimal), der Copter ist jedoch nicht sehr gut getrimmt, weshalb dieser nicht auf der Stelle schweben wird
 - es ergeben sich 5x 8 Bit (keine Leerzeichen, etc.)
+- die Werte werden so lange gehalten, bis neue gesendet wurden
+- die Steuerung initialisiert mit Werten, die der Mittelstellung der Joysticks und keinem Schub entsprechen
+- jedes Startbyte wird mit einem Byte `0xFF` beantwortet
+- ACHTUNG: Das Verhalten des Mikrocontrollers ohne Stromversorgung ist undefiniert!
 
 ### Not-Aus-Taster
 Um eine zusätzliche Sicherheitsebene zu schaffen, sollte es einen Not-Aus-Schalter an der Fernbedienung geben, der sofort alle Motoren abschaltet.  
@@ -70,18 +74,18 @@ Dadurch folgt diese Umsetzung der Flugbewegungen in Ansteuersignale der PWM-Pins
 Achse    | low/zurück/links | neutral | high/vor/rechts
 -------- | ---------------- | ------- | ---------------
 throttle | 3.3V - 0xFE      |   -/-   | 0V - 0x00
-pitch    | 3.3V - 0xFE      |         | 0V - 0x00
-roll     | 3.3V - 0xFE      |         | 0V - 0x00
-yaw      | 3.3V - 0xFE      |         | 0V - 0x00
+pitch    | 3.3V - 0xFE      |   -/-   | 0V - 0x00
+roll     | 3.3V - 0xFE      |   -/-   | 0V - 0x00
+yaw      | 3.3V - 0xFE      |   -/-   | 0V - 0x00
 
 Da diese Zuordnung etwas unintuitiv ist, wurden alle Steuerbefehle für die Schnittstelle invertiert:
 
 Achse    | low/zurück/links | neutral | high/vor/rechts
 -------- | ---------------- | ------- | ---------------
 throttle | 0x00             |   ---   | 0xFE
-pitch    | 0x00             |   0x??  | 0xFE
-roll     | 0x00             |   0x??  | 0xFE
-yaw      | 0x00             |   0x??  | 0xFE
+pitch    | 0x00             |   0x84  | 0xFE
+roll     | 0x00             |   0x84  | 0xFE
+yaw      | 0x00             |   0x84  | 0xFE
 
 ### Not-Aus-Taster
 Der Not-Aus-Taster soll (wie oben beschrieben) den Schub sofort abstellen, wenn dieser nicht gedrückt ist. Für die "absolute" Sicherheit war die erste Idee, den Not-Aus-Taster vollkommen unabhängig vom Mikrocontroller zu bauen. Da nun aber das Signal "kein Schub" erfordert, dass 3,3V auf den Controller der Fernsteuerung gegeben werden, ist dies mit einem Unterbrecher nicht ganz so einfach zu realisieren.  
@@ -110,3 +114,8 @@ Der Mikrocontroller wurde auf ein kleines Stück Lochrasterplatine gesetzt. Auf 
 
 Im Idealfall sollten diese 7 Ein- und Ausgangsleitungen über ein oder zwei verpolungssichere Stecker angeschlossen werden.
 
+
+
+## TODO:
+- Mikrocontroller fest einbauen
+- Stromversorgung Mikrocontroller auch ohne USB sicherstellen

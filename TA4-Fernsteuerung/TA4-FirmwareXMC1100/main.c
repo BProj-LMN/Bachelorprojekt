@@ -1,21 +1,15 @@
 /*
- * Bachelorprojekt WS 2015/16 - HAW Hamburg
- * Quadrocopter-Tracking und Positionsregelung
+ * main.c
  *
- * TA4-FirmwareXMC1100 - main.c
- * Interface Computer - Remote-Control
- *
- * to work with: DAVE4
- *  - XMC2Go
- *  - PWM_CCU4 DAVE-APP
- *
- * author: Jannik Beyerstedt
- *
+ *  Created on: 2015 Okt 24 22:18:22
+ *  Author: jannik
  */
 
 #include <XMC1100.h>
-#include <DAVE.h>  //Declarations from DAVE Code Generation (includes SFR declaration)
+#include <DAVE.h>			//Declarations from DAVE Code Generation (includes SFR declaration)
 #include "GPIO.h"
+
+//#define DEBUG       // activate debug mode (answer each byte)
 
 // UART baud rate constants for 115.2kbps @ MCLK=8MHz
 #define FDR_STEP 590UL
@@ -73,6 +67,12 @@ int main(void) {
   P2_7_set_mode(INPUT_PU); // emergency off
 
 
+  // Initialize output values
+  pwm.throttle = 254;
+  pwm.pitch    = 127;
+  pwm.roll     = 127;
+  pwm.yaw      = 127;
+
   /*
    * main loop
    */
@@ -88,7 +88,7 @@ int main(void) {
         pwmValueId = 0;
       }
 
-      P1_1_set();
+      P1_1_set(); // set LED1 as status LED
 
       if (pwmValueId >= 0) {
         switch (pwmValueId) {
@@ -100,22 +100,30 @@ int main(void) {
         case 1:
           pwm.throttle = 254-receivedData;
           pwmValueId++;
+#ifdef DEBUG
           USIC0_CH0->IN[0] = 0x10;
+#endif
           break;
         case 2:
           pwm.pitch = 254-receivedData;
           pwmValueId++;
+#ifdef DEBUG
           USIC0_CH0->IN[0] = 0x20;
+#endif
           break;
         case 3:
           pwm.roll = 254-receivedData;
           pwmValueId++;
+#ifdef DEBUG
           USIC0_CH0->IN[0] = 0x30;
+#endif
           break;
         case 4:
           pwm.yaw = 254-receivedData;
           pwmValueId++;
+#ifdef DEBUG
           USIC0_CH0->IN[0] = 0x40;
+#endif
           break;
         default:
           // means that pwmValueId > 4 --> ERROR
@@ -124,7 +132,7 @@ int main(void) {
       }
 
     }else {
-      P1_1_reset();
+      P1_1_reset(); // reset LED1 as status LED
     }
 
 
