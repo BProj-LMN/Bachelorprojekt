@@ -2,3 +2,9 @@
 # DAVE binaries, logs and other stuff 
 solver.log
 Debug
+
+# eclipse IDE
+.settings
+Debug
+.cproject
+.project
