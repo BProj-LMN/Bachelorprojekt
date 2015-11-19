@@ -35,12 +35,20 @@ int main(int argc, const char** argv) {
   Mat frame;
 
   cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
-  while (1) {
-    cout << "zugelassene Optionen: loadConfig, calibrateCamera, Kamerakalibrierung, calibrate3D, tracking, exit" << endl;
-    cin >> options;
 
+  /*
+   * start directly to one mode by program argument or get input by user
+   */
+  if (argc > 1) {
+    options = argv[1];
+  }else {
+    cin >> options;
+  }
+
+  while (1) {
     if (0 == options.compare("loadConfig")) {
       cout << "--> do loadConfig subroutine" << endl;
+      // TODO
 
     } else if (0 == options.compare("calibrateCamera")) {
       cout << "--> do calibrateCamera subroutine" << endl;
@@ -57,9 +65,13 @@ int main(int argc, const char** argv) {
     } else if (0 == options.compare("tracking")) {
       cout << "--> do normal operation" << endl;
       break;
+
     } else {
       cout << "diese Eingabe ist nicht zugelassen" << endl;
     }
+
+    cout << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, tracking, exit" << endl;
+    cin >> options;
   }
 
   while (1) {
