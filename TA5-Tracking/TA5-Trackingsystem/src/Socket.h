@@ -10,20 +10,36 @@
 
 #define MESSAGE_LEN 256
 
+#ifdef _WIN32
+#include <winsock2.h>
+
+#else
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#endif
 
 #include <iostream>
 
 class Socket {
   long rc;
+
+#ifndef _WIN32
   int udp_socket;
   struct sockaddr_in server;
   socklen_t serverLen;
   struct sockaddr_in remote;
   socklen_t remoteLen;
+
+#else
+  SOCKET udp_socket;
+  SOCKADDR_IN server;
+  unsigned int serverLen;
+
+  SOCKADDR_IN remote;
+  unsigned int remoteLen;
+#endif
 
   char message[MESSAGE_LEN];
   bool newClientMessage;
