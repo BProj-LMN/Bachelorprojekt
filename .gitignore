@@ -8,3 +8,10 @@ Debug
 Debug
 .cproject
 .project
+
+# netbeans
+nbproject
+dist
+build
+.dep.inc
+Makefile
