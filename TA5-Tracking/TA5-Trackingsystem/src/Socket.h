@@ -10,14 +10,14 @@
 
 #define MESSAGE_LEN 256
 
-#ifdef _WIN32
-#include <winsock2.h>
-
-#else
+#ifndef _WIN32
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+
+#else
+#include <winsock2.h>
 #endif
 
 #include <iostream>
@@ -44,7 +44,6 @@ class Socket {
 
   char message[MESSAGE_LEN];
   bool newClientMessage;
-
   bool clientConnected;
 
 public:

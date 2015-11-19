@@ -64,7 +64,7 @@ Socket::~Socket() {
 #ifndef _WIN32
   close(udp_socket);
 #else
-  // TODO windows close socket
+  closesocket(udp_socket);
 #endif
 }
 
@@ -132,8 +132,7 @@ int Socket::get_message(std::string & message) {
 int Socket::sendMessage(char message[MESSAGE_LEN]) {
 #ifndef _WIN32
   if (clientConnected) {
-    rc = sendto(udp_socket, message, MESSAGE_LEN, 0, (struct sockaddr *) &remote, remoteLen);
-    // TODO send correct lenght sizeof(message);
+    rc = sendto(udp_socket, message, strlen(message), 0, (struct sockaddr *) &remote, remoteLen);
     if (rc < 0) {
       fprintf(stderr, "[ERROR] in Socket::sendMessage - sendto\n");
       return 0;
@@ -143,8 +142,7 @@ int Socket::sendMessage(char message[MESSAGE_LEN]) {
 
 #else
   if (clientConnected) {
-    rc = sendto(udp_socket, message, MESSAGE_LEN, 0, (SOCKADDR*) &remote, remoteLen);
-    // TODO send correct lenght sizeof(message);
+    rc = sendto(udp_socket, message, strlen(message), 0, (SOCKADDR*) &remote, remoteLen);
     if (rc == SOCKET_ERROR) {
       fprintf(stderr, "[ERROR] in Socket::sendMessage - sendto\n");
       return 0;
