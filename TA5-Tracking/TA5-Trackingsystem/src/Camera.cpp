@@ -9,7 +9,7 @@
 
 Camera::Camera(int cameraIndex) {
 
-  capture = VideoCapture(0);
+  capture = VideoCapture(cameraIndex);
   if (!capture.isOpened()) {
     //return -1;
   }

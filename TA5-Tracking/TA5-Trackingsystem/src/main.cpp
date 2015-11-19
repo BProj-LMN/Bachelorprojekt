@@ -25,38 +25,43 @@ int main(int argc, const char** argv) {
   string options;
 
   Camera cam1(0);
+  Camera cam2(1);
   VideoCapture cap1 = cam1.get_capture();
 
   Socket remoteInput(61382);
   string message;
 
-  namedWindow("foo", 1);
+  //namedWindow("foo", 1);
   Mat frame;
 
-  cout << "Guten Tag, hier ist das Tracking-System. Was wünschen Sie?" << endl;
-  while(1) {
-    cout << "mögliche Optionen: loadConfig, calibrateCamera, calibrate3D, tracking" << endl;
+  cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
+  while (1) {
+    cout << "zugelassene Optionen: loadConfig, calibrateCamera, Kamerakalibrierung, calibrate3D, tracking, exit" << endl;
     cin >> options;
     //cout << "Sie haben " << options << " gewählt" << endl;
 
-    if(0 == options.compare("loadConfig")) {
+    if (0 == options.compare("loadConfig")) {
       cout << "--> do loadConfig subroutine" << endl;
 
-    }else if(0 == options.compare("calibrateCamera")) {
+    } else if (0 == options.compare("calibrateCamera")) {
       cout << "--> do calibrateCamera subroutine" << endl;
       calibrateCamera("calibrateCamera0.xml", cam1.cameraMatrix, cam1.distCoeffs);
 
-    }else if (0 == options.compare("calibrate3D")) {
+    } else if (0 == options.compare("calibrate3D")) {
       cout << "--> do calibrate3D subroutine" << endl;
+      calibrate3D(&cam1, &cam2);
 
-    }else if (0 == options.compare("tracking")) {
+    } else if (0 == options.compare("exit")) {
+      cout << "--> terminating ... Auf Wiedersehen" << endl;
+      return(0);
+
+    } else if (0 == options.compare("tracking")) {
       cout << "--> do normal operation" << endl;
       break;
-    }else {
-      cout << "diese Eingabe ist nicht zulässig" << endl;
+    } else {
+      cout << "diese Eingabe ist nicht zugelassen" << endl;
     }
   }
-
 
   while (1) {
     /*
