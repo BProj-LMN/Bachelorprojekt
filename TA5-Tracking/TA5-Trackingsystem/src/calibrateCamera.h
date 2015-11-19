@@ -66,7 +66,7 @@ int calibrateCamera(string inputFile, Mat& cameraMatrix, Mat& distCoeffs) {
   const Scalar RED(0, 0, 255), GREEN(0, 255, 0);
   const char ESC_KEY = 27;
 
-  for (int i = 0;; ++i) {
+  while (1) {
     Mat view;
     bool blinkOutput = false;
 
@@ -95,8 +95,7 @@ int calibrateCamera(string inputFile, Mat& cameraMatrix, Mat& distCoeffs) {
     vector<Point2f> pointBuf;
 
     bool found;
-    switch (s.calibrationPattern) // Find feature points on the input format
-    {
+    switch (s.calibrationPattern) { // Find feature points on the input format
       case Settings::CHESSBOARD:
         found = findChessboardCorners(view, s.boardSize, pointBuf,
         CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE);
@@ -147,8 +146,9 @@ int calibrateCamera(string inputFile, Mat& cameraMatrix, Mat& distCoeffs) {
 
     putText(view, msg, textOrigin, 1, 1, mode == CALIBRATED ? GREEN : RED);
 
-    if (blinkOutput)
+    if (blinkOutput) {
       bitwise_not(view, view);
+    }
 
     //------------------------- Video capture  output  undistorted ------------------------------
     if (mode == CALIBRATED && s.showUndistorsed) {
@@ -157,39 +157,22 @@ int calibrateCamera(string inputFile, Mat& cameraMatrix, Mat& distCoeffs) {
     }
 
     //------------------------------ Show image and check for input commands -------------------
-    imshow("Image View", view);
+    imshow("distortion calibration", view);
     char key = (char) waitKey(s.inputCapture.isOpened() ? 50 : s.delay);
 
-    if (key == ESC_KEY)
+    if (key == ESC_KEY) {
+      s.inputCapture.release();
+      destroyWindow("distortion calibration");
       break;
+    }
 
-    if (key == 'u' && mode == CALIBRATED)
+    if (key == 'u' && mode == CALIBRATED) {
       s.showUndistorsed = !s.showUndistorsed;
+    }
 
     if (s.inputCapture.isOpened() && key == 'g') {
       mode = CAPTURING;
       imagePoints.clear();
-    }
-  }
-
-  // -----------------------Show the undistorted image for the image list ------------------------
-  if (s.inputType == Settings::IMAGE_LIST && s.showUndistorsed) {
-    Mat view, rview, map1, map2;
-    initUndistortRectifyMap(cameraMatrix, distCoeffs, Mat(),
-                            getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, imageSize, 1, imageSize, 0), imageSize,
-                            CV_16SC2,
-                            map1, map2);
-
-    for (int i = 0; i < (int) s.imageList.size(); i++) {
-      view = imread(s.imageList[i], 1);
-      if (view.empty())
-        continue;
-      remap(view, rview, map1, map2, INTER_LINEAR);
-      imshow("Image View", rview);
-      char c = (char) waitKey();
-      if (c == ESC_KEY || c == 'q' || c == 'Q')
-        destroyWindow("Image View");
-        break;
     }
   }
 
