@@ -8,6 +8,8 @@
 #include <iostream>
 using namespace std;
 
+#include "Socket.h"
+
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/highgui.hpp>
@@ -19,26 +21,23 @@ using namespace cv;
 #include "calibrate3D.h"
 #include "calibrateCamera.h"
 #include "ObjectDetection.h"
-#include "Socket.h"
 
 int main(int argc, const char** argv) {
   string options;
+
+  Socket remoteInput(61362);
+  string message;
 
   Camera cam1(0);
   Camera cam2(1);
   VideoCapture cap1 = cam1.get_capture();
 
-  Socket remoteInput(61382);
-  string message;
-
-  //namedWindow("foo", 1);
   Mat frame;
 
   cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
   while (1) {
     cout << "zugelassene Optionen: loadConfig, calibrateCamera, Kamerakalibrierung, calibrate3D, tracking, exit" << endl;
     cin >> options;
-    //cout << "Sie haben " << options << " gewählt" << endl;
 
     if (0 == options.compare("loadConfig")) {
       cout << "--> do loadConfig subroutine" << endl;
