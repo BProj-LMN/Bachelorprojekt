@@ -8,6 +8,8 @@
 #include <iostream>
 using namespace std;
 
+#include "Socket.h"
+
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/highgui.hpp>
@@ -19,16 +21,15 @@ using namespace cv;
 #include "calibrate3D.h"
 #include "calibrateCamera.h"
 #include "ObjectDetection.h"
-#include "Socket.h"
 
 int main(int argc, const char** argv) {
   string options;
 
+  Socket remoteInput(61362);
+  string message;
+
   Camera cam1(0);
   VideoCapture cap1 = cam1.get_capture();
-
-  Socket remoteInput(61382);
-  string message;
 
   namedWindow("foo", 1);
   Mat frame;

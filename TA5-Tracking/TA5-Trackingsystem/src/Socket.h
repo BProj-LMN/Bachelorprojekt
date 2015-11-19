@@ -21,6 +21,7 @@
 #endif
 
 #include <iostream>
+#include <stdio.h>
 
 class Socket {
   long rc;
@@ -35,10 +36,10 @@ class Socket {
 #else
   SOCKET udp_socket;
   SOCKADDR_IN server;
-  unsigned int serverLen;
+  int serverLen;
 
   SOCKADDR_IN remote;
-  unsigned int remoteLen;
+  int remoteLen;
 #endif
 
   char message[MESSAGE_LEN];

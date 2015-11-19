@@ -8,6 +8,9 @@
 #include "Socket.h"
 
 Socket::Socket(int port) {
+  clientConnected = false;
+  newClientMessage = false;
+
 #ifndef _WIN32
   serverLen = sizeof(server);
   remoteLen = sizeof(remote);
@@ -34,7 +37,7 @@ Socket::Socket(int port) {
   WSADATA wsa;
   rc = WSAStartup(MAKEWORD(2, 0), &wsa);
   if (rc != 0) {
-    fprintf(stderr, "ERROR: startWinsock, code: %d\n", rc);
+    fprintf(stderr, "ERROR: startWinsock, code: %ld \n", rc);
     exit(0);
   }
 
@@ -45,12 +48,14 @@ Socket::Socket(int port) {
   }
   server.sin_family = AF_INET;
   server.sin_addr.s_addr = ADDR_ANY;
-  server.sin_port = htons(UDP_PORT);
+  server.sin_port = htons(port);
   rc = bind(udp_socket, (SOCKADDR*) &server, sizeof(SOCKADDR_IN));
   if (rc == SOCKET_ERROR) {
     printf("ERROR: binding, code: %d\n", WSAGetLastError());
-    return 1;
+    exit(0);
   }
+  u_long iMode = 1;
+  ioctlsocket(udp_socket, FIONBIO, &iMode);
 #endif
 
 }
@@ -65,7 +70,7 @@ Socket::~Socket() {
 
 void Socket::evaluate() {
 #ifndef _WIN32
-  rc = recvfrom(udp_socket, message, 1024, MSG_DONTWAIT, (struct sockaddr *) &remote, &remoteLen);
+  rc = recvfrom(udp_socket, message, MESSAGE_LEN, MSG_DONTWAIT, (struct sockaddr *) &remote, &remoteLen);
 
   if (rc > 0) {
     newClientMessage = true;
@@ -87,13 +92,13 @@ void Socket::evaluate() {
   }
 
 #else
-  rc = recvfrom(udp_socket, message, MESSAGE_LEN, MSG_DONTWAIT, (SOCKADDR*) &remote, &remoteLen);
+  rc = recvfrom(udp_socket, message, MESSAGE_LEN, 0, (SOCKADDR*) &remote, &remoteLen);
 
   if (rc != SOCKET_ERROR) {
     newClientMessage = true;
 
-    write(1, "[LOG] received packet: ", 23);
-    write(1, message, rc);
+    fprintf(stdout, "[LOG] received packet: ");
+    fprintf(stdout, "%s", message);
 
     if (0 == strncmp(message, "connect", 7)) {
       clientConnected = true;
