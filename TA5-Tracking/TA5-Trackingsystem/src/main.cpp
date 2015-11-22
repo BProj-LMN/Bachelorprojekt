@@ -49,6 +49,8 @@ int main(int argc, const char** argv) {
     if (0 == options.compare("loadConfig")) {
       cout << "--> do loadConfig subroutine" << endl;
       // TODO
+      cam1.readSettings("cam1.xml");
+      cam2.readSettings("cam2.xml");
 
     } else if (0 == options.compare("calibrateCamera")) {
       cout << "--> do calibrateCamera subroutine" << endl;
@@ -60,6 +62,8 @@ int main(int argc, const char** argv) {
 
     } else if (0 == options.compare("exit")) {
       cout << "--> terminating ... Auf Wiedersehen" << endl;
+      cam1.saveSettings("cam1.xml");
+      cam2.saveSettings("cam2.xml");
       return(0);
 
     } else if (0 == options.compare("tracking")) {
