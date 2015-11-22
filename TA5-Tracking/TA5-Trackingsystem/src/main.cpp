@@ -52,7 +52,7 @@ int main(int argc, const char** argv) {
 
     } else if (0 == options.compare("calibrateCamera")) {
       cout << "--> do calibrateCamera subroutine" << endl;
-      calibrateCamera("calibrateCamera0.xml", cam1.cameraMatrix, cam1.distCoeffs);
+      calibrateCameras(&cam1, &cam2);
 
     } else if (0 == options.compare("calibrate3D")) {
       cout << "--> do calibrate3D subroutine" << endl;

@@ -21,35 +21,22 @@
 using namespace cv;
 using namespace std;
 
-class Settings {
+class DistCalibSettings {
 public:
-  Settings() :
+  DistCalibSettings() :
       goodInput(false) {
   }
   enum Pattern {
     NOT_EXISTING, CHESSBOARD, CIRCLES_GRID, ASYMMETRIC_CIRCLES_GRID
   };
   enum InputType {
-    INVALID, CAMERA, VIDEO_FILE, IMAGE_LIST
+    INVALID, CAMERA
   };
 
-  void write(FileStorage& fs) const;                      //Write serialization for this class
-  void read(const FileNode& node);                        //Read serialization for this class
+  //void write(FileStorage& fs) const;    // Write serialization for this class
+  void read(const FileNode& node);      // Read serialization for this class
   void interprate();
   Mat nextImage();
-  static bool readStringList(const string& filename, vector<string>& l) {
-    l.clear();
-    FileStorage fs(filename, FileStorage::READ);
-    if (!fs.isOpened())
-      return false;
-    FileNode n = fs.getFirstTopLevelNode();
-    if (n.type() != FileNode::SEQ)
-      return false;
-    FileNodeIterator it = n.begin(), it_end = n.end();
-    for (; it != it_end; ++it)
-      l.push_back((string) *it);
-    return true;
-  }
 
 public:
   Size boardSize;               // The size of the board -> Number of items by width and height
@@ -58,7 +45,7 @@ public:
   int nrFrames;                 // The number of frames to use from the input for calibration
   float aspectRatio;            // The aspect ratio
   int delay;                    // In case of a video input
-  bool bwritePoints;            //  Write detected feature points
+  bool bwritePoints;            // Write detected feature points
   bool bwriteExtrinsics;        // Write extrinsic parameters
   bool calibZeroTangentDist;    // Assume zero tangential distortion
   bool calibFixPrincipalPoint;  // Fix the principal point at the center
@@ -67,9 +54,6 @@ public:
   bool showUndistorsed;         // Show undistorted images after calibration
   string input;                 // The input ->
 
-  int cameraID;
-  vector<string> imageList;
-  int atImageList;
   VideoCapture inputCapture;
   InputType inputType;
   bool goodInput;

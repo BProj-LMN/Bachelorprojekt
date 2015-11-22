@@ -13,6 +13,10 @@
 #ifndef SRC_CALIBRATECAMERA_H_
 #define SRC_CALIBRATECAMERA_H_
 
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include <iostream>
 #include <sstream>
 #include <time.h>
@@ -23,13 +27,6 @@
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-#ifndef _CRT_SECURE_NO_WARNINGS
-# define _CRT_SECURE_NO_WARNINGS
-#endif
-
-using namespace cv;
-using namespace std;
-
 #include "calibrateCamera_Helpers.h"
 #include "calibrateCamera_Settings.h"
 
@@ -37,31 +34,56 @@ enum {
   DETECTION = 0, CAPTURING = 1, CALIBRATED = 2
 };
 
-static void help() {
-  cout << "Hi, this is the distortion correction subroutine" << endl;
+enum {
+  ERROR = 0, OK = 1 // TODO error as -1 or 0? and change current code to this definition
+};
+
+int executeDistCalib(string settingsFile, Camera* cam);
+
+int calibrateCameras(Camera* cam1, Camera* cam2) {
+  cout << "\n\nHello, this is the distortion correction subroutine" << endl;
+  int returnValue = ERROR;
+
+  cout << "calibrate Camera 1 please" << endl;
+  returnValue = executeDistCalib("calibrateCamera.xml", cam1);
+  if (ERROR == returnValue) {
+    return ERROR;
+  }
+
+  cout << "\n\n" << "calibrate Camera 2 please" << endl;
+  returnValue = executeDistCalib("calibrateCamera.xml", cam2);
+  if (ERROR == returnValue) {
+    return ERROR;
+  }
+
+  return OK;
 }
 
-int calibrateCamera(string inputFile, Mat& cameraMatrix, Mat& distCoeffs) {
-  help();
-  Settings s;
-  const string inputSettingsFile = inputFile;
-  FileStorage fs(inputSettingsFile, FileStorage::READ); // Read the settings
+int executeDistCalib(string settingsFile, Camera* cam) {
+  DistCalibSettings s;
+  FileStorage fs(settingsFile, FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
-    cout << "Could not open the configuration file: \"" << inputSettingsFile << "\"" << endl;
+    cout << "Could not open the configuration file: \"" << settingsFile << "\"" << endl;
     return -1;
   }
+  // hard code some settings
+  s.inputType = DistCalibSettings::CAMERA;
+  VideoCapture cap = cam->get_capture();
+  s.inputCapture = cap;
   fs["Settings"] >> s;
   fs.release();                                         // close Settings file
 
   if (!s.goodInput) {
     cout << "Invalid input detected. Application stopping. " << endl;
-    return -1;
+    return ERROR;
   }
 
   vector<vector<Point2f> > imagePoints;
-  //Mat cameraMatrix, distCoeffs;
+  Mat* cameraMatrix = &cam->cameraMatrix;
+  Mat* distCoeffs = &cam->distCoeffs;
+
   Size imageSize;
-  int mode = s.inputType == Settings::IMAGE_LIST ? CAPTURING : DETECTION;
+  int mode = DETECTION;
   clock_t prevTimestamp = 0;
   const Scalar RED(0, 0, 255), GREEN(0, 255, 0);
   const char ESC_KEY = 27;
@@ -71,20 +93,17 @@ int calibrateCamera(string inputFile, Mat& cameraMatrix, Mat& distCoeffs) {
     bool blinkOutput = false;
 
     view = s.nextImage();
+    if (view.empty()) {
+      return ERROR;
+    }
 
     //-----  If no more image, or got enough, then stop calibration and show result -------------
     if (mode == CAPTURING && imagePoints.size() >= (unsigned) s.nrFrames) {
-      if (runCalibrationAndSave(s, imageSize, cameraMatrix, distCoeffs, imagePoints)) {
+      if (runCalibration(s, imageSize, *cameraMatrix, *distCoeffs, imagePoints)) {
         mode = CALIBRATED;
       } else {
         mode = DETECTION;
       }
-    }
-    if (view.empty()) {         // If no more images then run calibration, save and stop loop.
-      if (imagePoints.size() > 0) {
-        runCalibrationAndSave(s, imageSize, cameraMatrix, distCoeffs, imagePoints);
-      }
-      break;
     }
 
     imageSize = view.size();  // Format input image.
@@ -96,14 +115,14 @@ int calibrateCamera(string inputFile, Mat& cameraMatrix, Mat& distCoeffs) {
 
     bool found;
     switch (s.calibrationPattern) { // Find feature points on the input format
-      case Settings::CHESSBOARD:
+      case DistCalibSettings::CHESSBOARD:
         found = findChessboardCorners(view, s.boardSize, pointBuf,
         CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FAST_CHECK | CV_CALIB_CB_NORMALIZE_IMAGE);
         break;
-      case Settings::CIRCLES_GRID:
+      case DistCalibSettings::CIRCLES_GRID:
         found = findCirclesGrid(view, s.boardSize, pointBuf);
         break;
-      case Settings::ASYMMETRIC_CIRCLES_GRID:
+      case DistCalibSettings::ASYMMETRIC_CIRCLES_GRID:
         found = findCirclesGrid(view, s.boardSize, pointBuf, CALIB_CB_ASYMMETRIC_GRID);
         break;
       default:
@@ -113,7 +132,7 @@ int calibrateCamera(string inputFile, Mat& cameraMatrix, Mat& distCoeffs) {
 
     if (found) {               // If done with success,
       // improve the found corners' coordinate accuracy for chessboard
-      if (s.calibrationPattern == Settings::CHESSBOARD) {
+      if (s.calibrationPattern == DistCalibSettings::CHESSBOARD) {
         Mat viewGray;
         cvtColor(view, viewGray, COLOR_BGR2GRAY);
         cornerSubPix(viewGray, pointBuf, Size(11, 11), Size(-1, -1),
@@ -153,30 +172,26 @@ int calibrateCamera(string inputFile, Mat& cameraMatrix, Mat& distCoeffs) {
     //------------------------- Video capture  output  undistorted ------------------------------
     if (mode == CALIBRATED && s.showUndistorsed) {
       Mat temp = view.clone();
-      undistort(temp, view, cameraMatrix, distCoeffs);
+      undistort(temp, view, *cameraMatrix, *distCoeffs);
     }
 
     //------------------------------ Show image and check for input commands -------------------
     imshow("distortion calibration", view);
     char key = (char) waitKey(s.inputCapture.isOpened() ? 50 : s.delay);
-
     if (key == ESC_KEY) {
-      s.inputCapture.release();
       destroyWindow("distortion calibration");
       break;
     }
-
     if (key == 'u' && mode == CALIBRATED) {
       s.showUndistorsed = !s.showUndistorsed;
     }
-
     if (s.inputCapture.isOpened() && key == 'g') {
       mode = CAPTURING;
       imagePoints.clear();
     }
   }
 
-  return 0;
+  return OK;
 }
 
 #endif /* SRC_CALIBRATECAMERA_H_ */
