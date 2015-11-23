@@ -9,7 +9,8 @@
 #ifndef SRC_CALIBRATE3D_H_
 #define SRC_CALIBRATE3D_H_
 
-#define MAXPUNKTE 20
+#define MAXPUNKTE 30
+#define MY_FILENAME "3DPointsandPixelKam-"
 
 #include <fstream>
 #include <string>
@@ -18,10 +19,12 @@ using namespace cv;
 #include "Camera.h"
 #include "myGlobalConstants.h"
 
+void calibrate3Deinzeln(Camera* cam);
 void calibrate3D(Camera* cam1, Camera* cam2); // calibrate camera pair
 void KamerabildHolen(VideoCapture *cap, Mat *frame);
 void myMouseCallBackFunc(int event, int x, int y, int flags, void* userdata);
 void speichern(void);
+void lesen(Camera* cam);
 
 int x = 0;
 int KalibrierpunkteAnzahl = 0;
@@ -54,14 +57,13 @@ void myMouseCallBackFunc(int event, int x, int y, int flags, void* userdata) {
 }
 
 void calibrate3D(Camera* cam1, Camera* cam2) {
-  VideoCapture cap = cam1->get_capture();
-  Mat Kalliframe;
-  cout << "Wollen Sie neue Kalibrierungspunkte eingeben oder abgespeicherte verwendnen? (n - neu; g - gespeichert)"
-       << endl;
+
+  cout << "Wollen Sie neue Kalibrierungspunkte eingeben oder abgespeicherte verwendnen? (n - neu; g - gespeichert)" << endl;
   cin >> Antwortvariable;
   if ('g' == Antwortvariable) { //gespeicherte Werte verwenden
-    //TODO speicherung der Werte und Aufrufung
-    cout << x << " alte Punkte wurden gefunden" << endl;
+	lesen(cam1);
+	lesen(cam2);
+    cout << KalibrierpunkteAnzahl << " alte Punkte wurden gefunden" << endl;
   } else {
     cout << "Wie viele Punkte wollen sie eingeben?" << endl; //TODO Maximale Zahl hinzufügen
     cin >> KalibrierpunkteAnzahl;
@@ -78,9 +80,17 @@ void calibrate3D(Camera* cam1, Camera* cam2) {
       cout << "Punkt " << i + 1 << "; Koordinate X = " << KalibrierpunkteX[i] << endl;
       cout << "Punkt " << i + 1 << "; Koordinate Y = " << KalibrierpunkteY[i] << endl;
     }
+    calibrate3Deinzeln(cam1);
+    calibrate3Deinzeln(cam2);
+  }
+  cout << "Kalibrierung beendet" << endl;
+}
 
+void calibrate3Deinzeln(Camera* cam) {
+	Mat Kalliframe;
+	int KamNr = cam->getID();
+	VideoCapture cap = cam->get_capture();
     namedWindow("Kallibild", 1);
-
     for (int i = 0; i < KalibrierpunkteAnzahl; i++) { //für die Eingabe der Kalibrierpixel aus dem Bild per Klicken
       cout << "Bitte Punkt " << i + 1 << " im Bild anklicken" << endl;
       MauscallbackBekommen = 0;
@@ -97,51 +107,58 @@ void calibrate3D(Camera* cam1, Camera* cam2) {
       KalibrierpixelX[i] = PixelX;
       KalibrierpixelY[i] = PixelY;
     }
-    speichern();
-  }
-  destroyWindow("Kallibild");
-  cout << "Kalibrierung beendet" << endl;
+    speichern(KamNr);
+	cout << "Kamera" << KamNr << "done" << endl;
+	destroyWindow("Kallibild");
 }
 
-void speichern(void) {
-  f.open(SPEICHERORT, ios::out);
-  for (int i = 0; i < MAXPUNKTE; i++) {
-    f << KalibrierpixelX[i] << ";";
-  }
-  f << endl;
-  for (int i = 0; i < MAXPUNKTE; i++) {
-    f << KalibrierpixelY[i] << ";";
-  }
-  f << endl;
-  for (int i = 0; i < MAXPUNKTE; i++) {
-    f << KalibrierpunkteX[i] << ";";
-  }
-  f << endl;
-  for (int i = 0; i < MAXPUNKTE; i++) {
-    f << KalibrierpunkteY[i] << ";";
-  }
-  f.close();
+void speichern(int KamNr) {
+	  stringstream string;
+	  string << MY_FILENAME << KamNr;
+	  settingsFilename = string.str();
+
+	FileStorage mfs(settingsFile, FileStorage::WRITE); // Read the settings
+	  if (!mfs.isOpened()) {
+	    cout << "Could not open the configuration file: \"" << settingsFile << "\"" << endl;
+	    return -1;
+	  }
+
+	  time_t tm;
+	  time(&tm);
+	  struct tm *t2 = localtime(&tm);
+	  mfs << "timestamp" << (int) tm;
+	  char buf[1024];
+	  strftime(buf, sizeof(buf) - 1, "%c", t2);
+	  mfs << "datetime" << buf;
+
+	  mfs << "KalibrierpunkteAnzahl" << KalibrierpunkteAnzahl;
+	  mfs << "KalibrierpunkteX" << KalibrierpunkteX;
+	  mfs << "KalibrierpunkteY" << KalibrierpunkteY;
+	  mfs << "KalibrierpixelX" << KalibrierpixelX;
+	  mfs << "KalibrierpixelY" << KalibrierpixelY;
+
+	  mfs.release();                                    // close Settings file
 }
 
-void lesen(void) {
-  f.open(SPEICHERORT, ios::in);
+void lesen(Camera* cam) {
+  KamNr = cam->getID();
+  stringstream string;
+  string << MY_FILENAME << KamNr;
+  settingsFilename = string.str();
 
-  /*for (int i = 0; i < MAXPUNKTE; i++) {
-    f >> KalibrierpixelX[i] >> ";";
+  FileStorage mfs(settingsFile, FileStorage::READ); // Read the settings
+  if (!mfs.isOpened()) {
+    cout << "Could not open the configuration file: \"" << settingsFile << "\"" << endl;
+    return -1;
   }
-  f >> endl;
-  for (int i = 0; i < MAXPUNKTE; i++) {
-    f >> KalibrierpixelY[i] >> ";";
-  }
-  f >> endl;
-  for (int i = 0; i < MAXPUNKTE; i++) {
-    f >> KalibrierpunkteX[i] >> ";";
-  }
-  f >> endl;
-  for (int i = 0; i < MAXPUNKTE; i++) {
-    f >> KalibrierpunkteY[i] >> ";";
-  }*/
-  f.close();
+
+  mfs["KalibrierpunkteAnzahl"] >> KalibrierpunkteAnzahl;
+  mfs["KalibrierpunkteX"] >> KalibrierpunkteX;
+  mfs["KalibrierpunkteY"] >> KalibrierpunkteY;
+  mfs["KalibrierpixelX"] >> KalibrierpixelX;
+  mfs["KalibrierpixelY"] >> KalibrierpixelY;
+
+  mfs.release();                                    // close Settings file
 }
 
 void KamerabildHolen(VideoCapture *cap, Mat *frame) {

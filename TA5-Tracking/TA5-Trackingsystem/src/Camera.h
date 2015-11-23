@@ -45,6 +45,7 @@ public:
   int readSettings();                     // read from filename from constructor
   int saveSettings(string settingsFile);  // save to temporarily filename
   int saveSettings();                     // save to filename from constructor
+  int getID();
 
 };
 
