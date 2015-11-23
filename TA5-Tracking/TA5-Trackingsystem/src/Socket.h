@@ -1,8 +1,9 @@
 /*
  * Socket.h
  *
- *  Created on: 15.11.2015
- *      Author: Jannik
+ * function: create an UDP server for remote connection and control
+ *
+ * author: Jannik Beyerstedt
  */
 
 #ifndef SRC_SOCKET_H_
@@ -22,6 +23,8 @@
 
 #include <iostream>
 #include <stdio.h>
+
+#include "globalConstants.h"
 
 class Socket {
   long rc;
@@ -51,8 +54,8 @@ public:
   virtual ~Socket();
 
   void evaluate();
-  int get_message(std::string & message); // returns 1 if new data
-  int sendMessage(char message[MESSAGE_LEN]); // returns 1 if success
+  int get_message(std::string & message);     // returns true if new data
+  int sendMessage(char message[MESSAGE_LEN]); // returns OK if success
 
 };
 

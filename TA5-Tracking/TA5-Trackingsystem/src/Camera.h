@@ -1,8 +1,10 @@
 /*
  * camera.h
  *
- *  Created on: 12.11.2015
- *      Author: Jannik
+ * function: store all information of one camera
+ *           save/read all parameters to/from file
+ *
+ * author: Jannik Beyerstedt
  */
 
 #ifndef SRC_CAMERA_H_
@@ -13,9 +15,10 @@
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/imgproc.hpp>
-
 using namespace cv;
 using namespace std;
+
+#include "globalConstants.h"
 
 class Camera {
   VideoCapture capture;
@@ -36,10 +39,10 @@ public:
   VideoCapture get_capture();
   void correctDistortion(InputArray src, OutputArray dst);
 
-  int readSettings(string settingsFile);  // set filename
-  int readSettings();                     // with filename from constructor
-  int saveSettings(string settingsFile);  // set filename
-  int saveSettings();                     // with filename from constructor
+  int readSettings(string settingsFile);  // read from temporarily filename
+  int readSettings();                     // read from filename from constructor
+  int saveSettings(string settingsFile);  // save to temporarily filename
+  int saveSettings();                     // save to filename from constructor
 
 };
 

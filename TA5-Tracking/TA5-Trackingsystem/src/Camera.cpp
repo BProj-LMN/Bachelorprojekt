@@ -1,8 +1,10 @@
 /*
  * camera.cpp
  *
- *  Created on: 12.11.2015
- *      Author: Jannik
+ * function: store all information of one camera
+ *           save/read all parameters to/from file
+ *
+ * author: Jannik Beyerstedt
  */
 
 #include "Camera.h"
@@ -28,23 +30,18 @@ Camera::Camera(int cameraIndex, string settingsFile) {
   }
 
   this->settingsFilename = settingsFile;
-
-  readSettings(settingsFile);
 }
 
 Camera::~Camera() {
-  //saveSettings(settingsFilename); // TODO machen oder nicht??
-
   capture.release();
 }
 
 VideoCapture Camera::get_capture() {
-
   return capture;
 }
 
 void Camera::correctDistortion(InputArray src, OutputArray dst) {
-  // TODO call undistortPoints()
+  // TODO Task: call undistortPoints()
   //cv::undistortPoints(src, dst,
   //                    *cameraMatrix, *distCoeffs);
 }
@@ -54,12 +51,10 @@ int Camera::readSettings() {
 }
 
 int Camera::readSettings(string settingsFile) {
-  // TODO save settingsFile string local (potentially overwrite constructor settings) ??
-
   FileStorage fs(settingsFile, FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
-    //cout << "Could not open the configuration file: \"" << settingsFile << "\"" << endl;
-    return -1;
+    fprintf(stderr, "ERROR: Camera::readSettings - opening file \n");
+    return ERROR;
   }
 
   fs["cameraMatrix"] >> cameraMatrix;
@@ -68,7 +63,7 @@ int Camera::readSettings(string settingsFile) {
   fs["tvecs"] >> tvecs;
 
   fs.release();                                    // close Settings file
-  return 0;
+  return OK;
 }
 
 int Camera::saveSettings() {
@@ -78,8 +73,8 @@ int Camera::saveSettings() {
 int Camera::saveSettings(string settingsFile) {
   FileStorage fs(settingsFile, FileStorage::WRITE); // Read the settings
   if (!fs.isOpened()) {
-    //cout << "Could not open the configuration file: \"" << settingsFile << "\"" << endl;
-    return -1;
+    fprintf(stderr, "ERROR: Camera::saveSettings - opening file \n");
+    return ERROR;
   }
 
   time_t tm;
@@ -96,5 +91,5 @@ int Camera::saveSettings(string settingsFile) {
   fs << "tvecs" << tvecs;
 
   fs.release();                                    // close Settings file
-  return 0;
+  return OK;
 }

@@ -21,6 +21,7 @@ using namespace cv;
 #include "calibrate3D.h"
 #include "calibrateCamera.h"
 #include "ObjectDetection.h"
+#include "globalConstants.h"
 
 int main(int argc, const char** argv) {
   string options;
@@ -48,7 +49,7 @@ int main(int argc, const char** argv) {
   while (1) {
     if (0 == options.compare("loadConfig")) {
       cout << "--> do loadConfig subroutine" << endl;
-      // TODO
+      // TODO load all config --> complete settings methods of Camera
       cam1.readSettings("cam1.xml");
       cam2.readSettings("cam2.xml");
 
@@ -83,7 +84,7 @@ int main(int argc, const char** argv) {
      * evaluate remote input
      */
     remoteInput.evaluate();
-    int newMessage = remoteInput.get_message(message);
+    bool newMessage = remoteInput.get_message(message);
 
     if (newMessage) {
       // do something

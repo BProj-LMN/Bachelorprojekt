@@ -14,16 +14,16 @@
 #include <sstream>
 #include <time.h>
 #include <stdio.h>
+using namespace std;
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/highgui/highgui.hpp>
-
 using namespace cv;
-using namespace std;
 
 #include "calibrateCamera_Settings.h"
+#include "globalConstants.h"
 
 static void read(const FileNode& node, DistCalibSettings& x, const DistCalibSettings& default_value =
                      DistCalibSettings()) {
@@ -88,7 +88,7 @@ bool runCalibration(DistCalibSettings& s, Size imageSize, Mat& cameraMatrix, Mat
   vector<float> reprojErrs;
   double totalAvgErr = 0;
 
-  // compute
+  // --> compute
   cameraMatrix = Mat::eye(3, 3, CV_64F);
   if (s.flag & CV_CALIB_FIX_ASPECT_RATIO) {
     cameraMatrix.at<double>(0, 0) = 1.0;
@@ -111,7 +111,7 @@ bool runCalibration(DistCalibSettings& s, Size imageSize, Mat& cameraMatrix, Mat
 
   totalAvgErr = computeReprojectionErrors(objectPoints, imagePoints, rvecs, tvecs, cameraMatrix, distCoeffs,
                                           reprojErrs);
-  // end compute
+  // <-- end compute
 
   cout << (ok ? "Calibration succeeded" : "Calibration failed") << ". avg re projection error = " << totalAvgErr
        << endl;

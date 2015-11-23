@@ -1,8 +1,9 @@
 /*
  * calibrate3D.h
  *
- *  Created on: 12.11.2015
- *      Author: Daniel
+ * function: calibrate position of cameras in world coordinates
+ *
+ * author: Daniel Friedrich
  */
 
 #ifndef SRC_CALIBRATE3D_H_
@@ -10,11 +11,12 @@
 
 #define MAXPUNKTE 20
 
-#include "Camera.h"
 #include <fstream>
 #include <string>
-
 using namespace cv;
+
+#include "Camera.h"
+#include "globalConstants.h"
 
 void calibrate3D(Camera* cam1, Camera* cam2); // calibrate camera pair
 void KamerabildHolen(VideoCapture *cap, Mat *frame);

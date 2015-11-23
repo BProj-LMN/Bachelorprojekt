@@ -5,9 +5,6 @@
  *
  * author: Jannik Beyerstedt
  * modified from: http://docs.opencv.org/2.4/doc/tutorials/calib3d/camera_calibration/camera_calibration.html
- *
- * TODO: ordentliches Beenden der Subroutine
- * TODO: prüfen, ob cameraMatrix und distCoeffs ordentlich abgespeichert werden
  */
 
 #ifndef SRC_CALIBRATECAMERA_H_
@@ -30,12 +27,10 @@
 #include "calibrateCamera_Helpers.h"
 #include "calibrateCamera_Settings.h"
 
-enum {
-  DETECTION = 0, CAPTURING = 1, CALIBRATED = 2
-};
+#include "globalConstants.h"
 
 enum {
-  ERROR = 0, OK = 1 // TODO error as -1 or 0? and change current code to this definition
+  DETECTION = 0, CAPTURING = 1, CALIBRATED = 2
 };
 
 int executeDistCalib(string settingsFile, Camera* cam);

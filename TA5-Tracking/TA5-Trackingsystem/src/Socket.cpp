@@ -1,8 +1,9 @@
 /*
  * Socket.cpp
  *
- *  Created on: 15.11.2015
- *      Author: Jannik
+ * function: create an UDP server for remote connection and control
+ *
+ * author: Jannik Beyerstedt
  */
 
 #include "Socket.h"
@@ -17,7 +18,7 @@ Socket::Socket(int port) {
 
   udp_socket = socket(AF_INET, SOCK_DGRAM, 0);
   if (udp_socket < 0) {
-    fprintf(stderr, "ERROR: opening socket \n");
+    fprintf(stderr, "ERROR: in Socket::Socket - opening socket \n");
     exit(0);
   }
   bzero(&server, serverLen);
@@ -26,7 +27,7 @@ Socket::Socket(int port) {
   server.sin_port = htons(port);
   rc = bind(udp_socket, (struct sockaddr *) &server, serverLen);
   if (rc < 0) {
-    fprintf(stderr, "ERROR: binding \n");
+    fprintf(stderr, "ERROR: in Socket::Socket - binding \n");
     exit(0);
   }
 
@@ -37,13 +38,13 @@ Socket::Socket(int port) {
   WSADATA wsa;
   rc = WSAStartup(MAKEWORD(2, 0), &wsa);
   if (rc != 0) {
-    fprintf(stderr, "ERROR: startWinsock, code: %ld \n", rc);
+    fprintf(stderr, "ERROR: in Socket::Socket - startWinsock, code: %ld \n", rc);
     exit(0);
   }
 
   udp_socket = socket(AF_INET, SOCK_DGRAM, 0);
   if (udp_socket == INVALID_SOCKET) {
-    fprintf(stderr, "ERROR: opening socket, code: %d\n", WSAGetLastError());
+    fprintf(stderr, "ERROR: in Socket::Socket - opening socket, code: %d\n", WSAGetLastError());
     exit(0);
   }
   server.sin_family = AF_INET;
@@ -51,7 +52,7 @@ Socket::Socket(int port) {
   server.sin_port = htons(port);
   rc = bind(udp_socket, (SOCKADDR*) &server, sizeof(SOCKADDR_IN));
   if (rc == SOCKET_ERROR) {
-    printf("ERROR: binding, code: %d\n", WSAGetLastError());
+    printf("ERROR: in Socket::Socket - binding, code: %d\n", WSAGetLastError());
     exit(0);
   }
   u_long iMode = 1;
@@ -122,9 +123,9 @@ int Socket::get_message(std::string & message) {
 
   if (newClientMessage) {
     newClientMessage = false;
-    return 1;
+    return TRUE;
   } else {
-    return 0;
+    return FALSE;
   }
 
 }
@@ -135,19 +136,19 @@ int Socket::sendMessage(char message[MESSAGE_LEN]) {
     rc = sendto(udp_socket, message, strlen(message), 0, (struct sockaddr *) &remote, remoteLen);
     if (rc < 0) {
       fprintf(stderr, "[ERROR] in Socket::sendMessage - sendto\n");
-      return 0;
+      return ERROR;
     }
   }
-  return 1;
+  return OK;
 
 #else
   if (clientConnected) {
     rc = sendto(udp_socket, message, strlen(message), 0, (SOCKADDR*) &remote, remoteLen);
     if (rc == SOCKET_ERROR) {
       fprintf(stderr, "[ERROR] in Socket::sendMessage - sendto\n");
-      return 0;
+      return ERROR;
     }
   }
-  return 1;
+  return OK;
 #endif
 }
