@@ -6,16 +6,18 @@
  * author: Jannik Beyerstedt
  */
 
-#ifndef SRC_GLOBALCONSTANTS_H_
-#define SRC_GLOBALCONSTANTS_H_
+#ifndef SRC_MYGLOBALCONSTANTS_H_
+#define SRC_MYGLOBALCONSTANTS_H_
 
 enum {
-  ERROR = -1, OK = 0
+  ERR = -1, OK = 0
 };
 
+#ifndef _WIN32
 enum {
   FALSE = 0, TRUE = 1
 };
+#endif
 
 /*
  * error scheme
@@ -23,4 +25,4 @@ enum {
  * fprintf(stderr, "ERROR: in {functionName} - {custom message, error codes, etc.} \n");
  */
 
-#endif /* SRC_GLOBALCONSTANTS_H_ */
+#endif /* SRC_MYGLOBALCONSTANTS_H_ */

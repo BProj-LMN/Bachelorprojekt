@@ -21,7 +21,7 @@ using namespace cv;
 #include "calibrate3D.h"
 #include "calibrateCamera.h"
 #include "ObjectDetection.h"
-#include "globalConstants.h"
+#include "myGlobalConstants.h"
 
 int main(int argc, const char** argv) {
   string options;

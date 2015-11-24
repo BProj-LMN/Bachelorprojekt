@@ -24,7 +24,8 @@
 #include <iostream>
 #include <stdio.h>
 
-#include "globalConstants.h"
+#define MYOK     0
+#define MYERROR -1
 
 class Socket {
   long rc;

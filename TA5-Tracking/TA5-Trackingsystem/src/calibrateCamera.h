@@ -27,7 +27,7 @@
 #include "calibrateCamera_Helpers.h"
 #include "calibrateCamera_Settings.h"
 
-#include "globalConstants.h"
+#include "myGlobalConstants.h"
 
 enum {
   DETECTION = 0, CAPTURING = 1, CALIBRATED = 2

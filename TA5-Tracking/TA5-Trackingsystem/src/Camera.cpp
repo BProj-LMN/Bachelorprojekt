@@ -24,6 +24,8 @@ Camera::Camera(int cameraIndex) {
 }
 
 Camera::Camera(int cameraIndex, string settingsFile) {
+  this->cameraID = cameraIndex;
+
   capture = VideoCapture(cameraIndex);
   if (!capture.isOpened()) {
     //return -1;
@@ -54,7 +56,7 @@ int Camera::readSettings(string settingsFile) {
   FileStorage fs(settingsFile, FileStorage::READ); // Read the settings
   if (!fs.isOpened()) {
     fprintf(stderr, "ERROR: Camera::readSettings - opening file \n");
-    return ERROR;
+    return ERR;
   }
 
   fs["cameraMatrix"] >> cameraMatrix;
@@ -74,7 +76,7 @@ int Camera::saveSettings(string settingsFile) {
   FileStorage fs(settingsFile, FileStorage::WRITE); // Read the settings
   if (!fs.isOpened()) {
     fprintf(stderr, "ERROR: Camera::saveSettings - opening file \n");
-    return ERROR;
+    return ERR;
   }
 
   time_t tm;

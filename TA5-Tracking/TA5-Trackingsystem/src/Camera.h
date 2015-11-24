@@ -16,9 +16,11 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/imgproc.hpp>
 using namespace cv;
+
+#include <time.h>
 using namespace std;
 
-#include "globalConstants.h"
+#include "myGlobalConstants.h"
 
 class Camera {
   VideoCapture capture;

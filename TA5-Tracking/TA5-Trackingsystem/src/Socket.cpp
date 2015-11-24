@@ -136,19 +136,19 @@ int Socket::sendMessage(char message[MESSAGE_LEN]) {
     rc = sendto(udp_socket, message, strlen(message), 0, (struct sockaddr *) &remote, remoteLen);
     if (rc < 0) {
       fprintf(stderr, "[ERROR] in Socket::sendMessage - sendto\n");
-      return ERROR;
+      return MYERROR;
     }
   }
-  return OK;
+  return MYOK;
 
 #else
   if (clientConnected) {
     rc = sendto(udp_socket, message, strlen(message), 0, (SOCKADDR*) &remote, remoteLen);
     if (rc == SOCKET_ERROR) {
       fprintf(stderr, "[ERROR] in Socket::sendMessage - sendto\n");
-      return ERROR;
+      return MYERROR;
     }
   }
-  return OK;
+  return MYOK;
 #endif
 }

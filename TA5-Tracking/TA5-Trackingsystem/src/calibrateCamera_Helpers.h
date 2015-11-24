@@ -23,7 +23,7 @@ using namespace std;
 using namespace cv;
 
 #include "calibrateCamera_Settings.h"
-#include "globalConstants.h"
+#include "myGlobalConstants.h"
 
 static void read(const FileNode& node, DistCalibSettings& x, const DistCalibSettings& default_value =
                      DistCalibSettings()) {

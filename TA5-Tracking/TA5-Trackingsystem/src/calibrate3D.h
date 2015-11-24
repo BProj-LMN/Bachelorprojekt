@@ -16,7 +16,7 @@
 using namespace cv;
 
 #include "Camera.h"
-#include "globalConstants.h"
+#include "myGlobalConstants.h"
 
 void calibrate3D(Camera* cam1, Camera* cam2); // calibrate camera pair
 void KamerabildHolen(VideoCapture *cap, Mat *frame);
