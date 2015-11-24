@@ -26,6 +26,9 @@
 
 #define MYOK     0
 #define MYERROR -1
+#ifndef _WIN32
+#include "myGlobalConstants.h"
+#endif
 
 class Socket {
   long rc;

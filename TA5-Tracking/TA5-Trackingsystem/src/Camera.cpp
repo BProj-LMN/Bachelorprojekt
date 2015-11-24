@@ -42,10 +42,12 @@ VideoCapture Camera::get_capture() {
   return capture;
 }
 
-void Camera::correctDistortion(InputArray src, OutputArray dst) {
+int Camera::correctDistortion(InputArray src, OutputArray dst) {
   // TODO Task: call undistortPoints()
   //cv::undistortPoints(src, dst,
   //                    *cameraMatrix, *distCoeffs);
+
+  return OK;
 }
 
 int Camera::readSettings() {

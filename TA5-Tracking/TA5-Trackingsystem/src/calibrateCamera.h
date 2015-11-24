@@ -37,18 +37,18 @@ int executeDistCalib(string settingsFile, Camera* cam);
 
 int calibrateCameras(Camera* cam1, Camera* cam2) {
   cout << "\n\nHello, this is the distortion correction subroutine" << endl;
-  int returnValue = ERROR;
+  int returnValue = ERR;
 
   cout << "calibrate Camera 1 please" << endl;
   returnValue = executeDistCalib("calibrateCamera.xml", cam1);
-  if (ERROR == returnValue) {
-    return ERROR;
+  if (ERR == returnValue) {
+    return ERR;
   }
 
   cout << "\n\n" << "calibrate Camera 2 please" << endl;
   returnValue = executeDistCalib("calibrateCamera.xml", cam2);
-  if (ERROR == returnValue) {
-    return ERROR;
+  if (ERR == returnValue) {
+    return ERR;
   }
 
   return OK;
@@ -70,7 +70,7 @@ int executeDistCalib(string settingsFile, Camera* cam) {
 
   if (!s.goodInput) {
     cout << "Invalid input detected. Application stopping. " << endl;
-    return ERROR;
+    return ERR;
   }
 
   vector<vector<Point2f> > imagePoints;
@@ -89,7 +89,7 @@ int executeDistCalib(string settingsFile, Camera* cam) {
 
     view = s.nextImage();
     if (view.empty()) {
-      return ERROR;
+      return ERR;
     }
 
     //-----  If no more image, or got enough, then stop calibration and show result -------------
