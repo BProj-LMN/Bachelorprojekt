@@ -72,7 +72,7 @@ int ObjectDetection::getObjectPosition(Mat thresImg, int objectPos[2], Rect* bou
 
   // if contours vector is empty, we have found no objects
   if (contours.size() == 0) {
-    return ERROR;
+    return ERR;
   } else {
     // the largest contour is found at the end of the contours vector
     // we will simply assume that the biggest contour is the object we are looking for.

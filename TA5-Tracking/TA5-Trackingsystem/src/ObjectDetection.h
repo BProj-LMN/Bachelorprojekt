@@ -15,7 +15,7 @@
 using namespace cv;
 
 #include "Camera.h"
-#include "globalConstants.h"
+#include "myGlobalConstants.h"
 
 class ObjectDetection {
   Camera* cam;
