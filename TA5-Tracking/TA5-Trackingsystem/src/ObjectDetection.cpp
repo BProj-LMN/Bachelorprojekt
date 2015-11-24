@@ -20,14 +20,16 @@ ObjectDetection::~ObjectDetection() {
 
 }
 
-void ObjectDetection::setReferenceFrame(Mat frame) {
+int ObjectDetection::setReferenceFrame(Mat frame) {
   this->refereceFrame = frame;
+
+  return OK;
 }
 /*
  * input:  grayscale frame
  * output: int array with detected position {x, y}
  */
-void ObjectDetection::detectObject(Mat frame, int pixelPosition[2]) {
+int ObjectDetection::detectObject(Mat frame, int pixelPosition[2]) {
   // TODO: only copy-pasted the code --> check integration !!!
 
   Mat diffImage, thresholdImage;
@@ -51,16 +53,20 @@ void ObjectDetection::detectObject(Mat frame, int pixelPosition[2]) {
     rectangle(frame, objectBounding, Scalar(0, 255, 0), 2);
 
     imshow("final tracking", frame);
+
+    return OK;
+  }else {
+    return ERR;
   }
 
 }
 
-int ObjectDetection::getObjectPosition(Mat thresholdImage, int objectPosition[2], Rect* boundingRectangle) {
+int ObjectDetection::getObjectPosition(Mat thresImg, int objectPos[2], Rect* boundingRectange) {
 
   vector<vector<Point> > contours;
   vector<Vec4i> hierarchy;
 
-  findContours(thresholdImage, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE); // retrieves external contours
+  findContours(thresImg, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE); // retrieves external contours
 
   // TODO: merge the two nearby contours ! - with erode and dilate !?
 
@@ -75,12 +81,12 @@ int ObjectDetection::getObjectPosition(Mat thresholdImage, int objectPosition[2]
 
     // make a bounding rectangle around the largest contour then find its centroid
     // this will be the object's final estimated position.
-    *boundingRectangle = boundingRect(largestContourVec.at(0));
+    *boundingRectange = boundingRect(largestContourVec.at(0));
 
-    int xpos = boundingRectangle->x + boundingRectangle->width / 2;
-    int ypos = boundingRectangle->y + boundingRectangle->height / 2;
+    int xpos = boundingRectange->x + boundingRectange->width / 2;
+    int ypos = boundingRectange->y + boundingRectange->height / 2;
 
-    objectPosition[0] = xpos, objectPosition[1] = ypos;
+    objectPos[0] = xpos, objectPos[1] = ypos;
 
     return OK;
   }

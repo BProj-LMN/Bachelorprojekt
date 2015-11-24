@@ -25,11 +25,11 @@ public:
   ObjectDetection(Camera* cam);
   virtual ~ObjectDetection();
   
-  void setReferenceFrame(Mat frame);
-  void detectObject(Mat frame, int pixelPosition[2]);
+  int setReferenceFrame(Mat frame);
+  int detectObject(Mat frame, int pixelPosition[2]);
 
 private:
-  int getObjectPosition(Mat thresholdImage, int objectPosition[2], Rect* boundingRectangle);
+  int getObjectPosition(Mat thresImg, int objectPos[2], Rect* boundingRect);
 };
 
 #endif /* SRC_OBJECTDETECTION_H_ */
