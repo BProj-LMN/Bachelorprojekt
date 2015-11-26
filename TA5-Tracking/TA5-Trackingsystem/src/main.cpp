@@ -33,6 +33,8 @@ int main(int argc, const char** argv) {
   Camera cam2(1);
   VideoCapture cap1 = cam1.get_capture();
 
+  ObjectDetection detect1(&cam1);
+
   Mat frame;
 
   cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
@@ -42,7 +44,7 @@ int main(int argc, const char** argv) {
    */
   if (argc > 1) {
     options = argv[1];
-  }else {
+  } else {
     cin >> options;
   }
 
@@ -65,7 +67,7 @@ int main(int argc, const char** argv) {
       cout << "--> terminating ... Auf Wiedersehen" << endl;
       cam1.saveSettings("cam1.xml");
       cam2.saveSettings("cam2.xml");
-      return(0);
+      return (0);
 
     } else if (0 == options.compare("tracking")) {
       cout << "--> do normal operation" << endl;
@@ -78,6 +80,11 @@ int main(int argc, const char** argv) {
     cout << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, tracking, exit" << endl;
     cin >> options;
   }
+
+  int pixelPosition[2];
+  cap1 >> frame;
+  cvtColor(frame, frame, CV_BGR2GRAY);
+  detect1.setReferenceFrame(frame);
 
   while (1) {
     /*
@@ -96,7 +103,14 @@ int main(int argc, const char** argv) {
      * do something
      */
     cap1 >> frame;
+    cvtColor(frame, frame, CV_BGR2GRAY);
     imshow("foo", frame);
+
+    detect1.detectObject(frame, pixelPosition);
+
+    if (waitKey(30) >= 0) {
+      break;
+    }
 
   }
 
