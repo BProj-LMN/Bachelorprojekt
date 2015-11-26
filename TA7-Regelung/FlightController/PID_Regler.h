@@ -8,7 +8,7 @@
 
 #ifndef PID_REGLER_H
 #define	PID_REGLER_H
-
+#define IMAX 254
 class PID_Regler {
 public:
     void setfactors(double kp, double ki, double kd, double Scale);
