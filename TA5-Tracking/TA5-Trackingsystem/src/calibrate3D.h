@@ -27,18 +27,19 @@ int speichern(int KamNr);
 int lesen(Camera* cam);
 
 int x = 0;
-int KalibrierpunkteAnzahl = 0;
-int KalibrierpunkteX[MAXPUNKTE] = { 0 };
-int KalibrierpunkteY[MAXPUNKTE] = { 0 };
-int KalibrierpixelX[MAXPUNKTE] = { 0 };
-int KalibrierpixelY[MAXPUNKTE] = { 0 };
+Mat Punktematrix = Mat::zeros(6,MAXPUNKTE,4); //rows, cols, type - 4 für unsigned int 32 bit (CV_32S)
+//int Punktematrix.at<int>(0,0) = 0;
+//int KalibrierpunkteX[MAXPUNKTE] = { 0 };  //Punktematrix.at<int>(x,1)
+//int KalibrierpunkteY[MAXPUNKTE] = { 0 };  //Punktematrix.at<int>(x,2)
+//int KalibrierpunkteZ[MAXPUNKTE] = { 0 };  //Punktematrix.at<int>(x,3)
+//int KalibrierpixelX[MAXPUNKTE] = { 0 };   //Punktematrix.at<int>(x,4)
+//int KalibrierpixelY[MAXPUNKTE] = { 0 };   //Punktematrix.at<int>(x,5)
 bool war_schon = 0;
 char Antwortvariable = 0;
 int PixelX, PixelY;
 bool MauscallbackBekommen = 0;
 #define SPEICHERORT "C:/Users/User/Desktop/Punkte.txt"
 fstream f;
-//FILE *CSV; //TODO kann wahrscheinlich weg
 
 void myMouseCallBackFunc(int event, int x, int y, int flags, void* userdata) {
 
@@ -58,27 +59,31 @@ void myMouseCallBackFunc(int event, int x, int y, int flags, void* userdata) {
 
 void calibrate3D(Camera* cam1, Camera* cam2) {
 
+  Punktematrix.at<int>(0,0) = 0; // TODO - Matrix anfangs auf null setzen
+
   cout << "Wollen Sie neue Kalibrierungspunkte eingeben oder abgespeicherte verwendnen? (n - neu; g - gespeichert)" << endl;
   cin >> Antwortvariable;
   if ('g' == Antwortvariable) { //gespeicherte Werte verwenden //TODO Option nur Weltkoordinaten einlesen und dann klicken
 	lesen(cam1);
 	lesen(cam2);
-    cout << KalibrierpunkteAnzahl << " alte Punkte wurden gefunden" << endl;
+    cout << Punktematrix.at<int>(0,0) << " alte Punkte wurden gefunden" << endl;
   } else {
     cout << "Wie viele Punkte wollen sie eingeben?" << endl; //TODO Maximale Zahl hinzufügen
-    cin >> KalibrierpunkteAnzahl;
-    cout << KalibrierpunkteAnzahl << " Punkte werden aufgenommen..." << endl;
+    cin >> Punktematrix.at<int>(0,0);
+    cout << Punktematrix.at<int>(0,0) << " Punkte werden aufgenommen..." << endl;
 
-    for (int i = 0; i < KalibrierpunkteAnzahl; i++) { //für die Eingabe der Kalibrierpunkte
+    for (int i = 0; i < Punktematrix.at<int>(0,0); i++) { //für die Eingabe der Kalibrierpunkte
       cout << "Punkt " << i + 1 << "; Koordinate X: " << endl;
-      cin >> KalibrierpunkteX[i];
+      cin >> Punktematrix.at<int>(1,i);
       cout << "Punkt " << i + 1 << "; Koordinate Y: " << endl;
-      cin >> KalibrierpunkteY[i];
+      cin >> Punktematrix.at<int>(2,i);
+      cout << "Punkt " << i + 1 << "; Koordinate Z: " << endl;
+      cin >> Punktematrix.at<int>(3,i);
     }
 
-    for (int i = 0; i < KalibrierpunkteAnzahl; i++) { //für die Ausgabe/Best�tigund der Eingabe
-      cout << "Punkt " << i + 1 << "; Koordinate X = " << KalibrierpunkteX[i] << endl;
-      cout << "Punkt " << i + 1 << "; Koordinate Y = " << KalibrierpunkteY[i] << endl;
+    for (int i = 0; i < Punktematrix.at<int>(0,0); i++) { //für die Ausgabe/Best�tigund der Eingabe
+      cout << "Punkt " << i + 1 << "; Koordinate X = " << Punktematrix.at<int>(1,i) << endl;
+      cout << "Punkt " << i + 1 << "; Koordinate Y = " << Punktematrix.at<int>(2,i) << endl;
     }
     calibrate3Deinzeln(cam1);
     calibrate3Deinzeln(cam2);
@@ -91,7 +96,7 @@ void calibrate3Deinzeln(Camera* cam) {
 	int KamNr = cam->getID();
 	VideoCapture cap = cam->get_capture();
     namedWindow("Kallibild", 1);
-    for (int i = 0; i < KalibrierpunkteAnzahl; i++) { //für die Eingabe der Kalibrierpixel aus dem Bild per Klicken
+    for (int i = 0; i < Punktematrix.at<int>(0,0); i++) { //für die Eingabe der Kalibrierpixel aus dem Bild per Klicken
       cout << "Bitte Punkt " << i + 1 << " im Bild anklicken" << endl;
       MauscallbackBekommen = 0;
       setMouseCallback("Kallibild", myMouseCallBackFunc, NULL);
@@ -104,8 +109,8 @@ void calibrate3Deinzeln(Camera* cam) {
         if (waitKey(30) >= 0)
           break;
       }
-      KalibrierpixelX[i] = PixelX;
-      KalibrierpixelY[i] = PixelY;
+      Punktematrix.at<int>(4,i) = PixelX;
+      Punktematrix.at<int>(5,i) = PixelY;
     }
     speichern(KamNr);
 	cout << "Kamera" << KamNr << "done" << endl;
@@ -114,7 +119,7 @@ void calibrate3Deinzeln(Camera* cam) {
 
 int speichern(int KamNr) {
 	  stringstream pfad;
-	  pfad << MY_FILENAME << KamNr;
+	  pfad << MY_FILENAME << KamNr << ".xml";
 	  string settingsFilename = pfad.str();
 
 	FileStorage fs(settingsFilename, FileStorage::WRITE); // Read the settings
@@ -131,20 +136,19 @@ int speichern(int KamNr) {
 	  strftime(buf, sizeof(buf) - 1, "%c", t2);
 	  fs << "datetime" << buf;
 
-	  fs << "KalibrierpunkteAnzahl" << KalibrierpunkteAnzahl;
-	  fs << "KalibrierpunkteX" << KalibrierpunkteX;
-	  fs << "KalibrierpunkteY" << KalibrierpunkteY;
-	  fs << "KalibrierpixelX" << KalibrierpixelX;
-	  fs << "KalibrierpixelY" << KalibrierpixelY;
+	  fs << "Punktematrix" << Punktematrix;
 
 	  fs.release();                                    // close Settings file
+
+    cout << Punktematrix<<endl;
+
     return 1;
 }
 
 int lesen(Camera* cam) {
   int KamNr = cam->getID();
   stringstream pfad;
-  pfad << MY_FILENAME << KamNr;
+  pfad << MY_FILENAME << KamNr << ".xml";
   string settingsFilename = pfad.str();
 
   FileStorage fs(settingsFilename, FileStorage::READ); // Read the settings
@@ -153,11 +157,7 @@ int lesen(Camera* cam) {
     return -1;
   }
 
-  fs["KalibrierpunkteAnzahl"] >> KalibrierpunkteAnzahl;
-  fs["KalibrierpunkteX"] >> KalibrierpunkteX;
-  fs["KalibrierpunkteY"] >> KalibrierpunkteY;
-  fs["KalibrierpixelX"] >> KalibrierpixelX;
-  fs["KalibrierpixelY"] >> KalibrierpixelY;
+  fs["Punktematrix"] >> Punktematrix;
 
   fs.release();                                    // close Settings file
   return 1;
