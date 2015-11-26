@@ -26,7 +26,7 @@ using namespace cv;
 int main(int argc, const char** argv) {
   string options;
 
-  Socket remoteInput(61362);
+  Socket remoteInput(1362);
   string message;
 
   Camera cam1(0);
