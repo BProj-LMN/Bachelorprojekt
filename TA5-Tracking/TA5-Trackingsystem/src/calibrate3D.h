@@ -79,9 +79,9 @@ void calibrate3D(Camera* cam1, Camera* cam2) {
 	lesen(cam2);
 	cout << "Wollen Sie auch Weltkoordinaten einlesen oder neue eintippen? (n - neu; g - gespeichert)" << endl;
   	cin >> Antwortvariable;
-	if('n'){
+	if('n' == Antwortvariable){
 	  calibrate3Deinzeln(cam1);
-    	  calibrate3Deinzeln(cam2);
+	  calibrate3Deinzeln(cam2);
 	}
     cout << Punktematrix.at<int>(0,0) << " alte Punkte wurden gefunden" << endl;
   } else {
