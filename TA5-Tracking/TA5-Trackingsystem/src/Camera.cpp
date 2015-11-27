@@ -42,6 +42,10 @@ VideoCapture Camera::get_capture() {
   return capture;
 }
 
+int Camera::getID() {
+  return cameraID;
+}
+
 int Camera::correctDistortion(InputArray src, OutputArray dst) {
   // TODO Task: call undistortPoints()
   //cv::undistortPoints(src, dst,

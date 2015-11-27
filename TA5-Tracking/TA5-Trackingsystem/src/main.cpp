@@ -17,6 +17,8 @@ using namespace std;
 #include <opencv2/imgcodecs.hpp>
 using namespace cv;
 
+#include <tisgrabber.h>
+
 #include "Camera.h"
 #include "calibrate3D.h"
 #include "calibrateCamera.h"
@@ -32,8 +34,9 @@ int main(int argc, const char** argv) {
   Camera cam1(0);
   Camera cam2(1);
   VideoCapture cap1 = cam1.get_capture();
+  VideoCapture cap2 = cam2.get_capture();
 
-  Mat frame;
+  Mat frame1, frame2;
 
   cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
 
@@ -42,7 +45,7 @@ int main(int argc, const char** argv) {
    */
   if (argc > 1) {
     options = argv[1];
-  }else {
+  } else {
     cin >> options;
   }
 
@@ -65,7 +68,7 @@ int main(int argc, const char** argv) {
       cout << "--> terminating ... Auf Wiedersehen" << endl;
       cam1.saveSettings("cam1.xml");
       cam2.saveSettings("cam2.xml");
-      return(0);
+      return (0);
 
     } else if (0 == options.compare("tracking")) {
       cout << "--> do normal operation" << endl;
@@ -78,6 +81,21 @@ int main(int argc, const char** argv) {
     cout << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, tracking, exit" << endl;
     cin >> options;
   }
+
+  //IC_InitLibrary(0);
+  //HGRABBER hGrabber;
+// if (IC_InitLibrary(0)) {
+//    hGrabber = IC_CreateGrabber();
+//  }
+  //IC_ReleaseGrabber( hGrabber );
+
+//  HGRABBER testcamera1 = IC_CreateGrabber();
+  //cout << IC_GetAvailableFrameFilterCount();
+  //IC_SetExpAbsVal(camera1, 0.5);
+  // IC_ReleaseGrabber(&testcamera1);
+
+  namedWindow("test1", 1);
+  namedWindow("test2", 1);
 
   while (1) {
     /*
@@ -95,8 +113,20 @@ int main(int argc, const char** argv) {
     /*
      * do something
      */
-    cap1 >> frame;
-    imshow("foo", frame);
+
+    cap1 >> frame1;
+    flip(frame1, frame1, 0);
+    flip(frame1, frame1, 1);
+    imshow("test1", frame1);
+
+    cap2 >> frame2;
+    flip(frame2, frame2, 0);
+    flip(frame2, frame2, 1);
+    imshow("test2", frame2);
+
+    if (waitKey(30) >= 0) {
+      break;
+    }
 
   }
 
