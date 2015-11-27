@@ -66,6 +66,12 @@ void calibrate3D(Camera* cam1, Camera* cam2) {
   if ('g' == Antwortvariable) { //gespeicherte Werte verwenden //TODO Option nur Weltkoordinaten einlesen und dann klicken
 	lesen(cam1);
 	lesen(cam2);
+	cout << "Wollen Sie auch Weltkoordinaten einlesen oder neue eintippen? (n - neu; g - gespeichert)" << endl;
+  	cin >> Antwortvariable;
+	if('n'){
+	  calibrate3Deinzeln(cam1);
+    	  calibrate3Deinzeln(cam2);
+	}
     cout << Punktematrix.at<int>(0,0) << " alte Punkte wurden gefunden" << endl;
   } else {
     cout << "Wie viele Punkte wollen sie eingeben?" << endl; //TODO Maximale Zahl hinzufügen
