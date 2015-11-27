@@ -11,6 +11,7 @@
 
 class PID_Regler {
 public:
+    PID_Regler(double OG,double UG);
     void setfactors(double kp, double ki, double kd, double Scale);
     void setSoll(double Soll);
     double getControlValue(double IstValue);
@@ -24,6 +25,8 @@ private:
     double ScaleValue;
     double SollValue;
     double ControlValue;
+    double obereGrenze;
+    double untereGrenze;
     LONGLONG Timealt;
     LONGLONG Timeneu;
     LONGLONG Frequenz;

@@ -18,14 +18,22 @@ using namespace std;
  */
 int main(int argc, char** argv) {
     int i;
+    int j;
     fstream f;
     f.open("test.txt",ios::out);
-    PID_Regler test=PID_Regler();
-    test.setfactors(0.46,0.0032,0.1874,1);
+    PID_Regler test=PID_Regler(-127,127);
+    test.setfactors(0.46,1,0.1874,1);
     test.setSoll(50);
     for(i=0;i<1000;i++){
-    f<<test.getControlValue(0)<< endl;
-    //Sleep(10);
+        j=test.getControlValue(1);
+    f<<j<< endl;
+    Sleep(10);
+    }
+     test.setSoll(0);
+    for(i=0;i<1000;i++){
+        j=test.getControlValue(1);
+    f<<j<< endl;
+    Sleep(10);
     }
     f.close();
     return 0;
