@@ -27,6 +27,17 @@ int speichern(int KamNr);
 int lesen(Camera* cam);
 
 int x = 0;
+/*
+Zettelwerte 1 - 15 X Y Z (X1 Y1 Z1 X2 Y2 Z2 X3 Y3 Z3 X.....)
+x y  z   x y   z   x y   z   x y  z   x y   z   x y   z   x y  z
+0 37 248 0 151 232 0 287 226 0 63 155 0 170 171 0 254 149 0 27 78 
+x y   z  x y   z  x  y z   x   y z   x   y z  x   y z  x   y z   x   y z
+0 153 37 0 308 46 68 0 193 177 0 121 371 0 80 100 0 28 209 0 250 344 0 212
+
+Klötzchenwerte 1 - 5 X Y Z (X1 Y1 Z1 X2 Y2 Z2 X3 Y3 Z3 X.....)
+x   y   z   x   y   z   x   y   z  x   y   z   x   y   z  
+605 233 175 465 112 168 364 112 81 225 233 115 134 112 131
+*/
 Mat Punktematrix = Mat::zeros(6,MAXPUNKTE,4); //rows, cols, type - 4 für unsigned int 32 bit (CV_32S)
 //int Punktematrix.at<int>(0,0) = 0;
 //int KalibrierpunkteX[MAXPUNKTE] = { 0 };  //Punktematrix.at<int>(x,1)
