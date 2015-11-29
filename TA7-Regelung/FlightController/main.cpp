@@ -30,7 +30,7 @@ PID_Regler reglerZ = PID_Regler(0, REGELMAX);
 //Trajektorien Klasse erzeugen
 Trajectory trajec = Trajectory();
 //UserInterface erzeugen
-UserInterface UI = UserInterface();
+UserInterface UI = UserInterface(&Error);
 //Serielle Schnittstelle erzeugen
 SerielleUebertragung Serial = SerielleUebertragung();
 
@@ -58,11 +58,7 @@ int main(int argc, char** argv) {
     reglerY.setfactors(KPXY, KIXY, KDXY, 1);
     reglerZ.setfactors(KPZ, KIZ, KDZ, 1);
     //Sollwerte einlesen
-    while (!UI.sollEinlesen()&&(Error == 0)) {
-        if (UI.LeertasteGedrueckt()) {
-            Error = 1;
-        }
-    }
+    while (!UI.sollEinlesen()&&(Error == 0));
     //Wartet solange bis alle werte eingelesen sind
     //Istwerte einlesen
 
@@ -115,9 +111,6 @@ int main(int argc, char** argv) {
             cout << "Neue Sollwerte definieren" << endl;
             //Sollwerte einlesen bis alle vorhanden sind
             while (!UI.sollEinlesen()&&(Error == 0)) {
-                if (UI.LeertasteGedrueckt()) {
-                    Error = 1;
-                }
                 //Istwerte einlesen
 
                 //Übergibt die Regelwerte an den puffer der Seriellen Schnittstelle
@@ -133,9 +126,6 @@ int main(int argc, char** argv) {
             cout << "Um Copter weiter fliegen zu lassen Enter betaetigen" << endl;
             //Wartet bis Enter betätigt wird bevor der Copter wieder losfliegt
             while (!UI.EnterGedrueckt()&&(Error == 0)) {
-                if (UI.LeertasteGedrueckt()) {
-                    Error = 1;
-                }
                 //Istwerte einlesen
 
                 //Übergibt die Regelwerte an den puffer der Seriellen Schnittstelle

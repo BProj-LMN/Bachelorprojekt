@@ -11,10 +11,11 @@
 #define LEERTASTE 32
 #define DEL 8
 #define OFFSET 48
+#define ESC 27
 
 class UserInterface{
 public:
-    UserInterface();
+    UserInterface(int* Err);
     int sollEinlesen();
     bool EnterGedrueckt();
     double getX();
@@ -27,6 +28,7 @@ private:
     int status;
     int pos;
     int zaehler;
+    int* Error;
 };
 
 

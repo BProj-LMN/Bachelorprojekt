@@ -5,16 +5,19 @@
 
 using namespace std;
 
-UserInterface::UserInterface() {
+UserInterface::UserInterface(int* Err) {
     zaehler = 0;
     pos = 0;
     status = 0;
+    Error =Err;
 }
 
 bool UserInterface::EnterGedrueckt() {
     if (kbhit()) { // Wenn eine Taste betätigt wurde
         char eingabe = getch();//die gedrückte taste wird eingelesen
         fflush(stdin);//Buffer leeren
+        if(eingabe == ESC) {
+                    *Error =1;}
         if (eingabe == ENTER) {
             return 1;
         } else {
@@ -27,6 +30,8 @@ bool UserInterface::LeertasteGedrueckt() {
     if (kbhit()) {// Wenn eine Taste betätigt wurde
         char eingabe = getch();//die gedrückte taste wird eingelesen
         fflush(stdin);//Buffer leeren
+        if(eingabe == ESC) {
+                    *Error =1;}
         if (eingabe == LEERTASTE) {
             return 1;
         } else {
@@ -59,6 +64,8 @@ int UserInterface::sollEinlesen() {
                 char eingabe = getch();//die gedrückte taste wird eingelesen
                 fflush(stdin);//Buffer leeren
                 cout << eingabe;//die gedrückte taste ausgeben
+                if(eingabe == ESC) {
+                    *Error =1;}
                 if (eingabe == ENTER) {// Wenn eine Enter betätigt wurde neue zeile
                     cout << endl;
                     status = 5;
