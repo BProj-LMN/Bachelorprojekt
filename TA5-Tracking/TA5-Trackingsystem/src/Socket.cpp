@@ -118,14 +118,18 @@ void Socket::evaluate() {
 
 }
 
-int Socket::get_message(std::string & message) {
+bool Socket::is_clientConnected() {
+  return clientConnected;
+}
+
+bool Socket::get_message(std::string & message) {
   message = this->message;
 
   if (newClientMessage) {
     newClientMessage = false;
-    return TRUE;
+    return 1;
   } else {
-    return FALSE;
+    return 0;
   }
 
 }

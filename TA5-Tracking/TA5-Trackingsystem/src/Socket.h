@@ -26,9 +26,6 @@
 
 #define MYOK     0
 #define MYERROR -1
-#ifndef _WIN32
-#include "myGlobalConstants.h"
-#endif
 
 class Socket {
   long rc;
@@ -58,7 +55,8 @@ public:
   virtual ~Socket();
 
   void evaluate();
-  int get_message(std::string & message);     // returns true if new data
+  bool is_clientConnected();
+  bool get_message(std::string & message);    // returns true if new data
   int sendMessage(char message[MESSAGE_LEN]); // returns OK if success
 
 };
