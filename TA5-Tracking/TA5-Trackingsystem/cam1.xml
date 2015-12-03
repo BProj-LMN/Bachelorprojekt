@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<opencv_storage>
+<timestamp>1449143077</timestamp>
+<datetime>"12/03/15 12:44:37"</datetime>
+<cameraMatrix type_id="opencv-matrix">
+  <rows>3</rows>
+  <cols>3</cols>
+  <dt>d</dt>
+  <data>
+    1.1340490093870833e+003 0. 3.1950000000000000e+002 0.
+    1.1340490093870833e+003 2.3950000000000000e+002 0. 0. 1.</data></cameraMatrix>
+<distCoeffs type_id="opencv-matrix">
+  <rows>5</rows>
+  <cols>1</cols>
+  <dt>d</dt>
+  <data>
+    -4.8962292004051861e-001 2.4105966700042218e+000 0. 0.
+    -7.2416522168000883e+000</data></distCoeffs>
+<rvecs>
+  </rvecs>
+<tvecs>
+  </tvecs>
+</opencv_storage>
