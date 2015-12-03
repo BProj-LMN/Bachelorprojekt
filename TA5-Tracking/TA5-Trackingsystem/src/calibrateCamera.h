@@ -44,12 +44,15 @@ int calibrateCameras(Camera* cam1, Camera* cam2) {
   if (ERR == returnValue) {
     return ERR;
   }
+  cam1->intrinsicParamsLoaded = 1;
+
 
   cout << "\n\n" << "calibrate Camera 2 please" << endl;
   returnValue = executeDistCalib("calibrateCamera.xml", cam2);
   if (ERR == returnValue) {
     return ERR;
   }
+  cam2->intrinsicParamsLoaded = 1;
 
   return OK;
 }
