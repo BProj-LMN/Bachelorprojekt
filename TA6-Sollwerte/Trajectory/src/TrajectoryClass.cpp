@@ -10,7 +10,8 @@
 
 Trajectory_Class::Trajectory_Class() {
   // TODO Auto-generated constructor stub
-
+  checkpointIst = 0;
+  geradenparameter = 0;
 }
 
 Trajectory_Class::~Trajectory_Class() {
@@ -18,15 +19,15 @@ Trajectory_Class::~Trajectory_Class() {
 
 }
 
-void Trajectory_Class::calcCheckpoints(double istX, double istY, double istZ, double sollX, double sollY,
+void Trajectory_Class::calcCheckpointsA(double istX, double istY, double istZ, double sollX, double sollY,
                                        double sollZ) {
   int i;
   double xdif = sollX - istX; //berechnung Richtungsvektor
   double ydif = sollY - istY; //berechnung Richtungsvektor
   double zdif = sollZ - istZ; //berechnung Richtungsvektor
-  checkpointsX[0] = istX;
-  checkpointsY[0] = istY;
-  checkpointsZ[0] = istZ;
+  checkpointsX[0] = istX; // Ortsvektor
+  checkpointsY[0] = istY; // Ortsvektor
+  checkpointsZ[0] = istZ; // Ortsvektor
   for (i = 0; i < (CHECKPOINTMAX / 2); i++) {
     double xn = xdif / (2 << i); // Hälfte, Viertel, Achtel etc der Geraden berechnen
     double yn = ydif / (2 << i);
@@ -44,16 +45,39 @@ void Trajectory_Class::calcCheckpoints(double istX, double istY, double istZ, do
   checkpointIst = 0;
 }
 
+void Trajectory_Class::calcCheckpointsB(double istX, double istY, double istZ, double sollX, double sollY,
+                                        double sollZ) {
+  int k = 0;
+  double OrtsvX = istX; // Ortsvektor
+  double OrtsvY = istY; // Ortsvektor
+  double OrtsvZ = istZ; // Ortsvektor
+  double RichtungsvX = sollX - istX; //berechnung Richtungsvektor
+  double RichtungsvY = sollY - istY; //berechnung Richtungsvektor
+  double RichtungsvZ = sollZ - istZ; //berechnung Richtungsvektor
+  while ((RichtungsvX > ENTFMAX) || (RichtungsvY > ENTFMAX) || (RichtungsvZ > ENTFMAX)) { //Richtungsvektor verkleinern
+    RichtungsvX /= 2;
+    RichtungsvY /= 2;
+    RichtungsvZ /= 2;
+  }
+  for (k = 0; k < ((sollX - OrtsvX) / RichtungsvX); k++) { //K berechnen und hochzählen bis Sollwert erreicht erreicht
+    checkpointsX2[k] = OrtsvX + k * RichtungsvX;
+    checkpointsY2[k] = OrtsvY + k * RichtungsvY;
+    checkpointsZ2[k] = OrtsvZ + k * RichtungsvZ;
+  }
+  geradenparameter = k - 1; // k speichern, Anzahl des beschriebenen Arrrays minus 1
+
+}
+
 double Trajectory_Class::getNextCheckpointX() {
-  return checkpointsX[checkpointIst];
+  return checkpointsX2[checkpointIst];
 }
 
 double Trajectory_Class::getNextCheckpointY() {
-  return checkpointsY[checkpointIst];
+  return checkpointsY2[checkpointIst];
 }
 
 double Trajectory_Class::getNextCheckpointZ() {
-  return checkpointsZ[checkpointIst];
+  return checkpointsZ2[checkpointIst];
 }
 
 bool Trajectory_Class::checkpointReached(double istX, double istY, double istZ) {
@@ -67,7 +91,21 @@ bool Trajectory_Class::checkpointReached(double istX, double istY, double istZ) 
     return 0; // checkpoint not reached
 }
 
-void Trajectory_Class::nextCheckpoint() {
-  if (checkpointIst < CHECKPOINTMAX + 1)
+int Trajectory_Class::nextCheckpoint() {
+  if (checkpointIst < geradenparameter + 1) {
     checkpointIst++;
+    return 1;
+  } else {
+    return -1;
+  }
 }
+
+int Trajectory_Class::ArrayEndReached() {
+  if (checkpointIst < geradenparameter + 1) {
+    return 1;
+  } else {
+    return -1;
+  }
+
+}
+

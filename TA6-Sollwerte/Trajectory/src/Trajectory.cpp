@@ -3,7 +3,7 @@
 // Author      : Marcel Schmid
 // Version     :
 // Copyright   : Open-Source
-// Description : Hello World in C++, Ansi-style
+// Description : Trajectory_main(test), Ansi-style
 //============================================================================
 
 #include <iostream>
@@ -14,12 +14,12 @@
 using namespace std;
 
 int main() {
-  int i;
+
   Trajectory_Class Trajectory = Trajectory_Class();
-  Trajectory.calcCheckpoints(0, 0, 0, 15, 15, 15);
+  Trajectory.calcCheckpointsB(0, 0, 0, 150, 150, 150);
   fstream f;
   f.open("Geradenwerte.txt", ios::out);
-  for (i = 0; i < CHECKPOINTMAX + 1; i++) {
+  while (true == Trajectory.ArrayEndReached()) { ///false nur gleich null nichts anderes!!!!!!!!!!!!!!
     f << Trajectory.getNextCheckpointX() << "\t\t" << Trajectory.getNextCheckpointY() << "\t\t"
       << Trajectory.getNextCheckpointZ() << endl;
     Trajectory.nextCheckpoint();
