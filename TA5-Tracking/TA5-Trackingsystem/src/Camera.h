@@ -32,6 +32,7 @@ public:
   Mat distCoeffs;
   vector<Mat> rvecs;
   vector<Mat> tvecs;
+  bool intrinsicParamsLoaded;
 
 public:
   Camera(int cameraIndex);
