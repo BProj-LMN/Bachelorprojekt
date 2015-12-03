@@ -35,7 +35,7 @@ int main(int argc, const char** argv) {
 
   ObjectDetection detect1(&cam1);
 
-  Mat frame;
+  Mat frame1, frame2;
 
   cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
 
@@ -82,9 +82,19 @@ int main(int argc, const char** argv) {
   }
 
   int pixelPosition[2];
-  cap1 >> frame;
-  cvtColor(frame, frame, CV_BGR2GRAY);
-  detect1.setReferenceFrame(frame);
+
+  for (int i = 0; i < 20; i++) {
+    cap1 >> frame1;
+    cvtColor(frame1, frame1, CV_BGR2GRAY);
+    imshow("reference frame", frame1);
+
+    if (waitKey(30) >= 0) {
+      break;
+    }
+  }
+
+  //cap1 >> frame1;
+  detect1.setReferenceFrame(frame1);
 
   while (1) {
     /*
@@ -102,11 +112,11 @@ int main(int argc, const char** argv) {
     /*
      * do something
      */
-    cap1 >> frame;
-    cvtColor(frame, frame, CV_BGR2GRAY);
-    imshow("foo", frame);
+    cap1 >> frame1;
+    cvtColor(frame1, frame1, CV_BGR2GRAY);
+    imshow("foo", frame1);
 
-    detect1.detectObject(frame, pixelPosition);
+    detect1.detectObject(frame1, pixelPosition);
 
     if (waitKey(30) >= 0) {
       break;
