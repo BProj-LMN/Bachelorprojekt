@@ -30,8 +30,8 @@ class Camera {
 public:
   Mat cameraMatrix;
   Mat distCoeffs;
-  vector<Mat> rvecs;
-  vector<Mat> tvecs;
+  Mat rvecs;
+  Mat tvecs;
   bool intrinsicParamsLoaded;
 
 public:

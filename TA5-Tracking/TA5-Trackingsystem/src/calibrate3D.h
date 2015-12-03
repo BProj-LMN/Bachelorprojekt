@@ -48,6 +48,7 @@ bool MauscallbackBekommen = 0;
 #define SPEICHERORT "C:/Users/User/Desktop/Punkte.txt"
 
 
+
 void myMouseCallBackFunc(int event, int x, int y, int flags, void* userdata) {
 
   if (event == EVENT_LBUTTONDOWN) {
@@ -107,10 +108,36 @@ void calibrate3D(Camera* cam1, Camera* cam2) {
     calibrate3Deinzeln(cam2, Pixelmatrix2);
   }
   if (cam1->intrinsicParamsLoaded == 1 && cam2->intrinsicParamsLoaded == 1) {
-    //cout << cam1->rvecs << endl;
-    //solvePnP(PunktematrixXYZ, Pixelmatrix1, cam1->cameraMatrix, cam1->distCoeffs, cam1->rvecs, cam1->tvecs, false, SOLVEPNP_ITERATIVE);
-    //cout << cam1->rvecs << endl;
-    //TODO solvePnP(, , , , , , , ,);
+
+    /*
+    void push_points(int N, float* x float* y, float* z, std::vector<cv::Point3f>& points)
+    {
+        points.resize(N);
+        for(cv::Point3f & point : points)
+            point = cv::Point3f(x, y, z);
+    }*/
+
+    vector<Point3f> Testarray1; //Welt
+    vector<Point2f> Testarray2; //Pixel
+    Testarray1.resize(PUNKTE);
+    for(int i = 0; i < PUNKTE; i++){
+      //Testarray1[i] = cv::Point3f(PunktematrixXYZ.at<int>(i, 0), PunktematrixXYZ.at<int>(i, 1), PunktematrixXYZ.at<int>(i, 2));
+  }
+    Testarray2.resize(PUNKTE);
+    for(int i = 0; i < PUNKTE; i++){
+      //Testarray2[i] = cv::Point2f(Pixelmatrix.at<int>(i, 0), Pixelmatrix.at<int>(i, 1));
+}
+    //Testarray1.at<int>(0,0) = 12.0;
+    cout << "Testarray1" << Testarray1 << endl;
+    cout << "Testarray2" << Testarray2 << endl;
+    Mat rvec, tvec;
+    solvePnP(Testarray1, Testarray2, cam1->cameraMatrix, cam1->distCoeffs, cam1->rvecs, cam1->tvecs, false, SOLVEPNP_ITERATIVE);
+    solvePnP(Testarray1, Testarray2, cam2->cameraMatrix, cam2->distCoeffs, cam2->rvecs, cam2->tvecs, false, SOLVEPNP_ITERATIVE);
+    cout << "rvec" << cam1->rvecs << endl;
+// loadConfig calibrate3D g g
+
+
+
     cout << "Kalibrierung beendet" << endl;
   } else {
     cout
