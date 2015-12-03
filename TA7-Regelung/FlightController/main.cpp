@@ -14,7 +14,7 @@
 #include "defines_Regler.h"
 #include "Trajectory.h"
 #include "UserInterface.h"
-#include "SerielleUebertragung.h"
+#include "Wrapper_Steuerung.h"
 
 using namespace std;
 double istX, istY, istZ;
@@ -32,7 +32,7 @@ Trajectory trajec = Trajectory();
 //UserInterface erzeugen
 UserInterface UI = UserInterface(&Error);
 //Serielle Schnittstelle erzeugen
-SerielleUebertragung Serial = SerielleUebertragung();
+Wrapper_Steuerung Steuerung = Wrapper_Steuerung();
 
 void Sollwertvorgabe() {
     //nächsten Checkpoint zuweisen
@@ -44,11 +44,11 @@ void Sollwertvorgabe() {
 void Startprozedur() {
     //Um eine Verbindung mit dem Copter aufzubauen muss der Schub einmal auf Maximalausschlag und wieder zurück 
     cout << "Mit dem Copter Verbindung aufbauen" << endl;
-    Serial.HochRunter(REGELMAX);
-    Serial.Serialwrite();
+    Steuerung.HochRunter(REGELMAX);
+    Steuerung.Steuern();
     while (!UI.EnterGedrueckt()); //Warten auf Enter
-    Serial.HochRunter(0);
-    Serial.Serialwrite();
+    Steuerung.HochRunter(0);
+    Steuerung.Steuern();
     cout << "Rechner ist mit Copter verbunden" << endl;
 }
 
@@ -94,11 +94,11 @@ int main(int argc, char** argv) {
         } else;
         //Regeln
         //Übergibt die Regelwerte an den puffer der Seriellen Schnittstelle
-        Serial.HochRunter((int) reglerZ.getControlValue(istZ));
-        Serial.RechtLinks((int) reglerY.getControlValue(istY));
-        Serial.VorZurueck((int) reglerX.getControlValue(istX));
+        Steuerung.HochRunter((int) reglerZ.getControlValue(istZ));
+        Steuerung.RechtLinks((int) reglerY.getControlValue(istY));
+        Steuerung.VorZurueck((int) reglerX.getControlValue(istX));
         //Regelwerte an die Fernsteuerung senden
-        Serial.Serialwrite();
+        Steuerung.Steuern();
         //Wenn Enter betätigt wird können neue Sollwerte definiert werden dabei soll der Copter die aktuelle position halten
         if (UI.EnterGedrueckt()) {
             //Istwerte einlesen
@@ -114,11 +114,11 @@ int main(int argc, char** argv) {
                 //Istwerte einlesen
 
                 //Übergibt die Regelwerte an den puffer der Seriellen Schnittstelle
-                Serial.HochRunter((int) reglerZ.getControlValue(istZ));
-                Serial.RechtLinks((int) reglerY.getControlValue(istY));
-                Serial.VorZurueck((int) reglerX.getControlValue(istX));
+                Steuerung.HochRunter((int) reglerZ.getControlValue(istZ));
+                Steuerung.RechtLinks((int) reglerY.getControlValue(istY));
+                Steuerung.VorZurueck((int) reglerX.getControlValue(istX));
                 //Regelwerte an die Fernsteuerung senden
-                Serial.Serialwrite();
+                Steuerung.Steuern();
             }
             //neue Trajektorie wird berrechnet
             trajec.calcCheckpoints(istX, istY, istZ, UI.getX(), UI.getY(), UI.getZ());
@@ -129,24 +129,24 @@ int main(int argc, char** argv) {
                 //Istwerte einlesen
 
                 //Übergibt die Regelwerte an den puffer der Seriellen Schnittstelle
-                Serial.HochRunter((int) reglerZ.getControlValue(istZ));
-                Serial.RechtLinks((int) reglerY.getControlValue(istY));
-                Serial.VorZurueck((int) reglerX.getControlValue(istX));
+                Steuerung.HochRunter((int) reglerZ.getControlValue(istZ));
+                Steuerung.RechtLinks((int) reglerY.getControlValue(istY));
+                Steuerung.VorZurueck((int) reglerX.getControlValue(istX));
                 //Regelwerte an die Fernsteuerung senden
-                Serial.Serialwrite();
+                Steuerung.Steuern();
             }
         }
         //Um Copter landen zu lassen Leertaste betätigen
     } while ((!UI.LeertasteGedrueckt())&&(Error == 0));
-    if (Serial.HochAktuell()!=0) {
+    if (Steuerung.HochAktuell()!=0) {
         //Landenprozedur
         cout << "Copter soll landen" << endl;
-        Serial.RechtLinks(REGLEROFFSETRL); //Stabilen Wert vorgeben
-        Serial.VorZurueck(REGLEROFFSETVZ); //Stabilen Wert vorgeben
+        Steuerung.RechtLinks(REGLEROFFSETRL); //Stabilen Wert vorgeben
+        Steuerung.VorZurueck(REGLEROFFSETVZ); //Stabilen Wert vorgeben
         for (landen = 0x90; landen > 0; landen--) {
-            Serial.HochRunter(landen);
+            Steuerung.HochRunter(landen);
             Sleep(60);
-            Serial.Serialwrite();
+            Steuerung.Steuern();
         }
         cout << "Copter ist gelandet" << endl;
     } else {

@@ -16,21 +16,16 @@
 class SerielleUebertragung{
 public:
     SerielleUebertragung();
-    void Serialwrite();
-    void Serialread();
-    void RechtLinks(double Regelung);
-    void HochRunter(double Regelung);
-    void VorZurueck(double Regelung);
-    int HochAktuell();
+    void Serialwrite(unsigned char* Buffer,int Bufferlaenge );
+    void Serialread(unsigned char* Buffer,int Bufferlaenge);
+    HANDLE hCom;
 private:
     int hochRegelung;
     DCB serialconfig;
 DWORD iBytesWritten;
-unsigned char Startwerte[4];
-unsigned char Regelwerte[5] ;
-unsigned char Buffer[5];
 DWORD BytesRead;
-HANDLE hCom;
+
+unsigned char  Regelwerte[5] ;
 };
 
 #endif	/* SERIELLEUEBERTRAGUNG_H */
