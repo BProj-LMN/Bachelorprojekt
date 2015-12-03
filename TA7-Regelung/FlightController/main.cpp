@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
     cout << "Copter Regelung ist gestartet" << endl;
     cout << "Um den Copter landen zulassen Leertaste betaetigen" << endl;
     cout << "oder Enter betaetigen um neue Sollwerte zu definieren" << endl;
-    do {
+    while ((!UI.LeertasteGedrueckt())&&(Error == 0)) {
         if (UI.LeertasteGedrueckt()) {
             Error = 1;
         }
@@ -137,7 +137,7 @@ int main(int argc, char** argv) {
             }
         }
         //Um Copter landen zu lassen Leertaste betätigen
-    } while ((!UI.LeertasteGedrueckt())&&(Error == 0));
+    } 
     if (Steuerung.HochAktuell()!=0) {
         //Landenprozedur
         cout << "Copter soll landen" << endl;
