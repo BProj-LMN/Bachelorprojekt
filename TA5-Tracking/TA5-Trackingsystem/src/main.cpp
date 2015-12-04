@@ -36,6 +36,8 @@ int main(int argc, const char** argv) {
   VideoCapture cap1 = cam1.get_capture();
   VideoCapture cap2 = cam2.get_capture();
 
+
+  ObjectDetection detect1(&cam1);
   Mat frame1, frame2;
 
   cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
@@ -82,20 +84,20 @@ int main(int argc, const char** argv) {
     cin >> options;
   }
 
-  //IC_InitLibrary(0);
-  //HGRABBER hGrabber;
-// if (IC_InitLibrary(0)) {
-//    hGrabber = IC_CreateGrabber();
-//  }
-  //IC_ReleaseGrabber( hGrabber );
+  int pixelPosition[2];
 
-//  HGRABBER testcamera1 = IC_CreateGrabber();
-  //cout << IC_GetAvailableFrameFilterCount();
-  //IC_SetExpAbsVal(camera1, 0.5);
-  // IC_ReleaseGrabber(&testcamera1);
+  for (int i = 0; i < 20; i++) {
+    cap1 >> frame1;
+    cvtColor(frame1, frame1, CV_BGR2GRAY);
+    imshow("reference frame", frame1);
 
-  namedWindow("test1", 1);
-  namedWindow("test2", 1);
+    if (waitKey(30) >= 0) {
+      break;
+    }
+  }
+
+  //cap1 >> frame1;
+  detect1.setReferenceFrame(frame1);
 
   while (1) {
     /*
@@ -113,16 +115,11 @@ int main(int argc, const char** argv) {
     /*
      * do something
      */
-
     cap1 >> frame1;
-    flip(frame1, frame1, 0);
-    flip(frame1, frame1, 1);
-    imshow("test1", frame1);
+    cvtColor(frame1, frame1, CV_BGR2GRAY);
+    imshow("foo", frame1);
 
-    cap2 >> frame2;
-    flip(frame2, frame2, 0);
-    flip(frame2, frame2, 1);
-    imshow("test2", frame2);
+    detect1.detectObject(frame1, pixelPosition);
 
     if (waitKey(30) >= 0) {
       break;
