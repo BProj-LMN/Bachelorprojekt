@@ -24,6 +24,7 @@ using namespace cv;
 #include "calibrateCamera.h"
 #include "ObjectDetection.h"
 #include "myGlobalConstants.h"
+#include "ROI.h"
 
 int main(int argc, const char** argv) {
   string options;
@@ -36,12 +37,10 @@ int main(int argc, const char** argv) {
   VideoCapture cap1 = cam1.get_capture();
   VideoCapture cap2 = cam2.get_capture();
 
-
   ObjectDetection detect1(&cam1);
   ObjectDetection detect2(&cam2);
   Mat frame1, frame2;
-
-  cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
+  Mat mask1, mask2;
 
   /*
    * start directly to one mode by program argument or get input by user
@@ -49,6 +48,8 @@ int main(int argc, const char** argv) {
   if (argc > 1) {
     options = argv[1];
   } else {
+    cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
+    cout << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, tracking, setROI, exit" << endl;
     cin >> options;
   }
 
@@ -67,6 +68,10 @@ int main(int argc, const char** argv) {
       cout << "--> do calibrate3D subroutine" << endl;
       calibrate3D(&cam1, &cam2);
 
+    } else if (0 == options.compare("setROI")) {
+      cout << "--> do setROI subroutine" << endl;
+      setROI(&cam1, &cam2);
+
     } else if (0 == options.compare("exit")) {
       cout << "--> terminating ... Auf Wiedersehen" << endl;
       cam1.saveSettings("cam1.xml");
@@ -81,18 +86,37 @@ int main(int argc, const char** argv) {
       cout << "diese Eingabe ist nicht zugelassen" << endl;
     }
 
-    cout << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, tracking, exit" << endl;
+    cout << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, tracking, setROI, exit" << endl;
     cin >> options;
   }
 
   int pixelPosition1[2];
   int pixelPosition2[2];
 
+  cap1 >> frame1;
+  cap2 >> frame2;
+  if (cam1.ROI[2] != 0) {
+    mask1 = Mat::zeros(frame1.rows, frame1.cols, CV_8U); // all 0
+    mask1(Rect(cam1.ROI[0], cam1.ROI[2], (cam1.ROI[1] - cam1.ROI[0]), (cam1.ROI[3] - cam1.ROI[2]))) = 255;
+
+    mask2 = Mat::zeros(frame2.rows, frame2.cols, CV_8U); // all 0
+    mask2(Rect(cam2.ROI[0], cam2.ROI[2], (cam2.ROI[1] - cam2.ROI[0]), (cam2.ROI[3] - cam2.ROI[2]))) = 255;
+  } else {
+    mask1 = Mat::zeros(frame1.rows, frame1.cols, CV_8U); // all 0
+    mask1 = mask1 | 255;
+    mask2 = Mat::zeros(frame2.rows, frame2.cols, CV_8U); // all 0
+    mask2 = mask2 | 255;
+  }
+  cout << "region of interest set" << endl;
+
+  cout << "waiting for reference frame..." << endl;
   for (int i = 0; i < 20; i++) {
     cap1 >> frame1;
     cap2 >> frame2;
     cvtColor(frame1, frame1, CV_BGR2GRAY);
     cvtColor(frame2, frame2, CV_BGR2GRAY);
+    frame1 = frame1 & mask1;
+    frame2 = frame2 & mask2;
     imshow("reference frame1", frame1);
     imshow("reference frame2", frame2);
 
@@ -100,6 +124,10 @@ int main(int argc, const char** argv) {
       break;
     }
   }
+
+  cout << "reference frame set" << endl;
+  destroyWindow("reference frame1");
+  destroyWindow("reference frame2");
 
   //cap1 >> frame1;
   detect1.setReferenceFrame(frame1);
@@ -125,14 +153,17 @@ int main(int argc, const char** argv) {
     cap2 >> frame2;
     cvtColor(frame1, frame1, CV_BGR2GRAY);
     cvtColor(frame2, frame2, CV_BGR2GRAY);
+    frame1 = frame1 & mask1;
+    frame2 = frame2 & mask2;
+
     imshow("trackingbild_1", frame1);
     imshow("trackingbild_2", frame2);
 
-    if(detect1.detectObject(frame1, pixelPosition1) !=ERR) {
+    if (detect1.detectObject(frame1, pixelPosition1) != ERR) {
       circle(frame1, Point(pixelPosition1[0], pixelPosition1[1]), 30, Scalar(255, 0, 0), 1);
       imshow("final_tracking1", frame1);
     }
-    if(detect2.detectObject(frame2, pixelPosition2) != ERR) {
+    if (detect2.detectObject(frame2, pixelPosition2) != ERR) {
       circle(frame2, Point(pixelPosition2[0], pixelPosition2[1]), 30, Scalar(255, 0, 0), 1);
       imshow("final_tracking2", frame2);
     }
@@ -141,8 +172,6 @@ int main(int argc, const char** argv) {
     }
 
   }
-  destroyWindow("reference frame1");
-  destroyWindow("reference frame2");
   destroyWindow("trackingbild_1");
   destroyWindow("trackingbild_2");
   destroyWindow("final_tracking1");

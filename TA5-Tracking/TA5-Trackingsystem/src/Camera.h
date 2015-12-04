@@ -32,6 +32,7 @@ public:
   Mat distCoeffs;
   Mat rvecs;
   Mat tvecs;
+  int ROI[4]; //links, rechts, oben, unten
   bool intrinsicParamsLoaded;
 
 public:

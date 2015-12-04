@@ -12,6 +12,7 @@
 Camera::Camera(int cameraIndex) {
   this->cameraID = cameraIndex;
   intrinsicParamsLoaded = 0;
+  ROI[2]=0;
 
   capture = VideoCapture(cameraIndex);
   if (!capture.isOpened()) {
@@ -27,6 +28,8 @@ Camera::Camera(int cameraIndex) {
 Camera::Camera(int cameraIndex, string settingsFile) {
   this->cameraID = cameraIndex;
   intrinsicParamsLoaded = 0;
+  ROI[2]=0;
+
 
   capture = VideoCapture(cameraIndex);
   if (!capture.isOpened()) {
