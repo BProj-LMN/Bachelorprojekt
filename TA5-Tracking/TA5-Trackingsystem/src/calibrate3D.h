@@ -126,8 +126,8 @@ void gleichungRechnenEinzeln(Camera* cam, Mat Pixelmatrix) {
   Pixelvektor.resize(PUNKTE);
 
   for (int i = 0; i < PUNKTE; i++) {
-    Weltvektor[i] = cv::Point3f(PunktematrixXYZ.at<int>(0, i), PunktematrixXYZ.at<int>(1, i),
-                                PunktematrixXYZ.at<int>(2, i)); //TODO - Hexenwerk - warum Spaltenvektor?!?
+    Weltvektor[i] = cv::Point3f(PunktematrixXYZ.at<int>(i, 0), PunktematrixXYZ.at<int>(i, 1),
+                                PunktematrixXYZ.at<int>(i, 2)); //TODO - Hexenwerk - warum Spaltenvektor?!?
     Pixelvektor[i] = cv::Point2f(Pixelmatrix.at<int>(i, 0), Pixelmatrix.at<int>(i, 1));
   }
 
@@ -155,8 +155,6 @@ void calibrate3Deinzeln(Camera* cam, Mat Pixelmatrix) {
     while (0 == MauscallbackBekommen) {
 
       KamerabildHolen(&cap, &Kalliframe);
-      flip(Kalliframe, Kalliframe, 0);
-      flip(Kalliframe, Kalliframe, 1);
       imshow("Kallibild", Kalliframe);
       if (waitKey(30) >= 0)
         break;
