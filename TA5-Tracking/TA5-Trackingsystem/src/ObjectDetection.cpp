@@ -46,13 +46,13 @@ int ObjectDetection::detectObject(Mat frame, int pixelPosition[2]) {
   int error = getObjectPosition(thresholdImage, pixelPosition, &objectBounding);
 
   if (0 == error) {
-    int xpos = pixelPosition[0];
-    int ypos = pixelPosition[1];
-    circle(frame, Point(xpos, ypos), 30, Scalar(255, 0, 0), 1);
+    //int xpos = pixelPosition[0];
+    //int ypos = pixelPosition[1];
+    //circle(frame, Point(xpos, ypos), 30, Scalar(255, 0, 0), 1);
 
-    rectangle(frame, objectBounding, Scalar(0, 255, 0), 2);
+    //rectangle(frame, objectBounding, Scalar(0, 255, 0), 2);
 
-    imshow("final tracking", frame);
+    //imshow("final tracking", frame);
 
     return OK;
   }else {

@@ -38,6 +38,7 @@ int main(int argc, const char** argv) {
 
 
   ObjectDetection detect1(&cam1);
+  ObjectDetection detect2(&cam2);
   Mat frame1, frame2;
 
   cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
@@ -84,12 +85,16 @@ int main(int argc, const char** argv) {
     cin >> options;
   }
 
-  int pixelPosition[2];
+  int pixelPosition1[2];
+  int pixelPosition2[2];
 
   for (int i = 0; i < 20; i++) {
     cap1 >> frame1;
+    cap2 >> frame2;
     cvtColor(frame1, frame1, CV_BGR2GRAY);
-    imshow("reference frame", frame1);
+    cvtColor(frame2, frame2, CV_BGR2GRAY);
+    imshow("reference frame1", frame1);
+    imshow("reference frame2", frame2);
 
     if (waitKey(30) >= 0) {
       break;
@@ -98,6 +103,7 @@ int main(int argc, const char** argv) {
 
   //cap1 >> frame1;
   detect1.setReferenceFrame(frame1);
+  detect2.setReferenceFrame(frame2);
 
   while (1) {
     /*
@@ -116,16 +122,31 @@ int main(int argc, const char** argv) {
      * do something
      */
     cap1 >> frame1;
+    cap2 >> frame2;
     cvtColor(frame1, frame1, CV_BGR2GRAY);
-    imshow("foo", frame1);
+    cvtColor(frame2, frame2, CV_BGR2GRAY);
+    imshow("trackingbild_1", frame1);
+    imshow("trackingbild_2", frame2);
 
-    detect1.detectObject(frame1, pixelPosition);
-
+    if(detect1.detectObject(frame1, pixelPosition1) !=ERR) {
+      circle(frame1, Point(pixelPosition1[0], pixelPosition1[1]), 30, Scalar(255, 0, 0), 1);
+      imshow("final_tracking1", frame1);
+    }
+    if(detect2.detectObject(frame2, pixelPosition2) != ERR) {
+      circle(frame2, Point(pixelPosition2[0], pixelPosition2[1]), 30, Scalar(255, 0, 0), 1);
+      imshow("final_tracking2", frame2);
+    }
     if (waitKey(30) >= 0) {
       break;
     }
 
   }
+  destroyWindow("reference frame1");
+  destroyWindow("reference frame2");
+  destroyWindow("trackingbild_1");
+  destroyWindow("trackingbild_2");
+  destroyWindow("final_tracking1");
+  destroyWindow("final_tracking2");
 
   return 0;
 
