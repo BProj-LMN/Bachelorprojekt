@@ -12,7 +12,7 @@
 Camera::Camera(int cameraIndex) {
   this->cameraID = cameraIndex;
   intrinsicParamsLoaded = 0;
-  ROI[2]=0;
+  frameMaskSet = 0;
 
   capture = VideoCapture(cameraIndex);
   if (!capture.isOpened()) {
@@ -28,8 +28,7 @@ Camera::Camera(int cameraIndex) {
 Camera::Camera(int cameraIndex, string settingsFile) {
   this->cameraID = cameraIndex;
   intrinsicParamsLoaded = 0;
-  ROI[2]=0;
-
+  frameMaskSet = 0;
 
   capture = VideoCapture(cameraIndex);
   if (!capture.isOpened()) {
@@ -47,7 +46,7 @@ VideoCapture Camera::get_capture() {
   return capture;
 }
 
-int Camera::getID() {
+int Camera::get_cameraID() {
   return cameraID;
 }
 
@@ -105,5 +104,39 @@ int Camera::saveSettings(string settingsFile) {
   fs << "tvecs" << tvecs;
 
   fs.release();                                    // close Settings file
+  return OK;
+}
+
+int Camera::set_frameMask(Rect frameMask) {
+  Mat frame;
+  capture >> frame;
+  this->frameMask = Mat::zeros(frame.rows, frame.cols, CV_8U);
+  this->frameMask(frameMask) = 255;
+
+  frameMaskSet = 1;
+
+  return OK;
+}
+
+int Camera::get_newFrame(Mat& frame) {
+  capture >> frame;
+  cvtColor(frame, frame, CV_BGR2GRAY);
+
+  if (frameMaskSet) {
+    frame = frame & frameMask;
+  }
+
+  return OK;
+}
+
+int Camera::set_projMatr() {
+  Mat rotMatr;
+  Mat rtCombinedMatr;
+
+  Rodrigues(rvecs, rotMatr);
+  hconcat(rotMatr, tvecs, rtCombinedMatr);
+
+  this->projMatr = cameraMatrix * rtCombinedMatr;
+
   return OK;
 }

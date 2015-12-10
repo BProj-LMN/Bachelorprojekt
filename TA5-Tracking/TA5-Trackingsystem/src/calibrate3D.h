@@ -21,7 +21,6 @@ using namespace cv;
 #include "myGlobalConstants.h"
 
 void calibrate3Deinzeln(Camera* cam, Mat Pixelmatrix);
-void KamerabildHolen(VideoCapture *cap, Mat *frame);
 void myMouseCallBackFunc(int event, int x, int y, int flags, void* userdata);
 int speichern(int KamNr, Mat Pixelmatrix);
 int lesen(Camera* cam, Mat Pixelmatrix);
@@ -127,7 +126,7 @@ void gleichungRechnenEinzeln(Camera* cam, Mat Pixelmatrix) {
 
   for (int i = 0; i < PUNKTE; i++) {
     Weltvektor[i] = cv::Point3f(PunktematrixXYZ.at<int>(i, 0), PunktematrixXYZ.at<int>(i, 1),
-                                PunktematrixXYZ.at<int>(i, 2)); //TODO - Hexenwerk - warum Spaltenvektor?!?
+                                PunktematrixXYZ.at<int>(i, 2));
     Pixelvektor[i] = cv::Point2f(Pixelmatrix.at<int>(i, 0), Pixelmatrix.at<int>(i, 1));
   }
 
@@ -145,7 +144,7 @@ void gleichungRechnenEinzeln(Camera* cam, Mat Pixelmatrix) {
 void calibrate3Deinzeln(Camera* cam, Mat Pixelmatrix) {
 
   Mat Kalliframe;
-  int KamNr = cam->getID();
+  int KamNr = cam->get_cameraID();
   VideoCapture cap = cam->get_capture();
   namedWindow("Kallibild", 1);
   for (int i = 0; i < PUNKTE; i++) { //für die Eingabe der Kalibrierpixel aus dem Bild per Klicken
@@ -154,7 +153,7 @@ void calibrate3Deinzeln(Camera* cam, Mat Pixelmatrix) {
     setMouseCallback("Kallibild", myMouseCallBackFunc, NULL);
     while (0 == MauscallbackBekommen) {
 
-      KamerabildHolen(&cap, &Kalliframe);
+      cam->get_newFrame(Kalliframe);
       imshow("Kallibild", Kalliframe);
       if (waitKey(30) >= 0)
         break;
@@ -200,7 +199,7 @@ int speichern(int KamNr, Mat Pixelmatrix) {
 }
 
 int lesen(Camera* cam, Mat Pixelmatrix) {
-  int KamNr = cam->getID();
+  int KamNr = cam->get_cameraID();
   stringstream pfad;
   pfad << MY_FILENAME << KamNr << ".xml";
   string settingsFilename = pfad.str();
@@ -217,11 +216,6 @@ int lesen(Camera* cam, Mat Pixelmatrix) {
 
   fs.release();                                    // close Settings file
   return 1;
-}
-
-void KamerabildHolen(VideoCapture *cap, Mat *frame) {
-  *cap >> *frame; // get a new frame from camera
-  //cvtColor(*frame, *frame, CV_BGR2GRAY);
 }
 
 #endif /* SRC_CALIBRATE3D_H_ */

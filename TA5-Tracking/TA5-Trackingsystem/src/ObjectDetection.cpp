@@ -29,7 +29,7 @@ int ObjectDetection::setReferenceFrame(Mat frame) {
  * input:  grayscale frame
  * output: int array with detected position {x, y}
  */
-int ObjectDetection::detectObject(Mat frame, int pixelPosition[2]) {
+int ObjectDetection::detectObject(Mat frame, Point2i& pixelPosition) {
   // TODO: only copy-pasted the code --> check integration !!!
 
   Mat diffImage, thresholdImage;
@@ -55,13 +55,13 @@ int ObjectDetection::detectObject(Mat frame, int pixelPosition[2]) {
     //imshow("final tracking", frame);
 
     return OK;
-  }else {
+  } else {
     return ERR;
   }
 
 }
 
-int ObjectDetection::getObjectPosition(Mat thresImg, int objectPos[2], Rect* boundingRectange) {
+int ObjectDetection::getObjectPosition(Mat thresImg, Point2i& objectPos, Rect* boundingRectange) {
 
   vector<vector<Point> > contours;
   vector<Vec4i> hierarchy;
@@ -86,7 +86,7 @@ int ObjectDetection::getObjectPosition(Mat thresImg, int objectPos[2], Rect* bou
     int xpos = boundingRectange->x + boundingRectange->width / 2;
     int ypos = boundingRectange->y + boundingRectange->height / 2;
 
-    objectPos[0] = xpos, objectPos[1] = ypos;
+    objectPos.x = xpos, objectPos.y = ypos;
 
     return OK;
   }

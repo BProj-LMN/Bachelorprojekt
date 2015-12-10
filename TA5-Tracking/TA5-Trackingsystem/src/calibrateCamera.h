@@ -1,5 +1,5 @@
 /*
- * calibrateCamera.cpp
+ * calibrateCamera.h
  *
  * function: calibrate distCoeffs of camera
  *

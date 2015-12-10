@@ -24,7 +24,7 @@ using namespace cv;
 #include "calibrateCamera.h"
 #include "ObjectDetection.h"
 #include "myGlobalConstants.h"
-#include "ROI.h"
+#include "frameMask.h"
 
 int main(int argc, const char** argv) {
   string options;
@@ -33,14 +33,16 @@ int main(int argc, const char** argv) {
   string message;
 
   Camera cam1(0);
+  Mat frame1;
   Camera cam2(1);
-  VideoCapture cap1 = cam1.get_capture();
-  VideoCapture cap2 = cam2.get_capture();
+  Mat frame2;
 
   ObjectDetection detect1(&cam1);
+  Point2i pixelPos1(0, 0);
   ObjectDetection detect2(&cam2);
-  Mat frame1, frame2;
-  Mat mask1, mask2;
+  Point2i pixelPos2(0, 0);
+
+  Mat objectPos3D;
 
   /*
    * start directly to one mode by program argument or get input by user
@@ -56,7 +58,6 @@ int main(int argc, const char** argv) {
   while (1) {
     if (0 == options.compare("loadConfig")) {
       cout << "--> do loadConfig subroutine" << endl;
-      // TODO load all config --> complete settings methods of Camera
       cam1.readSettings("cam1.xml");
       cam2.readSettings("cam2.xml");
 
@@ -69,11 +70,15 @@ int main(int argc, const char** argv) {
       calibrate3D(&cam1, &cam2);
 
     } else if (0 == options.compare("setROI")) {
-      cout << "--> do setROI subroutine" << endl;
-      setROI(&cam1, &cam2);
+      cout << "--> do calibrateFrameMask subroutine" << endl;
+      calibrateFrameMask(&cam1, &cam2);
 
     } else if (0 == options.compare("exit")) {
       cout << "--> terminating ... Auf Wiedersehen" << endl;
+      return (0);
+
+    } else if (0 == options.compare("save&exit")) {
+      cout << "--> saving and terminating ... Auf Wiedersehen" << endl;
       cam1.saveSettings("cam1.xml");
       cam2.saveSettings("cam2.xml");
       return (0);
@@ -86,37 +91,23 @@ int main(int argc, const char** argv) {
       cout << "diese Eingabe ist nicht zugelassen" << endl;
     }
 
-    cout << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, tracking, setROI, exit" << endl;
+    cout << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, tracking, setROI, save&exit, exit" << endl;
     cin >> options;
   }
 
-  int pixelPosition1[2];
-  int pixelPosition2[2];
+  /*
+   * setup things
+   */
+  cam1.set_projMatr();
+  cam2.set_projMatr();
 
-  cap1 >> frame1;
-  cap2 >> frame2;
-  if (cam1.ROI[2] != 0) {
-    mask1 = Mat::zeros(frame1.rows, frame1.cols, CV_8U); // all 0
-    mask1(Rect(cam1.ROI[0], cam1.ROI[2], (cam1.ROI[1] - cam1.ROI[0]), (cam1.ROI[3] - cam1.ROI[2]))) = 255;
-
-    mask2 = Mat::zeros(frame2.rows, frame2.cols, CV_8U); // all 0
-    mask2(Rect(cam2.ROI[0], cam2.ROI[2], (cam2.ROI[1] - cam2.ROI[0]), (cam2.ROI[3] - cam2.ROI[2]))) = 255;
-  } else {
-    mask1 = Mat::zeros(frame1.rows, frame1.cols, CV_8U); // all 0
-    mask1 = mask1 | 255;
-    mask2 = Mat::zeros(frame2.rows, frame2.cols, CV_8U); // all 0
-    mask2 = mask2 | 255;
-  }
-  cout << "region of interest set" << endl;
-
+  /*
+   * set reference frame for tracking
+   */
   cout << "waiting for reference frame..." << endl;
   for (int i = 0; i < 20; i++) {
-    cap1 >> frame1;
-    cap2 >> frame2;
-    cvtColor(frame1, frame1, CV_BGR2GRAY);
-    cvtColor(frame2, frame2, CV_BGR2GRAY);
-    frame1 = frame1 & mask1;
-    frame2 = frame2 & mask2;
+    cam1.get_newFrame(frame1);
+    cam2.get_newFrame(frame2);
     imshow("reference frame1", frame1);
     imshow("reference frame2", frame2);
 
@@ -124,15 +115,15 @@ int main(int argc, const char** argv) {
       break;
     }
   }
-
+  detect1.setReferenceFrame(frame1);
+  detect2.setReferenceFrame(frame2);
   cout << "reference frame set" << endl;
   destroyWindow("reference frame1");
   destroyWindow("reference frame2");
 
-  //cap1 >> frame1;
-  detect1.setReferenceFrame(frame1);
-  detect2.setReferenceFrame(frame2);
-
+  /*
+   * main tracking routine
+   */
   while (1) {
     /*
      * evaluate remote input
@@ -147,36 +138,59 @@ int main(int argc, const char** argv) {
     }
 
     /*
-     * do something
+     * get frame and track object
      */
-    cap1 >> frame1;
-    cap2 >> frame2;
-    cvtColor(frame1, frame1, CV_BGR2GRAY);
-    cvtColor(frame2, frame2, CV_BGR2GRAY);
-    frame1 = frame1 & mask1;
-    frame2 = frame2 & mask2;
+    cam1.get_newFrame(frame1);
+    cam2.get_newFrame(frame2);
 
-    imshow("trackingbild_1", frame1);
-    imshow("trackingbild_2", frame2);
-
-    if (detect1.detectObject(frame1, pixelPosition1) != ERR) {
-      circle(frame1, Point(pixelPosition1[0], pixelPosition1[1]), 30, Scalar(255, 0, 0), 1);
+    if (detect1.detectObject(frame1, pixelPos1) != ERR) {
+      circle(frame1, Point(pixelPos1.x, pixelPos1.y), 30, Scalar(255, 0, 0), 1);
       imshow("final_tracking1", frame1);
     }
-    if (detect2.detectObject(frame2, pixelPosition2) != ERR) {
-      circle(frame2, Point(pixelPosition2[0], pixelPosition2[1]), 30, Scalar(255, 0, 0), 1);
+    if (detect2.detectObject(frame2, pixelPos2) != ERR) {
+      circle(frame2, Point(pixelPos2.x, pixelPos2.y), 30, Scalar(255, 0, 0), 1);
       imshow("final_tracking2", frame2);
     }
     if (waitKey(30) >= 0) {
       break;
     }
 
+    /*
+     * calculate 3D position
+     */
+    //  loadConfig calibrate3D g g tracking
+    // TODO undistort
+
+    // triangulate
+    vector<Point2f> pixelPosConv1(1);
+    vector<Point2f> pixelPosConv2(1);
+    pixelPosConv1[0] = Point2f((float) pixelPos1.x, (float) pixelPos1.y);
+    pixelPosConv2[0] = Point2f((float) pixelPos2.x, (float) pixelPos2.y);
+
+    triangulatePoints(cam1.projMatr, cam2.projMatr, pixelPosConv1, pixelPosConv2, objectPos3D);
+    cout << objectPos3D << endl;
+
+    /*
+     * send position via UDP socket
+     * TODO: socket send
+     */
   }
+
+  /*
+   * tidy everything up
+   */
   destroyWindow("trackingbild_1");
   destroyWindow("trackingbild_2");
   destroyWindow("final_tracking1");
   destroyWindow("final_tracking2");
 
-  return 0;
+  Camera * pcam1 = &cam1;
+  Camera * pcam2 = &cam2;
+  Socket * premoteInput = &remoteInput;
+  delete pcam1;
+  delete pcam2;
+  delete premoteInput;
+
+  return (0);
 
 }

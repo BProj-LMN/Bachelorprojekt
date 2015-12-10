@@ -26,10 +26,10 @@ public:
   virtual ~ObjectDetection();
   
   int setReferenceFrame(Mat frame);
-  int detectObject(Mat frame, int pixelPosition[2]);
+  int detectObject(Mat frame, Point2i& pixelPosition);
 
 private:
-  int getObjectPosition(Mat thresImg, int objectPos[2], Rect* boundingRect);
+  int getObjectPosition(Mat thresImg, Point2i&  objectPos, Rect* boundingRect);
 };
 
 #endif /* SRC_OBJECTDETECTION_H_ */
