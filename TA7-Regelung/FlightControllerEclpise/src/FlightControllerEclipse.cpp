@@ -19,7 +19,7 @@
 
 #include  "PID_Regler.h"
 #include "defines_Regler.h"
-#include "Trajectory.h"
+#include "TrajectoryClass.h"
 #include "UserInterface.h"
 #include "Wrapper_Steuerung.h"
 
@@ -35,7 +35,7 @@ PID_Regler reglerY = PID_Regler(-REGELMAX / 2, REGELMAX / 2);
 //Regler für Hoch Runter erzeugen Grenzwerte für Regelung von 0 bis 254
 PID_Regler reglerZ = PID_Regler(0, REGELMAX);
 //Trajektorien Klasse erzeugen
-Trajectory trajec = Trajectory();
+Trajectory_Class trajec = Trajectory_Class();
 //UserInterface erzeugen
 UserInterface UI = UserInterface(&Error);
 //Serielle Schnittstelle erzeugen
@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
     //Istwerte einlesen
 
     //Trajectorie Checkpoints berechnen
-    trajec.calcCheckpoints(istX, istY, istZ, UI.getX(), UI.getY(), UI.getZ()); // Checkpoints berrechnen
+    trajec.calcCheckpointsA(istX, istY, istZ, UI.getX(), UI.getY(), UI.getZ()); // Checkpoints berrechnen
     cout << "Checkpoints berechnet" << endl;
     // erster checkpoint als soll vorgeben
     Sollwertvorgabe();
@@ -128,7 +128,7 @@ int main(int argc, char** argv) {
                 Steuerung.Steuern();
             }
             //neue Trajektorie wird berrechnet
-            trajec.calcCheckpoints(istX, istY, istZ, UI.getX(), UI.getY(), UI.getZ());
+            trajec.calcCheckpointsA(istX, istY, istZ, UI.getX(), UI.getY(), UI.getZ());
             cout << "Checkpoints wurden berechnet" << endl;
             cout << "Um Copter weiter fliegen zu lassen Enter betaetigen" << endl;
             //Wartet bis Enter betätigt wird bevor der Copter wieder losfliegt
