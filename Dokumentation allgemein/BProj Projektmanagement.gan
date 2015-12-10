@@ -110,7 +110,7 @@ Die erforderlichen Schritte wurden dokumentiert.
             <notes><![CDATA[Der Meilenstein ist erreicht, sobald die Aufgabenpakete 4.1, 4.2 und 4.3 vollständig erfüllt sind. Das Ergebnis derer ist, dass der PC über die Schnittstelle mit dem Quadrocopter kommunizieren kann, diesem somit alle nötigen Steuerbefehle für den Flug übermittelt. Ferner ist ein NOT-AUS implementiert. ]]></notes>
             <depend id="58" type="2" difference="1" hardness="Strong"/>
         </task>
-        <task id="3" name="5 optisches Tracking" color="#8cb6ce" meeting="false" start="2015-10-09" duration="31" complete="46" expand="true">
+        <task id="3" name="5 optisches Tracking" color="#8cb6ce" meeting="false" start="2015-10-09" duration="31" complete="60" expand="true">
             <notes><![CDATA[Ziel:
 Die Ist-Position kann über eine Software-Schnittstelle abgerufen werden.]]></notes>
             <depend id="112" type="2" difference="4" hardness="Strong"/>
@@ -124,7 +124,7 @@ Es ist ein Programm vorhanden das den Quadrocopter auf Bildern erkennt und desse
 Die Softwareschnittstelle ist definiert und dokumentiert.
 ]]></notes>
             </task>
-            <task id="59" name="5.3 3D-Position errechnen" color="#8cb6ce" meeting="false" start="2015-10-26" duration="15" complete="0" expand="true">
+            <task id="59" name="5.3 3D-Position errechnen" color="#8cb6ce" meeting="false" start="2015-10-26" duration="15" complete="50" expand="true">
                 <notes><![CDATA[Ziel:
 Es ist ein Programm vorhanden, das die Ist-Koordinaten des Quadrocopters errechnet.]]></notes>
             </task>
@@ -221,7 +221,7 @@ Hierfür ist auch das User-Interface fertiggestellt.
         <allocation task-id="52" resource-id="0" function="Default:0" responsible="false" load="50.0"/>
         <allocation task-id="34" resource-id="0" function="Default:0" responsible="false" load="10.0"/>
         <allocation task-id="59" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
-        <allocation task-id="63" resource-id="0" function="Default:0" responsible="false" load="50.0"/>
+        <allocation task-id="63" resource-id="0" function="Default:0" responsible="true" load="50.0"/>
         <allocation task-id="22" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="111" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="106" resource-id="1" function="Default:0" responsible="true" load="5.0"/>
