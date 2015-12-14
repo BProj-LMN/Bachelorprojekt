@@ -29,22 +29,19 @@ double istX, istY, istZ;
 int landen = 0;
 int Error = 0;
 
-
 int main(int argc, char** argv) {
   FlightControllerClass flightcontroller = FlightControllerClass();
 
-flightcontroller.Initialisieren();
-flightcontroller.Startprozedur();
+  flightcontroller.Initialisieren();
+  flightcontroller.Startprozedur();
 
+  while (1) { //TODO if ERROR
+    flightcontroller.SollwertVorgeben();
+    flightcontroller.ZielAnfliegen();
+  }
 
- while(1){//TODO if ERROR
-           flightcontroller.SollwertVorgeben();
-           flightcontroller.ZielAnfliegen();
-}
+  flightcontroller.Landeprozedur();
 
-
-   flightcontroller.Landeprozedur();
-
-    return 0;
+  return 0;
 }
 
