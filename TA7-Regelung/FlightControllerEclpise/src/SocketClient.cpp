@@ -7,7 +7,7 @@
  */
 
 #include "SocketClient.h"
-#include <Ws2tcpip.h>
+#include <WS2tcpip.h>
 #include <windows.h>
 #include <winsock.h>
 #include <winsock2.h>
