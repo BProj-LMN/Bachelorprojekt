@@ -139,5 +139,7 @@ int Camera::set_projMatr() {
 
   this->projMatr = cameraMatrix * rtCombinedMatr;
 
+  cout << "rtCombined" << endl << rtCombinedMatr << endl;
+
   return OK;
 }

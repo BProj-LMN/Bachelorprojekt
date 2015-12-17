@@ -39,20 +39,20 @@ int calibrateCameras(Camera* cam1, Camera* cam2) {
   cout << "\n\nHello, this is the distortion correction subroutine" << endl;
   int returnValue = ERR;
 
-  cout << "calibrate Camera 1 please" << endl;
-  returnValue = executeDistCalib("calibrateCamera.xml", cam1);
-  if (ERR == returnValue) {
-    return ERR;
-  }
-  cam1->intrinsicParamsLoaded = 1;
-
-
-  cout << "\n\n" << "calibrate Camera 2 please" << endl;
+  cout << "calibrate Camera 2 please" << endl;
   returnValue = executeDistCalib("calibrateCamera.xml", cam2);
   if (ERR == returnValue) {
     return ERR;
   }
   cam2->intrinsicParamsLoaded = 1;
+
+
+  cout << "\n\n" << "calibrate Camera 1 please" << endl;
+  returnValue = executeDistCalib("calibrateCamera.xml", cam1);
+  if (ERR == returnValue) {
+    return ERR;
+  }
+  cam1->intrinsicParamsLoaded = 1;
 
   return OK;
 }
@@ -149,7 +149,7 @@ int executeDistCalib(string settingsFile, Camera* cam) {
     }
 
     //----------------------------- Output Text ------------------------------------------------
-    string msg = (mode == CAPTURING) ? "100/100" : mode == CALIBRATED ? "Calibrated" : "Press 'g' to start";
+    string msg = (mode == CAPTURING) ? "100/100" : mode == CALIBRATED ? "Calibrated, press 'esc' for next" : "Press 'g' to start";
     int baseLine = 0;
     Size textSize = getTextSize(msg, 1, 1, 1, &baseLine);
     Point textOrigin(view.cols - 2 * textSize.width - 10, view.rows - 2 * baseLine - 10);

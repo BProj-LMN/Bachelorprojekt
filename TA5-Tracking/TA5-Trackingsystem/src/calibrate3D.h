@@ -39,7 +39,6 @@ int x = 0;
  605 233 175 465 112 168 364 112 81 225 233 115 134 112 131
  */
 
-Mat Punktematrix = Mat::zeros(1, 1, 4); //rows, cols, type - 4 für unsigned int 32 bit (CV_32S)
 Mat PunktematrixXYZ = Mat::zeros(PUNKTE, 3, CV_32F); //rows, cols, type
 bool war_schon = 0;
 char Antwortvariable = 0;
@@ -65,7 +64,6 @@ void myMouseCallBackFunc(int event, int x, int y, int flags, void* userdata) {
 void calibrate3D(Camera* cam1, Camera* cam2) {
 
   if (cam1->intrinsicParamsLoaded == 1 && cam2->intrinsicParamsLoaded == 1) {
-    Punktematrix.at<int>(0, 0) = PUNKTE;
     Mat Pixelmatrix1 = Mat::zeros(PUNKTE, 2, CV_32S); //rows, cols, type - 4 für unsigned int 32 bit (CV_32S)
     Mat Pixelmatrix2 = Mat::zeros(PUNKTE, 2, CV_32S); //rows, cols, type - 4 für unsigned int 32 bit (CV_32S)
 
@@ -75,17 +73,15 @@ void calibrate3D(Camera* cam1, Camera* cam2) {
     if ('g' == Antwortvariable) { //gespeicherte Werte verwenden
       lesen(cam1, Pixelmatrix1);
       lesen(cam2, Pixelmatrix2);
-      cout << "Punktematrix: " << Punktematrix << endl;
-      cout << "PunktematrixXYZ: " << PunktematrixXYZ << endl;
-      cout << "Pixelmatrix1: " << Pixelmatrix1 << endl;
-      cout << "Pixelmatrix2: " << Pixelmatrix2 << endl;
+      cout << "PunktematrixXYZ: " << endl << PunktematrixXYZ << endl;
+      cout << "Pixelmatrix1: " << endl << Pixelmatrix1 << endl;
+      cout << "Pixelmatrix2: " << endl << Pixelmatrix2 << endl;
       cout << "Wollen Sie auch Weltkoordinaten einlesen oder neue eintippen? (n - neu; g - gespeichert)" << endl;
       cin >> Antwortvariable;
       if ('n' == Antwortvariable) {
         calibrate3Deinzeln(cam1, Pixelmatrix1);
         calibrate3Deinzeln(cam2, Pixelmatrix2);
       }
-      cout << Punktematrix.at<int>(0, 0) << " alte Punkte wurden gefunden" << endl;
     } else {
 
       for (int i = 0; i < PUNKTE; i++) { //für die Eingabe der Kalibrierpunkte
@@ -129,14 +125,15 @@ void gleichungRechnenEinzeln(Camera* cam, Mat Pixelmatrix) {
     Pixelvektor[i] = cv::Point2f(Pixelmatrix.at<int>(i, 0), Pixelmatrix.at<int>(i, 1));
   }
 
-  cout << "Weltvektor" << Weltvektor << endl;
-  cout << "Pixelvektor" << Pixelvektor << endl;
+  cout << "\n gleichungRechnenEinzeln" << endl;
+  cout << "Weltvektor" << endl << Weltvektor << endl;
+  cout << "Pixelvektor" << endl << Pixelvektor << endl;
 
   solvePnP(Weltvektor, Pixelvektor, cam->cameraMatrix, cam->distCoeffs, cam->rvecs, cam->tvecs, false,
            SOLVEPNP_ITERATIVE);
 
-  cout << "tvec" << cam->tvecs << endl;
-  cout << "rvec" << cam->rvecs << endl;
+  cout << "tvec" << endl << cam->tvecs << endl;
+  cout << "rvec" << endl << cam->rvecs << endl;
 
 }
 
@@ -184,13 +181,11 @@ int speichern(int KamNr, Mat Pixelmatrix) {
   strftime(buf, sizeof(buf) - 1, "%c", t2);
   fs << "datetime" << buf;
 
-  fs << "Punktematrix" << Punktematrix;
   fs << "PunktematrixXYZ" << PunktematrixXYZ;
   fs << "Pixelmatrix" << Pixelmatrix;
 
   fs.release();                                    // close Settings file
 
-  cout << Punktematrix << endl;
   cout << PunktematrixXYZ << endl;
   cout << Pixelmatrix << endl;
 
@@ -209,7 +204,6 @@ int lesen(Camera* cam, Mat Pixelmatrix) {
     return -1;
   }
 
-  fs["Punktematrix"] >> Punktematrix;
   fs["PunktematrixXYZ"] >> PunktematrixXYZ;
   fs["Pixelmatrix"] >> Pixelmatrix;
 
