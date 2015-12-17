@@ -51,7 +51,9 @@ int main(int argc, const char** argv) {
     options = argv[1];
   } else {
     cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
-    cout << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, tracking, setROI, exit" << endl;
+    cout
+        << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, setMask, save, tracking, loadAndTrack, save&exit, exit"
+        << endl;
     cin >> options;
   }
 
@@ -69,9 +71,15 @@ int main(int argc, const char** argv) {
       cout << "--> do calibrate3D subroutine" << endl;
       calibrate3D(&cam1, &cam2);
 
-    } else if (0 == options.compare("setROI")) {
+    } else if (0 == options.compare("setMask")) {
       cout << "--> do calibrateFrameMask subroutine" << endl;
       calibrateFrameMask(&cam1, &cam2);
+
+    } else if (0 == options.compare("save")) {
+      cout << "--> save camera object parameters" << endl;
+      cam1.saveSettings("cam1.xml");
+      cam2.saveSettings("cam2.xml");
+      return (0);
 
     } else if (0 == options.compare("exit")) {
       cout << "--> terminating ... Auf Wiedersehen" << endl;
@@ -87,11 +95,19 @@ int main(int argc, const char** argv) {
       cout << "--> do normal operation" << endl;
       break;
 
+    } else if (0 == options.compare("loadAndTrack")) {
+      cout << "--> loading config and track" << endl;
+      cam1.readSettings("cam1.xml");
+      cam2.readSettings("cam2.xml");
+      break;
+
     } else {
       cout << "diese Eingabe ist nicht zugelassen" << endl;
     }
 
-    cout << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, tracking, setROI, save&exit, exit" << endl;
+    cout
+        << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, setMask, save, tracking, loadAndTrack, save&exit, exit"
+        << endl;
     cin >> options;
   }
 
@@ -105,7 +121,7 @@ int main(int argc, const char** argv) {
    * set reference frame for tracking
    */
   cout << "waiting for reference frame..." << endl;
-  for (int i = 0; i < 20; i++) {
+  for (int i = 0; i < 40; i++) {
     cam1.get_newFrame(frame1);
     cam2.get_newFrame(frame2);
     imshow("reference frame1", frame1);
@@ -167,6 +183,8 @@ int main(int argc, const char** argv) {
     pixelPosConv1[0] = Point2f((float) pixelPos1.x, (float) pixelPos1.y);
     pixelPosConv2[0] = Point2f((float) pixelPos2.x, (float) pixelPos2.y);
 
+    cout << pixelPosConv1[0] << endl;
+
     triangulatePoints(cam1.projMatr, cam2.projMatr, pixelPosConv1, pixelPosConv2, objectPos3D);
     cout << objectPos3D << endl;
 
@@ -190,6 +208,8 @@ int main(int argc, const char** argv) {
   delete pcam1;
   delete pcam2;
   delete premoteInput;
+
+  cout << "program successful terminated" << endl;
 
   return (0);
 

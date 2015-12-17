@@ -45,7 +45,6 @@ bool war_schon = 0;
 char Antwortvariable = 0;
 int PixelX, PixelY;
 bool MauscallbackBekommen = 0;
-#define SPEICHERORT "C:/Users/User/Desktop/Punkte.txt"
 
 void myMouseCallBackFunc(int event, int x, int y, int flags, void* userdata) {
 
