@@ -40,6 +40,7 @@ Camera::Camera(int cameraIndex, string settingsFile) {
 
 Camera::~Camera() {
   capture.release();
+  cout << "[INFO]Camera::~Camera - released capture" << endl;
 }
 
 VideoCapture Camera::get_capture() {

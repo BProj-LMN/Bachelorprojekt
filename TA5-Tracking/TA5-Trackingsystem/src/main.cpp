@@ -161,12 +161,13 @@ int main(int argc, const char** argv) {
 
     if (detect1.detectObject(frame1, pixelPos1) != ERR) {
       circle(frame1, Point(pixelPos1.x, pixelPos1.y), 30, Scalar(255, 0, 0), 1);
-      imshow("final_tracking1", frame1);
     }
+    imshow("final_tracking1", frame1);
     if (detect2.detectObject(frame2, pixelPos2) != ERR) {
       circle(frame2, Point(pixelPos2.x, pixelPos2.y), 30, Scalar(255, 0, 0), 1);
-      imshow("final_tracking2", frame2);
     }
+    imshow("final_tracking2", frame2);
+
     if (waitKey(30) >= 0) {
       break;
     }
@@ -201,13 +202,7 @@ int main(int argc, const char** argv) {
   destroyWindow("trackingbild_2");
   destroyWindow("final_tracking1");
   destroyWindow("final_tracking2");
-
-  Camera * pcam1 = &cam1;
-  Camera * pcam2 = &cam2;
-  Socket * premoteInput = &remoteInput;
-  delete pcam1;
-  delete pcam2;
-  delete premoteInput;
+  cout << "windows destroyed" << endl;
 
   cout << "program successful terminated" << endl;
 

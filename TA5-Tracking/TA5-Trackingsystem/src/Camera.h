@@ -19,6 +19,7 @@
 using namespace cv;
 
 #include <time.h>
+#include <iostream>
 using namespace std;
 
 #include "myGlobalConstants.h"
