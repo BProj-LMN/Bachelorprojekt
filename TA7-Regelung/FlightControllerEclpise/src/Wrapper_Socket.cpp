@@ -1,5 +1,7 @@
 #include "Wrapper_Socket.h"
 #include "SocketClient.h"
+#include <string.h>
+
 Wrapper_Socket::Wrapper_Socket(){
   Socket = new SocketClient("127.0.0.1", 1362);
 istX=0;
@@ -11,12 +13,22 @@ Wrapper_Socket::~Wrapper_Socket(){
   delete Socket;
 }
 
+int Wrapper_Socket::connect(){
+  Socket->sendMessage("connect");
+  while(Socket->get_message(Nachricht)==1){
+  Socket->evaluate();
+  }
+  if(Nachricht.compare("connected")==0)return 1;
+  else return 0;
+}
+
 void Wrapper_Socket::updateIstwerte(){
-if (Socket->get_message(Werte[MESSAGE_LEN])==1){
-  if(Werte[0]==0xDA){
-    istX=(Werte[1]<<8)|Werte[2];
-    istY=(Werte[3]<<8)|Werte[4];
-    istZ=(Werte[5]<<8)|Werte[6];
+Socket->evaluate();
+if (Socket->get_message(Nachricht)==1){
+  if(Nachricht[0]==0xDA){
+    istX=(Nachricht[1]<<8)|Nachricht[2];
+    istY=(Nachricht[3]<<8)|Nachricht[4];
+    istZ=(Nachricht[5]<<8)|Nachricht[6];
   }
   else;
 }

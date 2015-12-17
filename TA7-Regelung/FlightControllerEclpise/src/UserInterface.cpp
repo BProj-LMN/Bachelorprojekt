@@ -49,14 +49,14 @@ int UserInterface::sollEinlesen() {
             soll[2] = 0;
             status = 1;
             break;
-        case 1:cout << "X-Koordinate eingeben (in cm)" << endl;
+        case 1:cout << "X-Koordinate eingeben (0-450 cm)" << endl;
             status = 4;
             pos = 0;
             break;
-        case 2: cout << "Y-Koordinate eingeben (in cm)" << endl;
+        case 2: cout << "Y-Koordinate eingeben (0-450 cm)" << endl;
             status = 4;
             break;
-        case 3:cout << "Z-Koordinate eingeben (in cm)" << endl;
+        case 3:cout << "Z-Koordinate eingeben (0-450 cm)" << endl;
             status = 4;
             break;
             //Zahl aufnehemen
@@ -93,6 +93,8 @@ int UserInterface::sollEinlesen() {
                     }
                 }
             }
+        if(soll[pos]>450)soll[pos]=450;
+        if(soll[pos]<0)soll[pos]=0;
             cout << "=> " << soll[pos] << endl; // gib die eingelesene Zahl aus
             pos++; //nächste zahl kann eingelesen werden
             zaehler = 0;
