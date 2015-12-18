@@ -20,7 +20,7 @@ using namespace std;
 #include <opencv2/imgcodecs.hpp>
 using namespace cv;
 
-#include <tisgrabber.h>
+//#include <tisgrabber.h>
 
 #include "Camera.h"
 #include "calibrate3D.h"
@@ -30,7 +30,7 @@ using namespace cv;
 #include "calibrateFrameMask.h"
 
 void printHelp() {
-  cout << "\n\n"
+  cout << "\n"
        << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, setFrameMask1, setFrameMask2, save, "
        << "tracking, loadAndTrack, save&exit, exit" << endl;
 }
@@ -53,167 +53,171 @@ int main(int argc, const char** argv) {
 
   Mat objectPos3D;
 
-  /*
-   * start directly to one mode by program argument or get input by user
-   */
-  if (argc > 1) {
-    options = argv[1];
-  } else {
-    cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
-    printHelp();
-    cin >> options;
-  }
+  try {
 
-  while (1) {
-    if (0 == options.compare("loadConfig")) {
-      cout << "--> do loadConfig subroutine" << endl;
-      cam1.readSettings(CAM1_FILENAME);
-      cam2.readSettings(CAM2_FILENAME);
-
-    } else if (0 == options.compare("calibrateCamera")) {
-      cout << "--> do calibrateCamera subroutine" << endl;
-      calibrateCameras(&cam1, &cam2);
-
-    } else if (0 == options.compare("calibrate3D")) {
-      cout << "--> do calibrate3D subroutine" << endl;
-      calibrate3D(&cam1, &cam2);
-
-    } else if (0 == options.compare("setFrameMask1")) {
-      cout << "--> do calibrateFrameMask subroutine" << endl;
-      calibrateFrameMask(&cam1);
-
-    } else if (0 == options.compare("setFrameMask2")) {
-      cout << "--> do calibrateFrameMask subroutine" << endl;
-      calibrateFrameMask(&cam2);
-
-    } else if (0 == options.compare("save")) {
-      cout << "--> save camera object parameters" << endl;
-      cam1.saveSettings(CAM1_FILENAME);
-      cam2.saveSettings(CAM2_FILENAME);
-
-    } else if (0 == options.compare("exit")) {
-      cout << "--> terminating ... Auf Wiedersehen" << endl;
-      return (0);
-
-    } else if (0 == options.compare("save&exit")) {
-      cout << "--> saving and terminating ... Auf Wiedersehen" << endl;
-      cam1.saveSettings(CAM1_FILENAME);
-      cam2.saveSettings(CAM2_FILENAME);
-      return (0);
-
-    } else if (0 == options.compare("tracking")) {
-      cout << "--> do normal operation" << endl;
-      break;
-
-    } else if (0 == options.compare("loadAndTrack")) {
-      cout << "--> loading config and track" << endl;
-      cam1.saveSettings(CAM1_FILENAME);
-      cam2.saveSettings(CAM2_FILENAME);
-      break;
-
+    /*
+     * start directly to one mode by program argument or get input by user
+     */
+    if (argc > 1) {
+      options = argv[1];
     } else {
-      cout << "diese Eingabe ist nicht zugelassen" << endl;
+      cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
+      printHelp();
+      cin >> options;
     }
 
-    printHelp();
-    cin >> options;
+    while (1) {
+      if (0 == options.compare("loadConfig")) {
+        cout << "--> do loadConfig subroutine" << endl;
+        cam1.readSettings(CAM1_FILENAME);
+        cam2.readSettings(CAM2_FILENAME);
+
+      } else if (0 == options.compare("calibrateCamera")) {
+        cout << "--> do calibrateCamera subroutine" << endl;
+        calibrateCameras(&cam1, &cam2);
+
+      } else if (0 == options.compare("calibrate3D")) {
+        cout << "--> do calibrate3D subroutine" << endl;
+        calibrate3D(&cam1, &cam2);
+
+      } else if (0 == options.compare("setFrameMask1")) {
+        cout << "--> do calibrateFrameMask subroutine" << endl;
+        calibrateFrameMask(&cam1);
+
+      } else if (0 == options.compare("setFrameMask2")) {
+        cout << "--> do calibrateFrameMask subroutine" << endl;
+        calibrateFrameMask(&cam2);
+
+      } else if (0 == options.compare("save")) {
+        cout << "--> save camera object parameters" << endl;
+        cam1.saveSettings(CAM1_FILENAME);
+        cam2.saveSettings(CAM2_FILENAME);
+
+      } else if (0 == options.compare("exit")) {
+        cout << "--> terminating ... Auf Wiedersehen" << endl;
+        return (0);
+
+      } else if (0 == options.compare("save&exit")) {
+        cout << "--> saving and terminating ... Auf Wiedersehen" << endl;
+        cam1.saveSettings(CAM1_FILENAME);
+        cam2.saveSettings(CAM2_FILENAME);
+        return (0);
+
+      } else if (0 == options.compare("tracking")) {
+        cout << "--> do normal operation" << endl;
+        break;
+
+      } else if (0 == options.compare("loadAndTrack")) {
+        cout << "--> loading config and track" << endl;
+        cam1.saveSettings(CAM1_FILENAME);
+        cam2.saveSettings(CAM2_FILENAME);
+        break;
+
+      } else {
+        cout << "diese Eingabe ist nicht zugelassen" << endl;
+      }
+
+      printHelp();
+      cin >> options;
+    }
+
+    /*
+     * setup things
+     */
+    cam1.set_projMatr();
+    cam2.set_projMatr();
+
+    /*
+     * set reference frame for tracking
+     */
+    cout << "waiting for reference frame..." << endl;
+    for (int i = 0; i < 40; i++) {
+      cam1.get_newFrame(frame1);
+      cam2.get_newFrame(frame2);
+      imshow("reference frame1", frame1);
+      imshow("reference frame2", frame2);
+
+      if (waitKey(30) >= 0) {
+        break;
+      }
+    }
+    detect1.setReferenceFrame(frame1);
+    detect2.setReferenceFrame(frame2);
+    cout << "reference frame set" << endl;
+    destroyWindow("reference frame1");
+    destroyWindow("reference frame2");
+
+    /*
+     * main tracking routine
+     */
+    while (1) {
+      /*
+       * evaluate remote input
+       */
+      remoteInput.evaluate();
+      bool newMessage = remoteInput.get_message(message);
+
+      if (newMessage) {
+        // do something
+        char answer[MESSAGE_LEN] = "some answer\n";
+        remoteInput.sendMessage(answer);
+      }
+
+      /*
+       * get frame and track object
+       */
+      cam1.get_newFrame(frame1);
+      cam2.get_newFrame(frame2);
+
+      if (detect1.detectObject(frame1, pixelPos1) != ERR) {
+        circle(frame1, Point(pixelPos1.x, pixelPos1.y), 30, Scalar(255, 0, 0), 1);
+      }
+      imshow("final_tracking1", frame1);
+      if (detect2.detectObject(frame2, pixelPos2) != ERR) {
+        circle(frame2, Point(pixelPos2.x, pixelPos2.y), 30, Scalar(255, 0, 0), 1);
+      }
+      imshow("final_tracking2", frame2);
+
+      if (waitKey(30) >= 0) {
+        break;
+      }
+
+      /*
+       * calculate 3D position
+       */
+      //  loadConfig calibrate3D g g tracking
+      // TODO undistort
+      // triangulate
+      vector<Point2f> pixelPosConv1(1);
+      vector<Point2f> pixelPosConv2(1);
+      pixelPosConv1[0] = Point2f((float) pixelPos1.x, (float) pixelPos1.y);
+      pixelPosConv2[0] = Point2f((float) pixelPos2.x, (float) pixelPos2.y);
+
+      cout << pixelPosConv1[0] << endl;
+
+      triangulatePoints(cam1.projMatr, cam2.projMatr, pixelPosConv1, pixelPosConv2, objectPos3D);
+      cout << objectPos3D << endl;
+
+      /*
+       * send position via UDP socket
+       * TODO: socket send
+       */
+    }
+
+    /*
+     * tidy everything up
+     */
+    destroyWindow("trackingbild_1");
+    destroyWindow("trackingbild_2");
+    destroyWindow("final_tracking1");
+    destroyWindow("final_tracking2");
+    cout << "windows destroyed" << endl;
+    cout << "program successful terminated" << endl;
+
+    return (0);
+
+  } catch (cv::Exception & e) {
+    cout << e.msg << endl;
   }
-
-  /*
-   * setup things
-   */
-  cam1.set_projMatr();
-  cam2.set_projMatr();
-
-  /*
-   * set reference frame for tracking
-   */
-  cout << "waiting for reference frame..." << endl;
-  for (int i = 0; i < 40; i++) {
-    cam1.get_newFrame(frame1);
-    cam2.get_newFrame(frame2);
-    imshow("reference frame1", frame1);
-    imshow("reference frame2", frame2);
-
-    if (waitKey(30) >= 0) {
-      break;
-    }
-  }
-  detect1.setReferenceFrame(frame1);
-  detect2.setReferenceFrame(frame2);
-  cout << "reference frame set" << endl;
-  destroyWindow("reference frame1");
-  destroyWindow("reference frame2");
-
-  /*
-   * main tracking routine
-   */
-  while (1) {
-    /*
-     * evaluate remote input
-     */
-    remoteInput.evaluate();
-    bool newMessage = remoteInput.get_message(message);
-
-    if (newMessage) {
-      // do something
-      char answer[MESSAGE_LEN] = "some answer\n";
-      remoteInput.sendMessage(answer);
-    }
-
-    /*
-     * get frame and track object
-     */
-    cam1.get_newFrame(frame1);
-    cam2.get_newFrame(frame2);
-
-    if (detect1.detectObject(frame1, pixelPos1) != ERR) {
-      circle(frame1, Point(pixelPos1.x, pixelPos1.y), 30, Scalar(255, 0, 0), 1);
-    }
-    imshow("final_tracking1", frame1);
-    if (detect2.detectObject(frame2, pixelPos2) != ERR) {
-      circle(frame2, Point(pixelPos2.x, pixelPos2.y), 30, Scalar(255, 0, 0), 1);
-    }
-    imshow("final_tracking2", frame2);
-
-    if (waitKey(30) >= 0) {
-      break;
-    }
-
-    /*
-     * calculate 3D position
-     */
-    //  loadConfig calibrate3D g g tracking
-    // TODO undistort
-
-    // triangulate
-    vector<Point2f> pixelPosConv1(1);
-    vector<Point2f> pixelPosConv2(1);
-    pixelPosConv1[0] = Point2f((float) pixelPos1.x, (float) pixelPos1.y);
-    pixelPosConv2[0] = Point2f((float) pixelPos2.x, (float) pixelPos2.y);
-
-    cout << pixelPosConv1[0] << endl;
-
-    triangulatePoints(cam1.projMatr, cam2.projMatr, pixelPosConv1, pixelPosConv2, objectPos3D);
-    cout << objectPos3D << endl;
-
-    /*
-     * send position via UDP socket
-     * TODO: socket send
-     */
-  }
-
-  /*
-   * tidy everything up
-   */
-  destroyWindow("trackingbild_1");
-  destroyWindow("trackingbild_2");
-  destroyWindow("final_tracking1");
-  destroyWindow("final_tracking2");
-  cout << "windows destroyed" << endl;
-
-  cout << "program successful terminated" << endl;
-
-  return (0);
 
 }
