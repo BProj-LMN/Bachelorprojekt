@@ -1,5 +1,4 @@
 #include "Wrapper_Socket.h"
-#include "SocketClient.h"
 #include <string.h>
 
 Wrapper_Socket::Wrapper_Socket(){
@@ -18,8 +17,8 @@ int Wrapper_Socket::connect(){
   while(Socket->get_message(Nachricht)==1){
   Socket->evaluate();
   }
-  if(Nachricht.compare("connected")==0)return 1;
-  else return 0;
+  if(Nachricht.compare("connected")==0) return 1;
+ else return 0;
 }
 
 void Wrapper_Socket::updateIstwerte(){

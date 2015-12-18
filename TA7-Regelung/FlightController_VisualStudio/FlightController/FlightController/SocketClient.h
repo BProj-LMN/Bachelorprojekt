@@ -13,6 +13,8 @@
 #ifndef SRC_SOCKETCLIENT_H_
 #define SRC_SOCKETCLIENT_H_
 
+
+
 #define MESSAGE_LEN 256
 
 #ifndef _WIN32
@@ -23,8 +25,9 @@
 #include <arpa/inet.h>
 
 #else
+#pragma comment(lib, "Ws2_32.lib")
 #include <winsock2.h>
-#include <WS2tcpip.h>
+#include <Ws2tcpip.h>
 #endif
 
 #include <iostream>

@@ -6,19 +6,6 @@
  */
 
 #include "FlightController.h"
-#include "stdio.h"
-#include <cstdlib>
-#include <iostream>
-#include <windows.h>
-#include <fstream>
-
-#include  "PID_Regler.h"
-#include "defines_Regler.h"
-#include "TrajectoryClass.h"
-#include "UserInterface.h"
-#include "Wrapper_Steuerung.h"
-
-using namespace std;
 
 FlightControllerClass::FlightControllerClass() {
   //Regler für Vor Zurück erzeugen Grenzwerte für Regelung von -127 bis 127
@@ -33,6 +20,8 @@ FlightControllerClass::FlightControllerClass() {
   UI = new UserInterface(&Error);
   //Serielle Schnittstelle erzeugen
   Steuerung = new Wrapper_Steuerung();
+
+  Tracking = new Wrapper_Socket();
 
   istX = 0;
   istY = 0;
@@ -49,6 +38,7 @@ FlightControllerClass::~FlightControllerClass() {
   delete Trajectory;
   delete UI;
   delete Steuerung;
+  delete Tracking;
 }
 
 void FlightControllerClass::ReglerSollwertvorgabe() {
@@ -67,11 +57,19 @@ void FlightControllerClass::Initialisieren() {
   cout << "Mit dem Copter Verbindung aufbauen" << endl;
   Steuerung->HochRunter(REGELMAX);
   Steuerung->Steuern();
-  while (!UI->EnterGedrueckt())
+  while ((!UI->EnterGedrueckt())&& (Error==0))
     ; //Warten auf Enter
   Steuerung->HochRunter(0);
   Steuerung->Steuern();
   cout << "Rechner ist mit Copter verbunden" << endl;
+  int i = 0;
+  while ((Tracking->connect() == 0) && (Error==0)){ i++;
+  if (i > 10){ Error = 1; 
+  cout << "Verbindung zu Server nicht möglich" << endl;
+  }
+  }
+	 
+  cout << "Server verbindung ist aufgebaut" << endl;
 }
 
 void FlightControllerClass::Landeprozedur() {
@@ -105,28 +103,29 @@ void FlightControllerClass::SollwertVorgeben() {
   cout << "Neue Sollwerte definieren" << endl;
   //Sollwerte einlesen bis alle vorhanden sind
 
-  while (!UI->sollEinlesen() && (Error == 0)) {
+  while ((!UI->sollEinlesen()) && (Error == 0)) {
     //Istwerte einlesen
-
+	  Tracking->updateIstwerte();
     //übergibt die Regelwerte an den puffer der Seriellen Schnittstelle
-    Steuerung->HochRunter((int) reglerZ->getControlValue(istZ));
-    Steuerung->RechtLinks((int) reglerY->getControlValue(istY));
-    Steuerung->VorZurueck((int) reglerX->getControlValue(istX));
+    Steuerung->HochRunter((int) reglerZ->getControlValue(Tracking->getZ()));
+	Steuerung->RechtLinks((int)reglerY->getControlValue(Tracking->getY()));
+	Steuerung->VorZurueck((int)reglerX->getControlValue(Tracking->getX()));
     //Regelwerte an die Fernsteuerung senden
     Steuerung->Steuern();
   }
   //neue Trajektorie wird berrechnet
-  Trajectory->calcCheckpointsB(istX, istY, istZ, UI->getX(), UI->getY(), UI->getZ());
+  Tracking->updateIstwerte();
+  Trajectory->calcCheckpointsB(Tracking->getX(), Tracking->getY(), Tracking->getZ(), UI->getX(), UI->getY(), UI->getZ());
   cout << "Checkpoints wurden berechnet" << endl;
   cout << "Um Copter weiter fliegen zu lassen Enter betaetigen" << endl;
   //Wartet bis Enter betätigt wird bevor der Copter wieder losfliegt
   while (!UI->EnterGedrueckt() && (Error == 0)) {
     //Istwerte einlesen
-
+	  Tracking->updateIstwerte();
     //übergibt die Regelwerte an den puffer der Seriellen Schnittstelle
-    Steuerung->HochRunter((int) reglerZ->getControlValue(istZ));
-    Steuerung->RechtLinks((int) reglerY->getControlValue(istY));
-    Steuerung->VorZurueck((int) reglerX->getControlValue(istX));
+	  Steuerung->HochRunter((int)reglerZ->getControlValue(Tracking->getZ()));
+	Steuerung->RechtLinks((int)reglerY->getControlValue(Tracking->getY()));
+	Steuerung->VorZurueck((int)reglerX->getControlValue(Tracking->getX()));
     //Regelwerte an die Fernsteuerung senden
     Steuerung->Steuern();
   }
@@ -135,19 +134,18 @@ void FlightControllerClass::SollwertVorgeben() {
 void FlightControllerClass::ZielAnfliegen() {
   while ((!UI->EnterGedrueckt()) && (0 == Error)) {
     //Istwerte einlesen
-
+	  Tracking->updateIstwerte();
     //wenn der aktuelle Checkpoint erreicht ist
-    if (Trajectory->checkpointReached(istX, istY, istZ)) {
+	  if (Trajectory->checkpointReached(Tracking->getX(), Tracking->getY(), Tracking->getZ())) {
       Trajectory->nextCheckpoint(); // nächsten Checkpoint auswählen
       ReglerSollwertvorgabe(); //neuen Checkpoint dem Regler übergeben
       cout << "Checkpoint wurde erreicht" << endl;
-    } else
-      ;
+    } else;
     //Regeln
     //übergibt die Regelwerte an den puffer der Seriellen Schnittstelle
-    Steuerung->HochRunter((int) reglerZ->getControlValue(istZ));
-    Steuerung->RechtLinks((int) reglerY->getControlValue(istY));
-    Steuerung->VorZurueck((int) reglerX->getControlValue(istX));
+	  Steuerung->HochRunter((int)reglerZ->getControlValue(Tracking->getZ()));
+	Steuerung->RechtLinks((int)reglerY->getControlValue(Tracking->getY()));
+	Steuerung->VorZurueck((int)reglerX->getControlValue(Tracking->getX()));
     //Regelwerte an die Fernsteuerung senden
     Steuerung->Steuern();
   }

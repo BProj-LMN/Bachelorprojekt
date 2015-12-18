@@ -9,6 +9,7 @@
 #define	SERIELLEUEBERTRAGUNG_H
 #define COMPORT "COM7"//nicht mehr benötigt, da string nicht geht sondern über LPCWSTR
 #include <iostream>
+#include <winsock2.h>
 #include <windows.h>
 #include <fstream>
 #include <cstdlib>

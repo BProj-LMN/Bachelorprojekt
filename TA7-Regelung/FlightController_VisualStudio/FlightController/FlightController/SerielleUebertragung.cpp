@@ -1,6 +1,5 @@
 #include "SerielleUebertragung.h"
 #include <iostream>
-#include <windows.h>
 #include <fstream>
 #include <cstdlib>
 #include "defines_Regler.h"

@@ -23,7 +23,7 @@ public:
     
 private:
     string Nachricht;
-    char Antwort[MESSAGE_LEN];
+   char Antwort[MESSAGE_LEN];
     unsigned int istX;
     unsigned int istY;
     unsigned int istZ;

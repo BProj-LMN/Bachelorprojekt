@@ -10,15 +10,17 @@
 #include "PID_Regler.h"
 #include <cstdlib>
 #include <iostream>
+#include <winsock2.h>
 #include <windows.h>
 #include <fstream>
 
-#include  "PID_Regler.h"
+//#include  "PID_Regler.h"
 #include "defines_Regler.h"
 #include "TrajectoryClass.h"
 #include "UserInterface.h"
 #include "Wrapper_Steuerung.h"
-#include "FlightController.h"
+//#include "FlightController.h"
+#include "Wrapper_Socket.h"
 
 class FlightControllerClass {
 public:
@@ -43,6 +45,7 @@ private:
   Trajectory_Class* Trajectory;
   UserInterface *UI;
   Wrapper_Steuerung *Steuerung;
+  Wrapper_Socket *Tracking;
 };
 
 #endif	/* FLIGHTCONTROLLER_H */

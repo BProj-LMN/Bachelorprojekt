@@ -7,15 +7,11 @@
  */
 
 #include "SocketClient.h"
-#include <Ws2tcpip.h>
-#include <windows.h>
-#include <winsock.h>
-#include <winsock2.h>
+
 #ifndef _WIN32
 #include <arpa/inet.h>
 #endif
 
-#pragma comment(lib, "Ws2_32.lib")
 
 SocketClient::SocketClient(char ipAddress[], int port) {
   newServerMessage = false;
