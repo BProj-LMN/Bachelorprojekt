@@ -46,7 +46,7 @@ public:
   virtual ~Camera();
 
   VideoCapture get_capture();
-  int correctDistortion(InputArray src, OutputArray dst);
+  int correctDistortion(Point2i src, Point2f dst);
 
   int readSettings(string settingsFile);  // read from temporarily filename
   int readSettings();                     // read from filename from constructor

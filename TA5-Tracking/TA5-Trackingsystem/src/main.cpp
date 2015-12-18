@@ -5,6 +5,9 @@
  * authors: Jannik Beyerstedt, Daniel Friedrich
  */
 
+#define CAM1_FILENAME "cameraStorage1.xml"
+#define CAM2_FILENAME "cameraStorage2.xml"
+
 #include <iostream>
 using namespace std;
 
@@ -64,8 +67,8 @@ int main(int argc, const char** argv) {
   while (1) {
     if (0 == options.compare("loadConfig")) {
       cout << "--> do loadConfig subroutine" << endl;
-      cam1.readSettings("cam1.xml");
-      cam2.readSettings("cam2.xml");
+      cam1.readSettings(CAM1_FILENAME);
+      cam2.readSettings(CAM2_FILENAME);
 
     } else if (0 == options.compare("calibrateCamera")) {
       cout << "--> do calibrateCamera subroutine" << endl;
@@ -85,8 +88,8 @@ int main(int argc, const char** argv) {
 
     } else if (0 == options.compare("save")) {
       cout << "--> save camera object parameters" << endl;
-      cam1.saveSettings("cam1.xml");
-      cam2.saveSettings("cam2.xml");
+      cam1.saveSettings(CAM1_FILENAME);
+      cam2.saveSettings(CAM2_FILENAME);
 
     } else if (0 == options.compare("exit")) {
       cout << "--> terminating ... Auf Wiedersehen" << endl;
@@ -94,8 +97,8 @@ int main(int argc, const char** argv) {
 
     } else if (0 == options.compare("save&exit")) {
       cout << "--> saving and terminating ... Auf Wiedersehen" << endl;
-      cam1.saveSettings("cam1.xml");
-      cam2.saveSettings("cam2.xml");
+      cam1.saveSettings(CAM1_FILENAME);
+      cam2.saveSettings(CAM2_FILENAME);
       return (0);
 
     } else if (0 == options.compare("tracking")) {
@@ -104,8 +107,8 @@ int main(int argc, const char** argv) {
 
     } else if (0 == options.compare("loadAndTrack")) {
       cout << "--> loading config and track" << endl;
-      cam1.readSettings("cam1.xml");
-      cam2.readSettings("cam2.xml");
+      cam1.saveSettings(CAM1_FILENAME);
+      cam2.saveSettings(CAM2_FILENAME);
       break;
 
     } else {

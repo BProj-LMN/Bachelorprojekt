@@ -51,12 +51,11 @@ int Camera::get_cameraID() {
   return cameraID;
 }
 
-int Camera::correctDistortion(InputArray src, OutputArray dst) {
+int Camera::correctDistortion(Point2i src, Point2f dst) {
   // TODO Task: call undistortPoints()
-  //cv::undistortPoints(src, dst,
-  //                    *cameraMatrix, *distCoeffs);
+  //undistortPoints(src, dst, *cameraMatrix, *distCoeffs);
 
-  return OK;
+  return ERR;
 }
 
 int Camera::readSettings() {
