@@ -32,6 +32,10 @@ class Camera {
   Mat frameMask;
   bool frameMaskSet;
 
+  Point3f positionVector;
+  Point3f viewingVector;
+  Point3f cameraRotation;
+
 public:
   Mat cameraMatrix;
   Mat distCoeffs;
@@ -56,6 +60,11 @@ public:
   int set_frameMask(Rect frameMask);
   int get_newFrame(Mat& frame);
   int set_projMatr();
+
+  int calculateObjectRay(Point3f positionVector, Point3f objectVector);
+
+private:
+  int calculateObjectRayInCameraCoordinates(Point3f objectRay);
 
 };
 

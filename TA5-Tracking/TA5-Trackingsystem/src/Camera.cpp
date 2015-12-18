@@ -74,6 +74,10 @@ int Camera::readSettings(string settingsFile) {
   fs["distCoeffs"] >> distCoeffs;
   fs["rvecs"] >> rvecs;
   fs["tvecs"] >> tvecs;
+  fs["tvecs"] >> tvecs;
+  fs["positionVector"] >> positionVector;
+  fs["viewingVector"] >> viewingVector;
+  fs["cameraRotation"] >> cameraRotation;
 
   fs.release();                                    // close Settings file
   intrinsicParamsLoaded = 1;
@@ -107,6 +111,9 @@ int Camera::saveSettings(string settingsFile) {
   fs << "distCoeffs" << distCoeffs;
   fs << "rvecs" << rvecs;
   fs << "tvecs" << tvecs;
+  fs << "positionVector" << positionVector;
+  fs << "viewingVector" << viewingVector;
+  fs << "cameraRotation" << cameraRotation;
 
   fs.release();                                    // close Settings file
   return OK;
@@ -122,7 +129,7 @@ int Camera::set_frameMask(Rect frameMask) {
     this->frameMaskRect = frameMask;
 
     frameMaskSet = 1;
-  }else {
+  } else {
     cout << "[ERROR] Camera::set_frameMask - no valid frameMask given in" << endl;
   }
 
@@ -152,4 +159,14 @@ int Camera::set_projMatr() {
   cout << "rtCombined" << endl << rtCombinedMatr << endl;
 
   return OK;
+}
+
+int Camera::calculateObjectRay(Point3f positionVector, Point3f objectVector) {
+  // TODO implement
+  return ERR;
+}
+
+int Camera::calculateObjectRayInCameraCoordinates(Point3f objectRay) {
+  // TODO implement
+  return ERR;
 }
