@@ -78,7 +78,7 @@ int Camera::readSettings(string settingsFile) {
 
   fs.release();                                    // close Settings file
   intrinsicParamsLoaded = 1;
-  if (frameMaskRect.height > 0) {
+  if (frameMaskRect.area() > 0) {
     frameMaskSet = 1;
   }
   return OK;
@@ -114,13 +114,17 @@ int Camera::saveSettings(string settingsFile) {
 }
 
 int Camera::set_frameMask(Rect frameMask) {
-  if (frameMaskRect.height > 0) {
+  if (frameMask.area() > 0) {
     Mat frame;
     capture >> frame;
     this->frameMask = Mat::zeros(frame.rows, frame.cols, CV_8U);
     this->frameMask(frameMask) = 255;
 
+    this->frameMaskRect = frameMask;
+
     frameMaskSet = 1;
+  }else {
+    cout << "[ERROR] Camera::set_frameMask - no valid frameMask given in" << endl;
   }
 
   return OK;

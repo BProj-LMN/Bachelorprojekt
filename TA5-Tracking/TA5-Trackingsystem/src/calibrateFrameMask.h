@@ -9,29 +9,27 @@
 #include "Camera.h"
 using namespace cv;
 
-void roiMouseCallBackFunc(int event, int x, int y, int flags, void* userdata) {
+void frameMaskMouseCallback(int event, int x, int y, int flags, void* userdata) {
   if (event == EVENT_LBUTTONDOWN) {
-    cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+    //cout << "position (" << x << ", " << y << ")" << endl;
     MauscallbackBekommen = 1;
     PixelX = x;
     PixelY = y;
   }
 }
 
-void executeSetFrameMask(Camera* cam) {
+void calibrateFrameMask(Camera* cam) {
   Mat Pixelgesammelt = Mat::zeros(4, 2, CV_32S);
-  Mat ROIBild;
+  Mat frame;
   VideoCapture cap = cam->get_capture();
-  namedWindow("ROIBild", 1);
+  namedWindow("frameMask calibration", 1);
   for (int i = 0; i < 4; i++) { //für die Eingabe der Pixel aus dem Bild per Klicken
-    cout << "Bitte Punkt " << i + 1 << " im Bild anklicken (1-links, 2-rechts, 3-oben, 4-unten)" << endl;
+    cout << "Bitte Punkt " << i + 1 << " im Bild anklicken (1: links, 2: rechts, 3: oben, 4: unten)" << endl;
     MauscallbackBekommen = 0;
-    setMouseCallback("ROIBild", roiMouseCallBackFunc, NULL);
+    setMouseCallback("frameMask calibration", frameMaskMouseCallback, NULL);
     while (0 == MauscallbackBekommen) {
-      cam->get_newFrame(ROIBild);
-      //flip(ROIBild, ROIBild, 0);
-      //flip(ROIBild, ROIBild, 1);
-      imshow("ROIBild", ROIBild);
+      cam->get_newFrame(frame);
+      imshow("frameMask calibration", frame);
       if (waitKey(30) >= 0) {
         break;
       }
@@ -43,15 +41,11 @@ void executeSetFrameMask(Camera* cam) {
   Rect frameMask = Rect(Pixelgesammelt.at<int>(0, 0), Pixelgesammelt.at<int>(2, 1),
                         (Pixelgesammelt.at<int>(1, 0) - Pixelgesammelt.at<int>(0, 0)),
                         (Pixelgesammelt.at<int>(3, 1) - Pixelgesammelt.at<int>(2, 1)));
+
+  cout << "your frameMask is: " << frameMask << endl;
   cam->set_frameMask(frameMask);
 
-  destroyWindow("ROIBild");
+  destroyWindow("frameMask calibration");
+
+  cout << "frameMask for Camera " << cam->get_cameraID() << " set" << endl;
 }
-
-void calibrateFrameMask(Camera* cam1, Camera* cam2) {
-  executeSetFrameMask(cam1);
-  executeSetFrameMask(cam2);
-
-  cout << "frameMask set" << endl;
-}
-

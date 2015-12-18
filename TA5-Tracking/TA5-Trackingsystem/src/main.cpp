@@ -24,7 +24,7 @@ using namespace cv;
 #include "calibrateCamera.h"
 #include "ObjectDetection.h"
 #include "myGlobalConstants.h"
-#include "frameMask.h"
+#include "calibrateFrameMask.h"
 
 int main(int argc, const char** argv) {
   string options;
@@ -71,9 +71,13 @@ int main(int argc, const char** argv) {
       cout << "--> do calibrate3D subroutine" << endl;
       calibrate3D(&cam1, &cam2);
 
-    } else if (0 == options.compare("setMask")) {
+    } else if (0 == options.compare("setFrameMask1")) {
       cout << "--> do calibrateFrameMask subroutine" << endl;
-      calibrateFrameMask(&cam1, &cam2);
+      calibrateFrameMask(&cam1);
+
+    } else if (0 == options.compare("setFrameMask2")) {
+      cout << "--> do calibrateFrameMask subroutine" << endl;
+      calibrateFrameMask(&cam2);
 
     } else if (0 == options.compare("save")) {
       cout << "--> save camera object parameters" << endl;
