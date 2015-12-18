@@ -13,8 +13,13 @@ Bei Start des Trackingssystem können diese Modi aungewählt werden:
 - loadConfig
 - calibrateCamera
 - calibrate3D
+- setFrameMask1
+- setFrameMask2
+- save
 - tracking
 - exit
+- save&exit
+- loadAndTrack
 
 Eine dieser Optionen kann auch per Programmparameter beim Aufruf des Programms ausgewählt werden.  
 Alle Modi bis auf "tracking" und "exit" kehren wieder auf die Auswahl zwischen diesen Optionen zurück.
@@ -37,9 +42,21 @@ Die Kalibierung speichert die intrinsischen Parameter in der Camera-Klasse. Dami
 "calibrate3D" wird verwendet, um die extrinsischen Parameter der Kameras zu bestimmen.  
 TODO
 
+### setFrameMask1 bzw. setFrameMask2
+setFrameMask gibt die Möglichkeit das Bild aus der Kamera zu maskieren, damit störende Bereiche ausgeblendet werden.  
+Diese Maske wird automatisch angewendet, wenn ein neuen Frame vom `Camera`-Objekt abgefragt wird.
+
+### save
+Speichert die `Camera`-Objekte in die korrespondierenden xml-Dateien.
 
 ### tracking
-Mit "tracking" werden die Kameraparamteter in der cam.xml Datei gespeichert und das Programm geht in den Hauptmodus über, mit dem der Copter getrackt wird und die Position an das Reglersystem übertragen wird.
+Mit "tracking" werden die Kameraparamteter in der korrespondierenden xml-Datei gespeichert und das Programm geht in den Hauptmodus über, mit dem der Copter getrackt wird und die Position an das Reglersystem übertragen wird.
 
 ### exit
-"exit" speichert die Kameraparameter und beendet das Programm.
+Beendet das Programm ohne die aktuelle Konfiguration der Kameras in der korrespondierenden xml-Datei gespeichert werden
+
+### save&exit
+Abkürzung für das Ausführen der Optionen `save` und `exit`.
+
+### loadAndTrack
+Abkürzung für das Ausführen der Optionen `loadConfig` und `tracking`. Wird verwendet, um mit einem Komandozeilenparameter direkt in das Tracking zu starten und damit in (die zukünftige) Steuerung per Socket.
