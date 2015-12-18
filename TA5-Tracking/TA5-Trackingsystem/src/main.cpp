@@ -26,6 +26,12 @@ using namespace cv;
 #include "myGlobalConstants.h"
 #include "calibrateFrameMask.h"
 
+void printHelp() {
+  cout << "\n\n"
+       << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, setFrameMask1, setFrameMask2, save, "
+       << "tracking, loadAndTrack, save&exit, exit" << endl;
+}
+
 int main(int argc, const char** argv) {
   string options;
 
@@ -51,9 +57,7 @@ int main(int argc, const char** argv) {
     options = argv[1];
   } else {
     cout << "Guten Tag, hier ist das Tracking-System. Was wollen Sie?" << endl;
-    cout
-        << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, setMask, save, tracking, loadAndTrack, save&exit, exit"
-        << endl;
+    printHelp();
     cin >> options;
   }
 
@@ -83,7 +87,6 @@ int main(int argc, const char** argv) {
       cout << "--> save camera object parameters" << endl;
       cam1.saveSettings("cam1.xml");
       cam2.saveSettings("cam2.xml");
-      return (0);
 
     } else if (0 == options.compare("exit")) {
       cout << "--> terminating ... Auf Wiedersehen" << endl;
@@ -109,9 +112,7 @@ int main(int argc, const char** argv) {
       cout << "diese Eingabe ist nicht zugelassen" << endl;
     }
 
-    cout
-        << "zugelassene Optionen: loadConfig, calibrateCamera, calibrate3D, setMask, save, tracking, loadAndTrack, save&exit, exit"
-        << endl;
+    printHelp();
     cin >> options;
   }
 
