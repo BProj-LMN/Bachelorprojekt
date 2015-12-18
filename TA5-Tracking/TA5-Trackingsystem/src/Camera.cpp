@@ -70,6 +70,7 @@ int Camera::readSettings(string settingsFile) {
     return ERR;
   }
 
+  fs["frameMaskRect"] >> frameMaskRect;
   fs["cameraMatrix"] >> cameraMatrix;
   fs["distCoeffs"] >> distCoeffs;
   fs["rvecs"] >> rvecs;
@@ -77,6 +78,9 @@ int Camera::readSettings(string settingsFile) {
 
   fs.release();                                    // close Settings file
   intrinsicParamsLoaded = 1;
+  if (frameMaskRect.height > 0) {
+    frameMaskSet = 1;
+  }
   return OK;
 }
 
@@ -99,6 +103,7 @@ int Camera::saveSettings(string settingsFile) {
   strftime(buf, sizeof(buf) - 1, "%c", t2);
   fs << "datetime" << buf;
 
+  fs << "frameMaskRect" << frameMaskRect;
   fs << "cameraMatrix" << cameraMatrix;
   fs << "distCoeffs" << distCoeffs;
   fs << "rvecs" << rvecs;
@@ -109,12 +114,14 @@ int Camera::saveSettings(string settingsFile) {
 }
 
 int Camera::set_frameMask(Rect frameMask) {
-  Mat frame;
-  capture >> frame;
-  this->frameMask = Mat::zeros(frame.rows, frame.cols, CV_8U);
-  this->frameMask(frameMask) = 255;
+  if (frameMaskRect.height > 0) {
+    Mat frame;
+    capture >> frame;
+    this->frameMask = Mat::zeros(frame.rows, frame.cols, CV_8U);
+    this->frameMask(frameMask) = 255;
 
-  frameMaskSet = 1;
+    frameMaskSet = 1;
+  }
 
   return OK;
 }

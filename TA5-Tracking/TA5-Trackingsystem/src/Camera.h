@@ -28,6 +28,7 @@ class Camera {
   VideoCapture capture;
   int cameraID;
   string settingsFilename;
+  Rect frameMaskRect;
   Mat frameMask;
   bool frameMaskSet;
 
