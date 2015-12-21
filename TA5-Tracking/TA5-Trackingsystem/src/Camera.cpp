@@ -14,7 +14,15 @@ Camera::Camera(int cameraIndex) {
   intrinsicParamsLoaded = 0;
   frameMaskSet = 0;
 
+#ifndef TEST
   capture = VideoCapture(cameraIndex);
+#else
+  if (0 == cameraIndex) {
+    capture = VideoCapture("test/frameCam1-01.png");
+  } else if (1 == cameraIndex) {
+    capture = VideoCapture("test/frameCam2-01.png");
+  }
+#endif
   if (!capture.isOpened()) {
     //return -1;
   }
@@ -138,7 +146,16 @@ int Camera::set_frameMask(Rect frameMask) {
 
 int Camera::get_newFrame(Mat& frame) {
   capture >> frame;
+#ifdef TEST
+  if (capture.get(CAP_PROP_POS_FRAMES) >= capture.get(CAP_PROP_FRAME_COUNT)) {
+    capture.set(CAP_PROP_POS_FRAMES, 0);
+  }
+#endif
   cvtColor(frame, frame, CV_BGR2GRAY);
+
+  //vector<Mat> channels;
+  //split(frame, channels);
+  //frame = channels[0];
 
   if (frameMaskSet) {
     frame = frame & frameMask;

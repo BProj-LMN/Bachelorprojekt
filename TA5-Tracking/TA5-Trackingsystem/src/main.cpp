@@ -109,8 +109,8 @@ int main(int argc, const char** argv) {
 
       } else if (0 == options.compare("loadAndTrack")) {
         cout << "--> loading config and track" << endl;
-        cam1.saveSettings(CAM1_FILENAME);
-        cam2.saveSettings(CAM2_FILENAME);
+        cam1.readSettings(CAM1_FILENAME);
+        cam2.readSettings(CAM2_FILENAME);
         break;
 
       } else {
@@ -131,11 +131,13 @@ int main(int argc, const char** argv) {
      * set reference frame for tracking
      */
     cout << "waiting for reference frame..." << endl;
+    namedWindow("reference frame 1", WINDOW_AUTOSIZE);
+    namedWindow("reference frame 2", WINDOW_AUTOSIZE);
     for (int i = 0; i < 40; i++) {
       cam1.get_newFrame(frame1);
       cam2.get_newFrame(frame2);
-      imshow("reference frame1", frame1);
-      imshow("reference frame2", frame2);
+      imshow("reference frame 1", frame1);
+      imshow("reference frame 2", frame2);
 
       if (waitKey(30) >= 0) {
         break;
@@ -144,12 +146,15 @@ int main(int argc, const char** argv) {
     detect1.setReferenceFrame(frame1);
     detect2.setReferenceFrame(frame2);
     cout << "reference frame set" << endl;
-    destroyWindow("reference frame1");
-    destroyWindow("reference frame2");
+    destroyWindow("reference frame 1");
+    destroyWindow("reference frame 2");
 
     /*
      * main tracking routine
      */
+    namedWindow("tracking 1", WINDOW_NORMAL);
+    namedWindow("tracking 2", WINDOW_NORMAL);
+
     while (1) {
       /*
        * evaluate remote input
@@ -172,11 +177,11 @@ int main(int argc, const char** argv) {
       if (detect1.detectObject(frame1, pixelPos1) != ERR) {
         circle(frame1, Point(pixelPos1.x, pixelPos1.y), 30, Scalar(255, 0, 0), 1);
       }
-      imshow("final_tracking1", frame1);
+      imshow("tracking 1", frame1);
       if (detect2.detectObject(frame2, pixelPos2) != ERR) {
         circle(frame2, Point(pixelPos2.x, pixelPos2.y), 30, Scalar(255, 0, 0), 1);
       }
-      imshow("final_tracking2", frame2);
+      imshow("tracking 2", frame2);
 
       if (waitKey(30) >= 0) {
         break;

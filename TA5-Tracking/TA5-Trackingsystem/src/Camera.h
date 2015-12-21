@@ -10,7 +10,9 @@
 #ifndef SRC_CAMERA_H_
 #define SRC_CAMERA_H_
 
-#define DEFAULT_FILENAME "cameraSettings-"
+//#define TEST  // for testing the system without cameras
+
+#define DEFAULT_FILENAME "cameraStorage-"
 
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>

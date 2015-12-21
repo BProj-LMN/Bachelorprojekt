@@ -24,6 +24,8 @@ Bei Start des Trackingssystem können diese Modi aungewählt werden:
 Eine dieser Optionen kann auch per Programmparameter beim Aufruf des Programms ausgewählt werden.  
 Alle Modi bis auf "tracking" und "exit" kehren wieder auf die Auswahl zwischen diesen Optionen zurück.
 
+Das Programm kann im Tracking-Modus jederzeit mit einem Tastendruck abgebrochen werden.
+
 
 ### loadConfig
 Lädt die Kamerakonfiguration aus den Dateien, die im Sourcecode angegeben sind.
