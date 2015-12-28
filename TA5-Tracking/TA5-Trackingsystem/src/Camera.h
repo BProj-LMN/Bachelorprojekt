@@ -10,7 +10,7 @@
 #ifndef SRC_CAMERA_H_
 #define SRC_CAMERA_H_
 
-//#define TEST  // for testing the system without cameras
+#define TEST  // for testing the system without cameras
 
 #define DEFAULT_FILENAME "cameraStorage-"
 
@@ -34,9 +34,11 @@ class Camera {
   Mat frameMask;
   bool frameMaskSet;
 
-  Point3f positionVector;
-  Point3f viewingVector;
-  Point3f cameraRotation;
+  Point3f positionVector; // position            (o) - will be saved and loaded
+  Point3f viewingCenter;  // central image point (p) - will be saved and loaded
+  Point3f viewingRight;   // second image point  (t) - will be saved and loaded
+  Point3f cameraRotation; // 3 euler rotations   (w) - will be computed
+  Mat rotationMatrix;     // 3x3 float !!!
 
 public:
   Mat cameraMatrix;
@@ -63,10 +65,13 @@ public:
   int get_newFrame(Mat& frame);
   int set_projMatr();
 
-  int calculateObjectRay(Point3f positionVector, Point3f objectVector);
+  // vector from Camera to object in world coordinates,
+  // be shure to reload settings after changing intrinsic parameters
+  int calcNewObjectRayVector(Point2f pixelPosition, Point3f objectRay);
 
 private:
-  int calculateObjectRayInCameraCoordinates(Point3f objectRay);
+  int setupRotationMatrix(); // call after changing camera position information - or reload setting
+  int calcObjectRayInCameraCoordinates(Point2f pixelPosition, Point3f objectRayCameraCoord);
 
 };
 

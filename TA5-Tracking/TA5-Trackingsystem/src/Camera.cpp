@@ -84,14 +84,17 @@ int Camera::readSettings(string settingsFile) {
   fs["tvecs"] >> tvecs;
   fs["tvecs"] >> tvecs;
   fs["positionVector"] >> positionVector;
-  fs["viewingVector"] >> viewingVector;
-  fs["cameraRotation"] >> cameraRotation;
+  fs["viewingCenter"] >> viewingCenter;
+  fs["viewingRight"] >> viewingRight;
 
   fs.release();                                    // close Settings file
   intrinsicParamsLoaded = 1;
   if (frameMaskRect.area() > 0) {
     frameMaskSet = 1;
   }
+
+  setupRotationMatrix();
+
   return OK;
 }
 
@@ -120,8 +123,8 @@ int Camera::saveSettings(string settingsFile) {
   fs << "rvecs" << rvecs;
   fs << "tvecs" << tvecs;
   fs << "positionVector" << positionVector;
-  fs << "viewingVector" << viewingVector;
-  fs << "cameraRotation" << cameraRotation;
+  fs << "viewingCenter" << viewingCenter;
+  fs << "viewingRight" << viewingRight;
 
   fs.release();                                    // close Settings file
   return OK;
@@ -178,12 +181,56 @@ int Camera::set_projMatr() {
   return OK;
 }
 
-int Camera::calculateObjectRay(Point3f positionVector, Point3f objectVector) {
-  // TODO implement
+int Camera::setupRotationMatrix() {
+  // TODO
+  // calculate rotation angles of viewingVectors
+  // calculate rotation matrix for all 3 rotations at once
+
+  Point3f r = viewingCenter - positionVector;
+  Point3f s = viewingRight - positionVector;
+
+  /*
+   * MATLAB
+   * cam1_w1 = -atan2(cam1_r(2), cam1_r(1));
+   * cam1_w2 = -asin(cam1_r(3)/norm(cam1_r));
+   *
+   * Xaxis_new = rotate2_euler(cam1_w2) * rotate1_euler(cam1_w1) * baseXaxis;
+   * Yaxis_new = rotate2_euler(cam1_w2) * rotate1_euler(cam1_w1) * baseYaxis;
+   * rotatedSys1_Plane = cross(Xaxis_new, Yaxis_new);
+   * cam1_ViewingPlane = cross(cam1_s', cam1_r');
+   * cam1_w3 = -acos( dot(rotatedSys1_Plane, cam1_ViewingPlane) / ( norm(rotatedSys1_Plane)*norm(cam1_ViewingPlane) ) );
+   */
+
+  float w1 = -atan2(r.y, r.x);
+  float w2 = -asin(r.z/ sqrt(r.x*r.x+r.y*r.y+r.z*r.z) );
+
+  // TODO euler rotations
+
   return ERR;
 }
 
-int Camera::calculateObjectRayInCameraCoordinates(Point3f objectRay) {
+int Camera::calcNewObjectRayVector(Point2f pixelPosition, Point3f objectRay) {
+  // pixelPosition is float instead if int, because there are subpixel values after undistort
+
   // TODO implement
+  // calculate object ray in world coordinates from pixel position
+
+  Point3f objectRayCameraCoord;
+
+  if (ERR == calcObjectRayInCameraCoordinates(pixelPosition, objectRayCameraCoord)) {
+    return ERR;
+  }
+
+  // transform vector to world coordinates by multiplying rotationMatrix in front of the vector
+  // TODO Matrix multiplication OR convert Point3f to Mat
+  //objectRay = rotationMatrix * objectRayCameraCoord;
+
+  return ERR;
+}
+
+int Camera::calcObjectRayInCameraCoordinates(Point2f pixelPosition, Point3f objectRay) {
+  // TODO implement
+  // calculate object ray from pixel value on the sensor. Vector is in camera coordinate system
+
   return ERR;
 }

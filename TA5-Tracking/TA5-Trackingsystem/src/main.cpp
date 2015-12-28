@@ -51,7 +51,7 @@ int main(int argc, const char** argv) {
   ObjectDetection detect2(&cam2);
   Point2i pixelPos2(0, 0);
 
-  Mat objectPos3D;
+  Point2f objectPos3D;
 
   try {
 
@@ -190,17 +190,9 @@ int main(int argc, const char** argv) {
       /*
        * calculate 3D position
        */
-      //  loadConfig calibrate3D g g tracking
       // TODO undistort
-      // triangulate
-      vector<Point2f> pixelPosConv1(1);
-      vector<Point2f> pixelPosConv2(1);
-      pixelPosConv1[0] = Point2f((float) pixelPos1.x, (float) pixelPos1.y);
-      pixelPosConv2[0] = Point2f((float) pixelPos2.x, (float) pixelPos2.y);
 
-      cout << pixelPosConv1[0] << endl;
-
-      triangulatePoints(cam1.projMatr, cam2.projMatr, pixelPosConv1, pixelPosConv2, objectPos3D);
+      // TODO triangulate
       cout << objectPos3D << endl;
 
       /*
@@ -212,10 +204,8 @@ int main(int argc, const char** argv) {
     /*
      * tidy everything up
      */
-    destroyWindow("trackingbild_1");
-    destroyWindow("trackingbild_2");
-    destroyWindow("final_tracking1");
-    destroyWindow("final_tracking2");
+    destroyWindow("tracking 1");
+    destroyWindow("tracking 2");
     cout << "windows destroyed" << endl;
     cout << "program successful terminated" << endl;
 
