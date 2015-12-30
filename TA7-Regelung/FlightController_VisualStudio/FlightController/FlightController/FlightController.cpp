@@ -91,9 +91,20 @@ void FlightControllerClass::Landeprozedur() {
 }
 
 void FlightControllerClass::Startprozedur() {
+	Steuerung->RechtLinks(REGLEROFFSETRL); //Stabilen Wert vorgeben
+	Steuerung->VorZurueck(REGLEROFFSETVZ); //Stabilen Wert vorgeben
+	Steuerung->HochRunter(0xA0);//Leichtsteigend
+
+
+	while ((Tracking->getZ()<= 25) && (Error == 0)){
+		Tracking->updateIstwerte();
+	}
+	reglerX->setSoll(Tracking->getX());
+	reglerY->setSoll(Tracking->getY());
+	reglerZ->setSoll(25);
 
   cout << "Copter Regelung ist gestartet" << endl;
-  cout << "Um den Copter landen zu lassen Leertaste betaetigen" << endl;
+  cout << "Um den Copter landen zu lassen ESC betaetigen" << endl;
   cout << "oder Enter betaetigen um neue Sollwerte zu definieren" << endl;
 
 }
