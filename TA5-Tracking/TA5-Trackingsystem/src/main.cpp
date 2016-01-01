@@ -193,9 +193,17 @@ int main(int argc, const char** argv) {
        * calculate 3D position
        */
       // TODO undistort
+      undistPos1 = pixelPos1;
+      //undistPos2 = pixelPos2;
 
       // TODO triangulate
-      cout << objectPos3D << endl;
+      Point3f objectRay1, objectRay2;
+
+      cam1.calcNewObjectRayVector(pixelPos1, objectRay1);
+      //cam2.calcNewObjectRayVector(pixelPos2, objectRay2);
+
+
+      cout << "objectPos3D " << objectPos3D << endl;
 
       /*
        * send position via UDP socket

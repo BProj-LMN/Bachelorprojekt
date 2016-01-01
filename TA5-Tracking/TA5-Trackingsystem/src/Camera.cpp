@@ -181,13 +181,6 @@ int Camera::set_projMatr() {
   return OK;
 }
 
-int Camera::calcObjectRayInCameraCoordinates(Point2f pixelPosition, Point3f objectRay) {
-  // TODO implement
-  // calculate object ray from pixel value on the sensor. Vector is in camera coordinate system
-
-  return ERR;
-}
-
 int Camera::setupRotationMatrix() {
   /*
    * calculates euler rotation angles
@@ -230,21 +223,35 @@ int Camera::setupRotationMatrix() {
   return OK;
 }
 
-int Camera::calcNewObjectRayVector(Point2f pixelPosition, Point3f objectRay) {
-  // pixelPosition is float instead if int, because there are subpixel values after undistort
+int Camera::calcNewObjectRayVector(Point2f pixelPosition, Point3f& objectRay) {
+  /*
+   * calculates objectRay for use in triangulation out of a sensor pixelPosition
+   *
+   * pixelPosition is float instead if int, because there are subpixel values after undistort
+   */
 
-  // TODO implement
   // calculate object ray in world coordinates from pixel position
-
-  Point3f objectRayCameraCoord;
-
-  if (ERR == calcObjectRayInCameraCoordinates(pixelPosition, objectRayCameraCoord)) {
+  Point3f ray;
+  if (ERR == calcObjectRayInCameraCoordinates(pixelPosition, ray)) {
     return ERR;
   }
+  Mat objectRayCameraCoord = (Mat_<float>(3, 1) << ray.x, ray.y, ray.z);
 
   // transform vector to world coordinates by multiplying rotationMatrix in front of the vector
-  // TODO Matrix multiplication OR convert Point3f to Mat
-  //objectRay = rotationMatrix * objectRayCameraCoord;
+  Mat objectRay_Mat = rotationMatrix * objectRayCameraCoord;
+
+  objectRay.x = objectRay_Mat.at<float>(0, 0);
+  objectRay.y = objectRay_Mat.at<float>(1, 0);
+  objectRay.z = objectRay_Mat.at<float>(2, 0);
+
+  return OK;
+}
+
+int Camera::calcObjectRayInCameraCoordinates(Point2f pixelPosition, Point3f& objectRay) {
+  /*
+   * calculates object ray from pixel value on the sensor. Vector is in camera coordinate system
+   */
+  // TODO implement: calc object ray vector in camera coordinates
 
   return ERR;
 }
