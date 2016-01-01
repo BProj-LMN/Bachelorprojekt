@@ -22,6 +22,7 @@ using namespace cv;
 
 #include <time.h>
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 #include "myGlobalConstants.h"
@@ -67,12 +68,16 @@ public:
 
   // vector from Camera to object in world coordinates,
   // be shure to reload settings after changing intrinsic parameters
-  int calcNewObjectRayVector(Point2f pixelPosition, Point3f objectRay);
+  int calcNewObjectRayVector(Point2f pixelPosition, Point3f& objectRay);
 
 private:
   int setupRotationMatrix(); // call after changing camera position information - or reload setting
-  int calcObjectRayInCameraCoordinates(Point2f pixelPosition, Point3f objectRayCameraCoord);
+  int calcObjectRayInCameraCoordinates(Point2f pixelPosition, Point3f& objectRayCameraCoord);
 
+  void euler1(float angle, Mat& matrix);
+  void euler2(float angle, Mat& matrix);
+  void euler3(float angle, Mat& matrix);
+  float norm(Mat column_vector);
 };
 
 #endif /* SRC_CAMERA_H_ */

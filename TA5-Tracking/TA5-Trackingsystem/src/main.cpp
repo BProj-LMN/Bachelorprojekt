@@ -48,8 +48,10 @@ int main(int argc, const char** argv) {
 
   ObjectDetection detect1(&cam1);
   Point2i pixelPos1(0, 0);
+  Point2f undistPos1(0.0, 0.0);
   ObjectDetection detect2(&cam2);
   Point2i pixelPos2(0, 0);
+  Point2f undistPos2(0.0, 0.0);
 
   Point2f objectPos3D;
 

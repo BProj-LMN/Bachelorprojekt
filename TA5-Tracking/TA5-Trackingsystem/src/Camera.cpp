@@ -181,32 +181,53 @@ int Camera::set_projMatr() {
   return OK;
 }
 
+int Camera::calcObjectRayInCameraCoordinates(Point2f pixelPosition, Point3f objectRay) {
+  // TODO implement
+  // calculate object ray from pixel value on the sensor. Vector is in camera coordinate system
+
+  return ERR;
+}
+
 int Camera::setupRotationMatrix() {
-  // TODO
-  // calculate rotation angles of viewingVectors
-  // calculate rotation matrix for all 3 rotations at once
+  /*
+   * calculates euler rotation angles
+   * and calculate rotation matrix for all rotations at once
+   */
+
+  // some variables
+  Mat Xaxis = (Mat_<float>(3, 1) << 1, 0, 0);
+  Mat Yaxis = (Mat_<float>(3, 1) << 0, 1, 0);
+  Mat Euler1, Euler2, Euler3;
 
   Point3f r = viewingCenter - positionVector;
   Point3f s = viewingRight - positionVector;
+  Mat r_vec = (Mat_<float>(3, 1) << r.x, r.y, r.z);
+  Mat s_vec = (Mat_<float>(3, 1) << s.x, s.y, s.z);
 
-  /*
-   * MATLAB
-   * cam1_w1 = -atan2(cam1_r(2), cam1_r(1));
-   * cam1_w2 = -asin(cam1_r(3)/norm(cam1_r));
-   *
-   * Xaxis_new = rotate2_euler(cam1_w2) * rotate1_euler(cam1_w1) * baseXaxis;
-   * Yaxis_new = rotate2_euler(cam1_w2) * rotate1_euler(cam1_w1) * baseYaxis;
-   * rotatedSys1_Plane = cross(Xaxis_new, Yaxis_new);
-   * cam1_ViewingPlane = cross(cam1_s', cam1_r');
-   * cam1_w3 = -acos( dot(rotatedSys1_Plane, cam1_ViewingPlane) / ( norm(rotatedSys1_Plane)*norm(cam1_ViewingPlane) ) );
-   */
-
+  // calculate euler angles
   float w1 = -atan2(r.y, r.x);
-  float w2 = -asin(r.z/ sqrt(r.x*r.x+r.y*r.y+r.z*r.z) );
+  float w2 = -asin(r.z / sqrt(r.x * r.x + r.y * r.y + r.z * r.z));
 
-  // TODO euler rotations
+  euler1(w1, Euler1);
+  euler2(w2, Euler2);
 
-  return ERR;
+  Mat Xaxis_new = Euler2 * Euler1 * Xaxis;
+  Mat Yaxis_new = Euler2 * Euler1 * Yaxis;
+  Mat plane_reference = Xaxis_new.cross(Yaxis_new);
+  Mat plane_camera = s_vec.cross(r_vec);
+  float w3 = -acos(plane_reference.dot(plane_camera) / (norm(plane_reference) * norm(plane_camera)));
+  euler3(w3, Euler3);
+
+  cout << "Camera::setupRotationMatrix of camera " << cameraID << endl;
+  cout << "w1 " << fixed << setprecision(5) << setw(8) << w1 << endl;
+  cout << "w2 " << fixed << setprecision(5) << setw(8) << w2 << endl;
+  cout << "w3 " << fixed << setprecision(5) << setw(8) << w3 << endl;
+  cout << endl;
+
+  // calculate euler rotation matrix
+  this->rotationMatrix = Euler3 * Euler2 * Euler1;
+
+  return OK;
 }
 
 int Camera::calcNewObjectRayVector(Point2f pixelPosition, Point3f objectRay) {
@@ -228,9 +249,58 @@ int Camera::calcNewObjectRayVector(Point2f pixelPosition, Point3f objectRay) {
   return ERR;
 }
 
-int Camera::calcObjectRayInCameraCoordinates(Point2f pixelPosition, Point3f objectRay) {
-  // TODO implement
-  // calculate object ray from pixel value on the sensor. Vector is in camera coordinate system
-
-  return ERR;
+/*
+ * euler rotations for the following scheme
+ * rotate Z, then Y', then X''
+ *
+ * correspondance Camera Coordinate System to World Coordinate System:
+ * u,v,w --> X,Y,Z or more precisely X'',Y'',Z''
+ * X --> w, Y --> u, Z --> v
+ * ==> X-Axis is camera viewing axis !
+ * ==> with this correspondance, camera is already upside down
+ */
+void Camera::euler1(float angle, Mat& matrix) {
+  /* first euler rotation
+   * Matrix = [ [ cos(alpha)  sin(alpha)  0];
+   [-sin(alpha)  cos(alpha)  0];
+   [ 0           0           1] ];
+   */
+  float m[3][3] = { { cos(angle), sin(angle), 0 }, { -sin(angle), cos(angle), 0 }, { 0, 0, 1 } };
+  Mat result = Mat(3, 3, CV_32F, m);
+  result.copyTo(matrix);
 }
+void Camera::euler2(float angle, Mat& matrix) {
+  /* second euler rotation
+   * Matrix = [ [ cos(alpha)  0          -sin(alpha)];
+   [ 0           1           0];
+   [ sin(alpha)  0           cos(alpha)] ];
+   */
+  float m[3][3] = { { cos(angle), 0, -sin(angle) }, { 0, 1, 0 }, { sin(angle), 0, cos(angle) } };
+  Mat result = Mat(3, 3, CV_32F, m);
+  result.copyTo(matrix);
+}
+void Camera::euler3(float angle, Mat& matrix) {
+  /* third euler rotation
+   * Matrix = [ [ 1           0           0];
+   [ 0           cos(alpha)  sin(alpha)];
+   [ 0          -sin(alpha)  cos(alpha)] ];
+   */
+  float m[3][3] = { { 1, 0, 0 }, { 0, cos(angle), sin(angle) }, { 0, -sin(angle), cos(angle) } };
+  Mat result = Mat(3, 3, CV_32F, m);
+  result.copyTo(matrix);
+}
+float Camera::norm(Mat column_vector) {
+  float result = 0;
+
+  if (column_vector.rows > 1 && column_vector.cols == 1) {
+    for (int i = 0; i < column_vector.rows; i++) {
+      result += column_vector.at<float>(i, 0) * column_vector.at<float>(i, 0);
+    }
+    result = sqrt(result);
+  } else {
+    fprintf(stderr, "ERROR: in Camera::vecNorm - no column vector given \n");
+  }
+
+  return result;
+}
+
