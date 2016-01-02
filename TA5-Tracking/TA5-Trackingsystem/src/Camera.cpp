@@ -250,10 +250,19 @@ int Camera::calcNewObjectRayVector(Point2f pixelPosition, Point3f& objectRay) {
 int Camera::calcObjectRayInCameraCoordinates(Point2f pixelPosition, Point3f& objectRay) {
   /*
    * calculates object ray from pixel value on the sensor. Vector is in camera coordinate system
+   *
+   * pixelPosition.x <=> u , pixelPosition.y <=> v
    */
-  // TODO implement: calc object ray vector in camera coordinates
 
-  return ERR;
+  float c_x = cameraMatrix.at<double>(0, 2);
+  float c_y = cameraMatrix.at<double>(1, 2);
+  float f = cameraMatrix.at<double>(0, 0);
+
+  objectRay.y = c_x - pixelPosition.x; // u --> Y
+  objectRay.z = c_y - pixelPosition.y; // v --> Z
+  objectRay.x = f;                     // w --> X
+
+  return OK;
 }
 
 /*
