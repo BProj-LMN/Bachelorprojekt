@@ -1192,7 +1192,7 @@
 									"width": 169,
 									"height": 121,
 									"autoResize": false,
-									"text": "posDataPacket:\n0xDA\nX (high byte, low byte)\nY (high byte, low byte)\nZ (high byte, low byte)\n--> 5 byte\n\nX, Y, Z: uint_16",
+									"text": "posDataPacket:\n0xDA\nX (high byte, low byte)\nY (high byte, low byte)\nZ (high byte, low byte)\n--> 7 byte\n\nX, Y, Z: int_16",
 									"wordWrap": true
 								}
 							],
