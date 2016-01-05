@@ -9,6 +9,7 @@
 #define CAM2_FILENAME "cameraStorage2.xml"
 
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 #include "Socket.h"
@@ -165,9 +166,7 @@ int main(int argc, const char** argv) {
       bool newMessage = remoteInput.get_message(message);
 
       if (newMessage) {
-        // do something
-        char answer[MESSAGE_LEN] = "some answer\n";
-        remoteInput.sendMessage(answer);
+        // TODO do something
       }
 
       /*
@@ -211,7 +210,6 @@ int main(int argc, const char** argv) {
       cout << "objectRay1" << objectRay1 << endl;
       cout << "objectRay2" << objectRay2 << endl;
 
-
       cout << "objectPos3D " << objectPos3D << endl;
       cout << endl;
 
@@ -219,6 +217,14 @@ int main(int argc, const char** argv) {
        * send position via UDP socket
        * TODO: socket send
        */
+      char position[MESSAGE_LEN];
+
+      position[0] = 0xDA;
+      position[1] = (int)objectPos3D.x & 0x000000FF;
+      position[2] = (int)objectPos3D.y & 0x000000FF;
+      position[3] = (int)objectPos3D.z & 0x000000FF;
+
+      remoteInput.sendMessage(position);
 
     }
 
