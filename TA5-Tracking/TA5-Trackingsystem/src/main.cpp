@@ -218,7 +218,7 @@ int main(int argc, const char** argv) {
       position[5] = ((int) objectPos3D.z >> 8) & 0x000000FF;
       position[6] = (int) objectPos3D.z & 0x000000FF;
 
-      remoteInput.sendMessage(position);
+      remoteInput.sendMessage(position, 7);
     }
 
     /*

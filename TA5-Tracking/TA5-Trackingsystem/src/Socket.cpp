@@ -134,10 +134,10 @@ bool Socket::get_message(std::string & message) {
 
 }
 
-int Socket::sendMessage(char message[MESSAGE_LEN]) {
+int Socket::sendMessage(char message[MESSAGE_LEN], unsigned int messageLen) {
 #ifndef _WIN32
   if (clientConnected) {
-    rc = sendto(udp_socket, message, strlen(message), 0, (struct sockaddr *) &remote, remoteLen);
+    rc = sendto(udp_socket, message, messageLen, 0, (struct sockaddr *) &remote, remoteLen);
     if (rc < 0) {
       fprintf(stderr, "[ERROR] in Socket::sendMessage - sendto\n");
       return MYERROR;
@@ -147,7 +147,7 @@ int Socket::sendMessage(char message[MESSAGE_LEN]) {
 
 #else
   if (clientConnected) {
-    rc = sendto(udp_socket, message, strlen(message), 0, (SOCKADDR*) &remote, remoteLen);
+    rc = sendto(udp_socket, message, messageLen, 0, (SOCKADDR*) &remote, remoteLen);
     if (rc == SOCKET_ERROR) {
       fprintf(stderr, "[ERROR] in Socket::sendMessage - sendto\n");
       return MYERROR;

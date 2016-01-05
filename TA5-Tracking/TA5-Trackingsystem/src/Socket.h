@@ -57,7 +57,7 @@ public:
   void evaluate();
   bool is_clientConnected();
   bool get_message(std::string & message);    // returns true if new data
-  int sendMessage(char message[MESSAGE_LEN]); // returns OK if success
+  int sendMessage(char message[MESSAGE_LEN], unsigned int messageLen); // returns OK if success
 
 };
 
