@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
   FlightControllerClass flightcontroller = FlightControllerClass();
 
   flightcontroller.Initialisieren();
-  flightcontroller.Startprozedur();
+  flightcontroller.Startprozedur(); //für den flug wichtig
 
   while (0==flightcontroller.getError()) { //if error leave loop
     flightcontroller.SollwertVorgeben();

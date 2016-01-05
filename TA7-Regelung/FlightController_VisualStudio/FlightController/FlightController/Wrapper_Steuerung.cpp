@@ -26,7 +26,7 @@ void Wrapper_Steuerung::HochRunter(double Regelung) {
 }
 
 void Wrapper_Steuerung::RechtLinks(double Regelung) {
-    Regelwerte[3] = Startwerte[2] + Regelung;
+    Regelwerte[3] = Startwerte[2] - Regelung;
 }
 
 void Wrapper_Steuerung::VorZurueck(double Regelung) {

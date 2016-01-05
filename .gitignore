@@ -15,3 +15,9 @@ dist
 build
 .dep.inc
 Makefile
+TA7-Regelung/FlightController_VisualStudio/FlightController/FlightController.opensdf
+TA7-Regelung/FlightController_VisualStudio/FlightController/FlightController/FlightController.vcxproj
+*.filters
+TA7-Regelung/FlightController_VisualStudio/FlightController/FlightController.v12.suo
+*.sln
+TA7-Regelung/FlightController_VisualStudio/FlightController/FlightController.sdf

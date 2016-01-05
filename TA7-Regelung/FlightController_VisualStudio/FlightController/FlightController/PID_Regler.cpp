@@ -50,5 +50,6 @@ double PID_Regler::getControlValue(double IstValue) {
     if (ControlValue < untereGrenze) {
         ControlValue = untereGrenze;
     }
+	//cout << ControlValue << endl;
     return ControlValue;
 }
