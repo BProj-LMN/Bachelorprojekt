@@ -15,14 +15,14 @@ int Wrapper_Socket::connect(){
 	Socket->sendMessage("connect");
 	do{ Socket->evaluate();
 	} while (Socket->get_message(Nachricht) == 0);	
-  if (strcmp(Nachricht, "you are connected") == 0) { return 1; }
+  if (strcmp(Nachricht, "you are connected\n") == 0) { return 1; }
  else return 0;
 
 }
 
 void Wrapper_Socket::updateIstwerte(){
 	Socket->evaluate();
-	if ((Socket->get_message(Nachricht) == 1) && (Nachricht.length() >= 7)){
+	if (Socket->get_message(Nachricht) == 1){
 		istX = (((int)Nachricht[1] << 8) & 0xff00 | (int)Nachricht[2] & 0x00ff) & 0x0000ffff;
 		istY = (((int)Nachricht[3] << 8) & 0xff00 | (int)Nachricht[4] & 0x00ff) & 0x0000ffff;
 		istZ = (((int)Nachricht[5] << 8) & 0xff00 | (int)Nachricht[6] & 0x00ff) & 0x0000ffff;
