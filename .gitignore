@@ -22,3 +22,7 @@ TA7-Regelung/FlightController_VisualStudio/FlightController/FlightController.v12
 *.sln
 TA7-Regelung/FlightController_VisualStudio/FlightController/FlightController.sdf
 
+TA7-Regelung/FlightController_VisualStudio/BA_Flightcontroller/BA_Flightcontroller/BA_Flightcontroller.vcxproj
+*.opendb
+TA7-Regelung/FlightController_VisualStudio/BA_Flightcontroller/.vs/BA_Flightcontroller/v14/.suo
+TA7-Regelung/FlightController_VisualStudio/BA_Flightcontroller/BA_Flightcontroller.sdf
