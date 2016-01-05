@@ -86,8 +86,8 @@ void SocketClient::evaluate() {
     newServerMessage = true;
     message[rc] = '\0';
 
-    fprintf(stdout, "[LOG] received packet: ");
-    fprintf(stdout, "%s", message);
+    //fprintf(stdout, "[LOG] received packet: ");
+    //fprintf(stdout, "%s", message);
   }
 
 #endif

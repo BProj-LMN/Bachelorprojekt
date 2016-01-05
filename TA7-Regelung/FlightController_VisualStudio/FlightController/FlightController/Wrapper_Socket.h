@@ -9,7 +9,11 @@
 #define	WRAPPER_SOCKET_H
 
 #include "SocketClient.h"
-using namespace std;
+#include <iostream>
+#include <string.h>
+#include <stdio.h>
+
+//using namespace std;
 class Wrapper_Socket{
 public:
 
@@ -22,11 +26,11 @@ public:
     unsigned int getZ();
     
 private:
-    string Nachricht;
-   char Antwort[MESSAGE_LEN];
-    unsigned int istX;
-    unsigned int istY;
-    unsigned int istZ;
+    std::string Nachricht;
+    char Antwort[MESSAGE_LEN];
+    int istX;
+    int istY;
+    int istZ;
     SocketClient *Socket;
 };
 
