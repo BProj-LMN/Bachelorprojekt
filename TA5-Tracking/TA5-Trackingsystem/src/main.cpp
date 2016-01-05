@@ -224,14 +224,13 @@ int main(int argc, const char** argv) {
 
       position[0] = 0xDA;
       position[1] = ((int)objectPos3D.x>>8) & 0x000000FF;
-      position[1] = (int)objectPos3D.x & 0x000000FF;
-      position[1] = ((int)objectPos3D.y>>8) & 0x000000FF;
-      position[2] = (int)objectPos3D.y & 0x000000FF;
-      position[1] = ((int)objectPos3D.z>>8) & 0x000000FF;
-      position[3] = (int)objectPos3D.z & 0x000000FF;
+      position[2] = (int)objectPos3D.x & 0x000000FF;
+      position[3] = ((int)objectPos3D.y>>8) & 0x000000FF;
+      position[4] = (int)objectPos3D.y & 0x000000FF;
+      position[5] = ((int)objectPos3D.z>>8) & 0x000000FF;
+      position[6] = (int)objectPos3D.z & 0x000000FF;
 
       remoteInput.sendMessage(position);
-
     }
 
     /*
