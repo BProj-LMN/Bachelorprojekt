@@ -702,9 +702,9 @@
 											"showShadow": false,
 											"containerChangeable": false,
 											"containerExtending": false,
-											"left": 256,
+											"left": 257,
 											"top": 152,
-											"width": 136.43017578125,
+											"width": 134.25927734375,
 											"height": 13,
 											"autoResize": false,
 											"alpha": 1.5707963267948966,
@@ -714,7 +714,7 @@
 											},
 											"edgePosition": 1,
 											"underline": false,
-											"text": "2 : \"You are connected\"",
+											"text": "2 : \"you are connected\"",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5
 										},
@@ -1227,7 +1227,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFRfZxFu+8pAew="
 							},
-							"name": "\"You are connected\"",
+							"name": "\"you are connected\"",
 							"source": {
 								"$ref": "AAAAAAFRfZ6A2PLpnbo="
 							},
