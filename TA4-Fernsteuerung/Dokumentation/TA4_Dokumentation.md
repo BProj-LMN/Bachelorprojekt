@@ -3,7 +3,7 @@
 
 
 ## Schnittstelle und Abhängigkeiten
-Die Vernsteuerung wird über eine micro-USB-Schnittstelle mit einem PC verbunden. Über diese Schnittstelle ist ein virtueller Serieller Port nutzbar.
+Die Fernsteuerung wird über eine micro-USB-Schnittstelle mit einem PC verbunden. Über diese Schnittstelle ist ein virtueller Serieller Port nutzbar.
 
 ### Einleitung
 Die verwendete Fernsteuerung hat normalerweise 2 Joysticks mit je 2 Achsen. Angesteuert werden:
@@ -115,7 +115,6 @@ Der Mikrocontroller wurde auf ein kleines Stück Lochrasterplatine gesetzt. Auf 
 Im Idealfall sollten diese 7 Ein- und Ausgangsleitungen über ein oder zwei verpolungssichere Stecker angeschlossen werden.
 
 
-
-## TODO:
-- Mikrocontroller fest einbauen
-- Stromversorgung Mikrocontroller auch ohne USB sicherstellen
+## Sicherheitshinweise
+Die Fernsteuerung darf **nie** ohne eine USB-Verbindung genutzt werden! Ansonsten wird der Mikrocontroller nicht mehr mit Spannung versort, die Fernsteuerung funktioniert jedoch weiter. Wenn der Mikrocontroller aber keine Spannung mehr hat, erkennt die Fernsteuerung dies als vollen Schub.  
+Daher: **nie ohne USB-Spannungsversorgung die Fernsteuerung betreiben**.
