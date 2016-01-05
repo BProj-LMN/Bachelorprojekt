@@ -258,8 +258,8 @@ int Camera::calcObjectRayInCameraCoordinates(Point2f pixelPosition, Point3f& obj
   float c_y = cameraMatrix.at<double>(1, 2);
   float f = cameraMatrix.at<double>(0, 0);
 
-  objectRay.y = c_x - pixelPosition.x; // u --> Y
-  objectRay.z = c_y - pixelPosition.y; // v --> Z
+  objectRay.y = pixelPosition.x - c_x; // u --> Y
+  objectRay.z = pixelPosition.y - c_y; // v --> Z
   objectRay.x = f;                     // w --> X
 
   return OK;

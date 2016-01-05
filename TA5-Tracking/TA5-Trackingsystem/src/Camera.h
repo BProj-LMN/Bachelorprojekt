@@ -35,13 +35,14 @@ class Camera {
   Mat frameMask;
   bool frameMaskSet;
 
-  Point3f positionVector; // position            (o) - will be saved and loaded
   Point3f viewingCenter;  // central image point (p) - will be saved and loaded
   Point3f viewingRight;   // second image point  (t) - will be saved and loaded
   Point3f cameraRotation; // 3 euler rotations   (w) - will be computed
   Mat rotationMatrix;     // 3x3 float !!!
 
 public:
+  Point3f positionVector; // position            (o) - will be saved and loaded
+
   Mat cameraMatrix;
   Mat distCoeffs;
   Mat rvecs;

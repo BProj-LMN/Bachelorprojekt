@@ -29,6 +29,7 @@ using namespace cv;
 #include "ObjectDetection.h"
 #include "myGlobalConstants.h"
 #include "calibrateFrameMask.h"
+#include "triangulate.h"
 
 void printHelp() {
   cout << "\n"
@@ -210,6 +211,8 @@ int main(int argc, const char** argv) {
       cout << "objectRay1" << objectRay1 << endl;
       cout << "objectRay2" << objectRay2 << endl;
 
+      triangulate(cam1.positionVector, objectRay1, cam2.positionVector, objectRay2, objectPos3D);
+
       cout << "objectPos3D " << objectPos3D << endl;
       cout << endl;
 
@@ -220,8 +223,11 @@ int main(int argc, const char** argv) {
       char position[MESSAGE_LEN];
 
       position[0] = 0xDA;
+      position[1] = ((int)objectPos3D.x>>8) & 0x000000FF;
       position[1] = (int)objectPos3D.x & 0x000000FF;
+      position[1] = ((int)objectPos3D.y>>8) & 0x000000FF;
       position[2] = (int)objectPos3D.y & 0x000000FF;
+      position[1] = ((int)objectPos3D.z>>8) & 0x000000FF;
       position[3] = (int)objectPos3D.z & 0x000000FF;
 
       remoteInput.sendMessage(position);
