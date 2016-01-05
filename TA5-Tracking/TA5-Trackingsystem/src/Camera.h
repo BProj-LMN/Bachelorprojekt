@@ -42,12 +42,12 @@ class Camera {
 
 public:
   Point3f positionVector; // position            (o) - will be saved and loaded
+  Point3f objectVector;   // from calcNewObjectRayVector
 
   Mat cameraMatrix;
   Mat distCoeffs;
   Mat rvecs;
   Mat tvecs;
-  Mat projMatr;
   bool intrinsicParamsLoaded;
 
 public:
@@ -65,11 +65,10 @@ public:
   int get_cameraID();
   int set_frameMask(Rect frameMask);
   int get_newFrame(Mat& frame);
-  int set_projMatr();
 
   // vector from Camera to object in world coordinates,
   // be shure to reload settings after changing intrinsic parameters
-  int calcNewObjectRayVector(Point2f pixelPosition, Point3f& objectRay);
+  int calcNewObjectRayVector(Point2f pixelPosition);
 
 private:
   int setupRotationMatrix(); // call after changing camera position information - or reload setting

@@ -126,12 +126,6 @@ int main(int argc, const char** argv) {
     }
 
     /*
-     * setup things
-     */
-    cam1.set_projMatr();
-    cam2.set_projMatr();
-
-    /*
      * set reference frame for tracking
      */
     cout << "waiting for reference frame..." << endl;
@@ -167,7 +161,7 @@ int main(int argc, const char** argv) {
       bool newMessage = remoteInput.get_message(message);
 
       if (newMessage) {
-        // TODO do something
+        // TODO do something - remote control this software
       }
 
       /*
@@ -190,45 +184,39 @@ int main(int argc, const char** argv) {
       }
 
       /*
-       * calculate 3D position
+       * undistort pixel position
        */
       // TODO undistort
-      cout << "pixelPos1" << pixelPos1 << endl;
-      cout << "pixelPos2" << pixelPos2 << endl;
+      cout << "pixelPos1" << pixelPos1 << " pixelPos2" << pixelPos2 << endl;
 
       undistPos1 = pixelPos1; // stub
       undistPos2 = pixelPos2; // stub
 
-      cout << "undistPos1" << undistPos1 << endl;
-      cout << "undistPos2" << undistPos2 << endl;
+      cout << "undistPos1" << undistPos1 << " undistPos2" << undistPos2 << endl;
 
-      // TODO triangulate
-      Point3f objectRay1, objectRay2;
+      /*
+       * calculate 3D position - triangulate
+       */
+      cam1.calcNewObjectRayVector(pixelPos1);
+      cam2.calcNewObjectRayVector(pixelPos2);
 
-      cam1.calcNewObjectRayVector(pixelPos1, objectRay1);
-      cam2.calcNewObjectRayVector(pixelPos2, objectRay2);
-
-      cout << "objectRay1" << objectRay1 << endl;
-      cout << "objectRay2" << objectRay2 << endl;
-
-      triangulate(cam1.positionVector, objectRay1, cam2.positionVector, objectRay2, objectPos3D);
+      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D);
 
       cout << "objectPos3D " << objectPos3D << endl;
       cout << endl;
 
       /*
        * send position via UDP socket
-       * TODO: socket send
        */
       char position[MESSAGE_LEN];
 
       position[0] = 0xDA;
-      position[1] = ((int)objectPos3D.x>>8) & 0x000000FF;
-      position[2] = (int)objectPos3D.x & 0x000000FF;
-      position[3] = ((int)objectPos3D.y>>8) & 0x000000FF;
-      position[4] = (int)objectPos3D.y & 0x000000FF;
-      position[5] = ((int)objectPos3D.z>>8) & 0x000000FF;
-      position[6] = (int)objectPos3D.z & 0x000000FF;
+      position[1] = ((int) objectPos3D.x >> 8) & 0x000000FF;
+      position[2] = (int) objectPos3D.x & 0x000000FF;
+      position[3] = ((int) objectPos3D.y >> 8) & 0x000000FF;
+      position[4] = (int) objectPos3D.y & 0x000000FF;
+      position[5] = ((int) objectPos3D.z >> 8) & 0x000000FF;
+      position[6] = (int) objectPos3D.z & 0x000000FF;
 
       remoteInput.sendMessage(position);
     }

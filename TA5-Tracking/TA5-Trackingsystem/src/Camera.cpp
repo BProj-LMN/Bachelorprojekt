@@ -167,20 +167,6 @@ int Camera::get_newFrame(Mat& frame) {
   return OK;
 }
 
-int Camera::set_projMatr() {
-  Mat rotMatr;
-  Mat rtCombinedMatr;
-
-  Rodrigues(rvecs, rotMatr);
-  hconcat(rotMatr, tvecs, rtCombinedMatr);
-
-  this->projMatr = cameraMatrix * rtCombinedMatr;
-
-  cout << "rtCombined" << endl << rtCombinedMatr << endl;
-
-  return OK;
-}
-
 int Camera::setupRotationMatrix() {
   /*
    * calculates euler rotation angles
@@ -223,7 +209,7 @@ int Camera::setupRotationMatrix() {
   return OK;
 }
 
-int Camera::calcNewObjectRayVector(Point2f pixelPosition, Point3f& objectRay) {
+int Camera::calcNewObjectRayVector(Point2f pixelPosition) {
   /*
    * calculates objectRay for use in triangulation out of a sensor pixelPosition
    *
@@ -240,9 +226,9 @@ int Camera::calcNewObjectRayVector(Point2f pixelPosition, Point3f& objectRay) {
   // transform vector to world coordinates by multiplying rotationMatrix in front of the vector
   Mat objectRay_Mat = rotationMatrix * objectRayCameraCoord;
 
-  objectRay.x = objectRay_Mat.at<float>(0, 0);
-  objectRay.y = objectRay_Mat.at<float>(1, 0);
-  objectRay.z = objectRay_Mat.at<float>(2, 0);
+  this->objectVector.x = objectRay_Mat.at<float>(0, 0);
+  this->objectVector.y = objectRay_Mat.at<float>(1, 0);
+  this->objectVector.z = objectRay_Mat.at<float>(2, 0);
 
   return OK;
 }
