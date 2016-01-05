@@ -14,13 +14,10 @@ Wrapper_Socket::~Wrapper_Socket(){
 int Wrapper_Socket::connect(){
 	Socket->sendMessage("connect");
 	do{ Socket->evaluate();
-	} while (Socket->get_message(Nachricht) == 0);
-	if (Nachricht.compare("you are connected ") <= 0){
-		return 1; //wenn nachricht.compare  richtig ist 
-	}
-	else{
-		return 0;
-	}
+	} while (Socket->get_message(Nachricht) == 0);	
+  if (strcmp(Nachricht, "you are connected") == 0) { return 1; }
+ else return 0;
+
 }
 
 void Wrapper_Socket::updateIstwerte(){

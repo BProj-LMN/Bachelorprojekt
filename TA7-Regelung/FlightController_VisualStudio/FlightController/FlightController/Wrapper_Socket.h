@@ -9,28 +9,32 @@
 #define	WRAPPER_SOCKET_H
 
 #include "SocketClient.h"
+
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
 
 //using namespace std;
 class Wrapper_Socket{
+
 public:
 
-  Wrapper_Socket();
-  ~Wrapper_Socket();
-  int connect();
-  void updateIstwerte();
-    unsigned int getX();
-    unsigned int getY();
-    unsigned int getZ();
-    
+	Wrapper_Socket();
+	~Wrapper_Socket();
+	int connect();
+	void updateIstwerte();
+	unsigned int getX();
+	unsigned int getY();
+	unsigned int getZ();
+
 private:
-    std::string Nachricht;
+	char Nachricht[MESSAGE_LEN];
     char Antwort[MESSAGE_LEN];
     int istX;
     int istY;
     int istZ;
+
+ 
     SocketClient *Socket;
 };
 
