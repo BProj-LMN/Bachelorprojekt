@@ -53,7 +53,7 @@ int main(int argc, const char** argv) {
   Point2i pixelPos2(0, 0);
   Point2f undistPos2(0.0, 0.0);
 
-  Point2f objectPos3D;
+  Point3f objectPos3D;
 
   try {
 
@@ -209,7 +209,7 @@ int main(int argc, const char** argv) {
       cam2.calcNewObjectRayVector(pixelPos2, objectRay2);
 
       cout << "objectRay1" << objectRay1 << endl;
-      cout << "objectRay2" << objectRay1 << endl;
+      cout << "objectRay2" << objectRay2 << endl;
 
 
       cout << "objectPos3D " << objectPos3D << endl;
@@ -219,6 +219,7 @@ int main(int argc, const char** argv) {
        * send position via UDP socket
        * TODO: socket send
        */
+
     }
 
     /*

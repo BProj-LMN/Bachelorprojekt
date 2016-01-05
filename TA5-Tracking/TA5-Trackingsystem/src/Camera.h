@@ -10,7 +10,7 @@
 #ifndef SRC_CAMERA_H_
 #define SRC_CAMERA_H_
 
-#define TEST  // for testing the system without cameras
+//#define TEST  // for testing the system without cameras
 
 #define DEFAULT_FILENAME "cameraStorage-"
 
