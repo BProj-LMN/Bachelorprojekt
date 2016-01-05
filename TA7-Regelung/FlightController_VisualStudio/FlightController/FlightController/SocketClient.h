@@ -33,6 +33,7 @@
 #include <iostream>
 #include <stdio.h>
 
+
 class SocketClient {
   long rc;
 
@@ -60,7 +61,7 @@ public:
   virtual ~SocketClient();
 
   void evaluate();
-  bool get_message(std::string & message); // returns true if new data
+  bool get_message(char message[]); // returns true if new data
   int sendMessage(char message[MESSAGE_LEN]);  // returns OK if success
 
 };

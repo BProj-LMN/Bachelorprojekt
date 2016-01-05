@@ -11,6 +11,7 @@
 #ifndef _WIN32
 #include <arpa/inet.h>
 #endif
+  #pragma warning(disable : 4996)
 
 
 SocketClient::SocketClient(char ipAddress[], int port) {
@@ -80,21 +81,20 @@ void SocketClient::evaluate() {
   }
 
 #else
-  rc = recvfrom(udp_socket, message, MESSAGE_LEN, 0, (SOCKADDR*) &remote, &remoteLen);
+  rc = recvfrom(udp_socket, message, MESSAGE_LEN, 0, (SOCKADDR*) &remote, &remoteLen);//länge des strings
 
-  if (rc != SOCKET_ERROR) {
-    newServerMessage = true;
-    message[rc] = '\0';
+  if (rc != SOCKET_ERROR) {//wenn länge korrekt erfasst
+		  newServerMessage = true;
+		  message[rc] = '\0';
 
-    fprintf(stdout, "[LOG] received packet: ");
-    fprintf(stdout, "%s", message);
-  }
-
+		  fprintf(stdout, "[LOG] received packet: ");
+		  fprintf(stdout, "%s", message);
+	  }
 #endif
 }
 
-bool SocketClient::get_message(std::string & message) {
-  message = this->message;
+bool SocketClient::get_message(char message[]) {
+  strcpy(message,this->message);
 
   if (newServerMessage) {
     newServerMessage = false;

@@ -17,7 +17,7 @@ int Wrapper_Socket::connect(){
   while(Socket->get_message(Nachricht)==1){
   Socket->evaluate();
   }
-  if(Nachricht.compare("connected")==0) return 1;
+  if (strcmp(Nachricht, "connected") == 0) { return 1; }
  else return 0;
 }
 
