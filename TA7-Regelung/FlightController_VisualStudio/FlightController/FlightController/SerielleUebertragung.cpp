@@ -7,7 +7,7 @@ using namespace std;
 
 
 SerielleUebertragung::SerielleUebertragung() {
-	a = L"COM7";// nötig da define von string nicht funktioniert, visual studio will LPCWSTR haben  COM PORT MUSS EINSTELLIG BLEIBEN
+	a = L"COM2";// nötig da define von string nicht funktioniert, visual studio will LPCWSTR haben  COM PORT MUSS EINSTELLIG BLEIBEN
     hCom = CreateFile(a, GENERIC_WRITE | GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
     serialconfig.DCBlength = sizeof (DCB); // Laenge des Blockes MUSS gesetztsein!
     GetCommState(hCom, &serialconfig); // COM-Einstellungen holen und aendern

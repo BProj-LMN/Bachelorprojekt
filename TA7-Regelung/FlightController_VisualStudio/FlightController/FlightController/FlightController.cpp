@@ -62,14 +62,15 @@ void FlightControllerClass::Initialisieren() {
   Steuerung->HochRunter(0);
   Steuerung->Steuern();
   cout << "Rechner ist mit Copter verbunden" << endl;
-  if (Tracking->connect() == 0){ cout << "verbunden" << endl; }
-  else { cout << "fehler" << endl;
+  if (Tracking->connect() == 0){ cout << "Mit Socket verbunden" << endl; }
+  else { cout << "Socket fehler" << endl;
   Error = 1;
   }
 }
 
 void FlightControllerClass::Landeprozedur() {
-  if (Steuerung->HochAktuell() != 0) {
+	Tracking->~Wrapper_Socket();// Socket verbindung auflösen
+	if (Steuerung->HochAktuell() != 0) {
     //Landenprozedur
     cout << "Copter soll landen" << endl;
     Steuerung->RechtLinks(REGLEROFFSETRL); //Stabilen Wert vorgeben

@@ -31,7 +31,7 @@ using namespace std;
 int main(int argc, char** argv) {
   FlightControllerClass flightcontroller = FlightControllerClass();
 
-  flightcontroller.Initialisieren();
+  flightcontroller.Initialisieren();// Socket und Regler und copter Verbindung(hier COM-Port anpassen-SerielleUebertragung.cpp)
   flightcontroller.Startprozedur(); //für den flug wichtig
 
   while (0==flightcontroller.getError()) { //if error leave loop
@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
     flightcontroller.ZielAnfliegen();
   }
 
-  flightcontroller.Landeprozedur();
+  flightcontroller.Landeprozedur(); //Copter landen lassen und Socket disconnect
   system("pause"); //visual studio spezifisch, lässt konsole offen
   return 0;
 }

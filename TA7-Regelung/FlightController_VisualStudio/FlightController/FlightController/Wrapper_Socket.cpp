@@ -8,6 +8,7 @@ Wrapper_Socket::Wrapper_Socket(){
 }
 
 Wrapper_Socket::~Wrapper_Socket(){
+	Socket->sendMessage("exit");
 	delete Socket;
 }
 
