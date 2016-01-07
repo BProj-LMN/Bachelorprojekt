@@ -8,15 +8,15 @@
 using namespace std;
 
 Wrapper_Steuerung::Wrapper_Steuerung(){
-    Startwerte[0] = 0x00;
+	Startwerte[0] = REGLEROFFSETHR;
     Startwerte[1] = REGELMAX / 2; // Stabilerwert 0x87
     Startwerte[2] = REGELMAX / 2; //Stabilerwert 0x8a
     Startwerte[3] = REGELMAX / 2; //Stabilerwert 0x0x81
     Regelwerte[0] = 0xFF; // Startbyte
-    Regelwerte[1] = 0x00;// Stabilerwert 0x00
+	Regelwerte[1] = REGLEROFFSETHR;// Stabilerwert 0x00
     Regelwerte[2] = (REGELMAX / 2) + REGLEROFFSETRL; // Stabilerwert 0x87
     Regelwerte[3] = (REGELMAX / 2) + REGLEROFFSETVZ; //Stabilerwert 0x8a
-    Regelwerte[4] = (REGELMAX / 2) + REGLEROFFSETD; //Stabilerwert 0x0x81
+    Regelwerte[4] = (REGELMAX / 2) + REGLEROFFSETD; //Stabilerwert 0x81
 }
 
 

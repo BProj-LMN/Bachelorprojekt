@@ -20,19 +20,24 @@ int Wrapper_Socket::connect(){
 
 }
 
-void Wrapper_Socket::updateIstwerte(){
+int Wrapper_Socket::updateIstwerte(){
 	Socket->evaluate();
 	if (Socket->get_message(Nachricht) == 1){
+		if (Nachricht[7] & 0x01 == 0x00){
 		istX = (((int)Nachricht[1] << 8) & 0xff00 | (int)Nachricht[2] & 0x00ff) & 0x0000ffff;
 		istY = (((int)Nachricht[3] << 8) & 0xff00 | (int)Nachricht[4] & 0x00ff) & 0x0000ffff;
 		istZ = (((int)Nachricht[5] << 8) & 0xff00 | (int)Nachricht[6] & 0x00ff) & 0x0000ffff;
-		if (istZ >= 10000) {istZ = 0;
+		if (istZ >= 10000) {
+			istZ = 0;
+		}
+		else { return 1;
+		}
 	}
 		//std::cout << istX << std::endl;
 		
 	}
 	else;
-
+	return 0;
 }
 
 unsigned int Wrapper_Socket::getX(){

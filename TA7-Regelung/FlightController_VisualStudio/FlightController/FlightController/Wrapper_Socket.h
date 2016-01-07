@@ -22,7 +22,7 @@ public:
 	Wrapper_Socket();
 	~Wrapper_Socket();
 	int connect();
-	void updateIstwerte();
+	int updateIstwerte();
 	unsigned int getX();
 	unsigned int getY();
 	unsigned int getZ();
