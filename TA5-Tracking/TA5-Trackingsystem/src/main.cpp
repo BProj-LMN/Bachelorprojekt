@@ -45,6 +45,9 @@ int main(int argc, const char** argv) {
 
   Socket remoteInput(1362);
   string message;
+  char fehler = 0x00;
+  char position[MESSAGE_LEN];
+  position[0] = 0xDA;
 
   Camera cam1(0);
   Mat frame1;
@@ -57,6 +60,9 @@ int main(int argc, const char** argv) {
   ObjectDetection detect2(&cam2);
   Point2i pixelPos2(0, 0);
   Point2f undistPos2(0.0, 0.0);
+
+  int StatusTracking1 = OK;
+  int StatusTracking2 = OK;
 
   Point3f objectPos3D;
   float abstand;
@@ -204,6 +210,8 @@ int main(int argc, const char** argv) {
 #endif
 
     while (1) {
+      fehler = 0x00;
+
       /*
        * evaluate remote input
        */
@@ -221,15 +229,15 @@ int main(int argc, const char** argv) {
       cam2.get_newFrame(frame2);
 
 #ifndef DEBUG
-      detect1.detectObject(frame1, pixelPos1);
-      detect2.detectObject(frame2, pixelPos2);
+      StatusTracking1 = detect1.detectObject(frame1, pixelPos1);
+      StatusTracking2 = detect2.detectObject(frame2, pixelPos2);
 #else
-      if (detect1.detectObject(frame1, pixelPos1) != ERR) {
+      if (StatusTracking1 = detect1.detectObject(frame1, pixelPos1) != ERR) {
         circle(frame1, Point(pixelPos1.x, pixelPos1.y), 30, Scalar(255, 0, 0), 1);
       }
       imshow("tracking 1", frame1);
 
-      if (detect2.detectObject(frame2, pixelPos2) != ERR) {
+      if (StatusTracking2 = detect2.detectObject(frame2, pixelPos2) != ERR) {
         circle(frame2, Point(pixelPos2.x, pixelPos2.y), 30, Scalar(255, 0, 0), 1);
       }
       imshow("tracking 2", frame2);
@@ -238,6 +246,10 @@ int main(int argc, const char** argv) {
         break;
       }
 #endif
+
+      if(StatusTracking1 == ERR || StatusTracking2 == ERR){
+      fehler = fehler & 0x01;
+      }
 
       /*
        * undistort pixel position
@@ -262,15 +274,14 @@ int main(int argc, const char** argv) {
       /*
        * send position via UDP socket
        */
-      char position[MESSAGE_LEN];
 
-      position[0] = 0xDA;
       position[1] = ((int) objectPos3D.x >> 8) & 0x000000FF;
       position[2] = (int) objectPos3D.x & 0x000000FF;
       position[3] = ((int) objectPos3D.y >> 8) & 0x000000FF;
       position[4] = (int) objectPos3D.y & 0x000000FF;
       position[5] = ((int) objectPos3D.z >> 8) & 0x000000FF;
       position[6] = (int) objectPos3D.z & 0x000000FF;
+      position[7] = fehler;
 
       remoteInput.sendMessage(position, 7);
       if (kbhit())
