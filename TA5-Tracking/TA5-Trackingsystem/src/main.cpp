@@ -13,7 +13,7 @@
 #define ERR_BIG_DISTANCE  0x02
 #define DIST_ERR_CAT1  100
 
-#define DEBUG
+//#define DEBUG
 //#define CAMERA_CALIB_CIRCLES
 
 #include <iostream>
@@ -213,7 +213,9 @@ int main(int argc, const char** argv) {
     namedWindow("tracking 1", WINDOW_NORMAL);
     namedWindow("tracking 2", WINDOW_NORMAL);
 #else
-    namedWindow("zum Beenden: press ESC", WINDOW_NORMAL);
+    Mat destroyimg = imread("C:/Users/User/Documents/GitHub/Bachelorprojekt/TA5-Tracking/TA5-Trackingsystem/test/destroybild.jpg", 1);   // Read the file
+    namedWindow("zum Beenden: press ESC", WINDOW_AUTOSIZE);
+    imshow("zum Beenden: press ESC", destroyimg);
 #endif
 
     while (1) {
@@ -228,6 +230,7 @@ int main(int argc, const char** argv) {
       if (newMessage) {
         if (message.compare("exit")) {
           break;
+          //break;
         }
       }
 
