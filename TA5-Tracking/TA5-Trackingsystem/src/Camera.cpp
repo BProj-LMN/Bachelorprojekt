@@ -90,6 +90,7 @@ int Camera::readSettings(string settingsFile) {
   fs.release();                                    // close Settings file
   intrinsicParamsLoaded = 1;
   if (frameMaskRect.area() > 0) {
+    set_frameMask(frameMaskRect);
     frameMaskSet = 1;
   }
 
