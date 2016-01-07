@@ -13,6 +13,9 @@
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
+#include <conio.h>
+
+#define ESC 27
 
 //using namespace std;
 class Wrapper_Socket{

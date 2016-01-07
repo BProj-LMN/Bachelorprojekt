@@ -11,14 +11,14 @@
 #define KPXY 1.401       //Regelparameter KP für X und Y Achse
 #define KIXY 0.067      //Regelparameter KI für X und Y Achse
 #define KDXY 0.173    //Regelparameter KD für X und Y Achse
-#define KPZ 2.14               //Regelparameter KP für Z Achse
-#define KIZ 0.02              //Regelparameter KI für Z Achse
+#define KPZ 2               //Regelparameter KP für Z Achse
+#define KIZ 0.1             //Regelparameter KI für Z Achse
 #define KDZ 0.029             //Regelparameter KD für ZAchse
 #define REGELMAX 254     //Maximaler Regelwert 
-#define REGLEROFFSETRL (-0x0F)     //RegelOffset für gößer für Links kleiner für rechts
-#define REGLEROFFSETVZ 0x0B     //RegelOffset für Vor Zurück
+#define REGLEROFFSETRL (-0x0A)     //RegelOffset für gößer für Links kleiner für rechts
+#define REGLEROFFSETVZ 0x06     //RegelOffset für Vor Zurück
 #define REGLEROFFSETD 0x02      //RegelOffset für Drehen
-#define REGLEROFFSETHR 140		//Regeloffste für Hoch Runter
+#define REGLEROFFSETHR 130		//Regeloffste für Hoch Runter
 
 
 

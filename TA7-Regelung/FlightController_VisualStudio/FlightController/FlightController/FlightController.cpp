@@ -52,17 +52,17 @@ void FlightControllerClass::Initialisieren() {
   //Regler koeffizienten zuweisen
   reglerX->setfactors(KPXY, KIXY, KDXY, 1);
   reglerY->setfactors(KPXY, KIXY, KDXY, 1);
-  reglerZ->setfactors(KPZ, KIZ, KDZ, 0.5);
+  reglerZ->setfactors(KPZ, KIZ, KDZ, 0.005);
   //Um eine Verbindung mit dem Copter aufzubauen muss der Schub einmal auf Maximalausschlag und wieder zurück
   cout << "Mit dem Copter Verbindung aufbauen" << endl;
-  Steuerung->HochRunter(REGELMAX);
+  Steuerung->HochRunter(REGELMAX - REGLEROFFSETHR);
   Steuerung->Steuern();
   while ((!UI->EnterGedrueckt())&& (Error==0))
     ; //Warten auf Enter
   Steuerung->HochRunter(0);
   Steuerung->Steuern();
   cout << "Rechner ist mit Copter verbunden" << endl;
-  if (Tracking->connect() == 1){ cout << "verbunden" << endl; }
+  if (Tracking->connect() == 0){ cout << "verbunden" << endl; }
   else { cout << "fehler" << endl;
   Error = 1;
   }
