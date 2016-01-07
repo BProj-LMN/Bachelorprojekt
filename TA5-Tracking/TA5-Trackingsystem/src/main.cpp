@@ -8,8 +8,13 @@
 #define CAM1_FILENAME "cameraStorage1.xml"
 #define CAM2_FILENAME "cameraStorage2.xml"
 
+#define ERR_RESET         0x00
+#define ERR_TRACKING_LOST 0x01
+#define ERR_BIG_DISTANCE  0x02
+#define DIST_ERR_CAT1  100
+
 #define DEBUG
-#define CAMERA_CALIB_CIRCLES
+//#define CAMERA_CALIB_CIRCLES
 
 #include <iostream>
 #include <iomanip>
@@ -184,7 +189,7 @@ int main(int argc, const char** argv) {
     cout << "waiting for reference frame..." << endl;
     namedWindow("reference frame 1", WINDOW_AUTOSIZE);
     namedWindow("reference frame 2", WINDOW_AUTOSIZE);
-    for (int i = 0; i < 40; i++) {
+    for (int i = 0; i < 50; i++) {
       cam1.get_newFrame(frame1);
       cam2.get_newFrame(frame2);
       imshow("reference frame 1", frame1);
@@ -212,16 +217,18 @@ int main(int argc, const char** argv) {
 #endif
 
     while (1) {
-      fehler = 0x00;
+      fehler = ERR_RESET;
 
       /*
-       * evaluate remote input
+       * evaluate remote input - remote control this software
        */
       remoteInput.evaluate();
       bool newMessage = remoteInput.get_message(message);
 
       if (newMessage) {
-        // TODO do something - remote control this software
+        if (message.compare("exit")) {
+          break;
+        }
       }
 
       /*
@@ -230,28 +237,20 @@ int main(int argc, const char** argv) {
       cam1.get_newFrame(frame1);
       cam2.get_newFrame(frame2);
 
-#ifndef DEBUG
       StatusTracking1 = detect1.detectObject(frame1, pixelPos1);
       StatusTracking2 = detect2.detectObject(frame2, pixelPos2);
-#else
-      if (StatusTracking1 = detect1.detectObject(frame1, pixelPos1) != ERR) {
-        circle(frame1, Point(pixelPos1.x, pixelPos1.y), 30, Scalar(255, 0, 0), 1);
+
+#ifdef DEBUG
+      if (StatusTracking1 != ERR) {
+        circle(frame1, Point(pixelPos1.x, pixelPos1.y), 20, Scalar(255, 0, 0), 1);
       }
       imshow("tracking 1", frame1);
 
-      if (StatusTracking2 = detect2.detectObject(frame2, pixelPos2) != ERR) {
-        circle(frame2, Point(pixelPos2.x, pixelPos2.y), 30, Scalar(255, 0, 0), 1);
+      if (StatusTracking2 != ERR) {
+        circle(frame2, Point(pixelPos2.x, pixelPos2.y), 20, Scalar(255, 0, 0), 1);
       }
       imshow("tracking 2", frame2);
-
-      /*if (waitKey(30) >= 0) {
-       break;
-       }*/
 #endif
-
-      if (StatusTracking1 == ERR || StatusTracking2 == ERR) {
-        fehler = fehler & 0x01;
-      }
 
       /*
        * undistort pixel position
@@ -268,14 +267,15 @@ int main(int argc, const char** argv) {
 
       triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, abstand);
 
-      cout << "x y z " << "\t" << (int) objectPos3D.x << "\t" << (int) objectPos3D.y << "\t" << (int) objectPos3D.z;
-      cout << "\t" << "Abstand der Geraden: " << abstand;
-      cout << "\t" << "Fehlercode: ";
-      printf("%x\n", fehler);
-
       /*
        * send position via UDP socket
        */
+      if (StatusTracking1 == ERR || StatusTracking2 == ERR) {
+        fehler |= ERR_TRACKING_LOST;
+      }
+      if (abstand > DIST_ERR_CAT1) {
+        fehler |= ERR_BIG_DISTANCE;
+      }
 
       position[1] = ((int) objectPos3D.x >> 8) & 0x000000FF;
       position[2] = (int) objectPos3D.x & 0x000000FF;
@@ -287,7 +287,16 @@ int main(int argc, const char** argv) {
 
       remoteInput.sendMessage(position, 7);
 
-      if (waitKey(0) >= 0) {
+      /*
+       * Ausgabe und Abbruch
+       */
+      cout << "x " << (int) objectPos3D.x << "\t y " << (int) objectPos3D.y << "\t z " << (int) objectPos3D.z;
+      cout << "\t" << "Abstand der Geraden: " << abstand;
+      cout << "\t" << "Fehlercode: ";
+      printf("0x%2x", fehler);
+      cout << endl;
+
+      if (waitKey(30) >= 0) {
         break;
       }
 

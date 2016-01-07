@@ -99,7 +99,7 @@ void Socket::evaluate() {
     newClientMessage = true;
 
     fprintf(stdout, "[LOG] received packet: ");
-    fprintf(stdout, "%s", message);
+    fprintf(stdout, "%s \n", message);
 
     if (0 == strncmp(message, "connect", 7)) {
       clientConnected = true;
