@@ -6,6 +6,10 @@
 - Verbindung zum Reglersystem per UDP-Socket
 - opencv v3.0.0
 
+## Ablauf
+Es muss immer zuerst das Trackingsystem gestartet werden. Für den normalen Betrieb sollte der Modus `loadAndTrack` verwendet werden. Dies kann auch direkt als Argument an das Programm übergeben werden.  
+Danach kann sich der Regler entsprechend des `SystemsConnectionProtocol` mit dem Trackingsystem verbinden, sodass die Ist-Koordinaten kontiuierlich per UDP-Paket an das Regelungssystem übertragen werden.  
+Bei der Socket-Verbindung ist zu beachten, dass im HAW-Netz keine UDP-Paktete zwischen dem WLAN- und LAN-Netz übertragen werden. Der Rechner für das Reglersystem muss also per Kabel angeschlossen sein (oder es muss ein eigenes WLAN aufgebaut werden).
 
 ## Modi
 Bei Start des Trackingssystem können diese Modi aungewählt werden:
@@ -42,7 +46,7 @@ Die Kalibierung speichert die intrinsischen Parameter in der Camera-Klasse. Dami
 
 ### calibrate3D
 "calibrate3D" wird verwendet, um die extrinsischen Parameter der Kameras zu bestimmen.  
-TODO
+TODO Daniel
 
 ### setFrameMask1 bzw. setFrameMask2
 setFrameMask gibt die Möglichkeit das Bild aus der Kamera zu maskieren, damit störende Bereiche ausgeblendet werden.  
