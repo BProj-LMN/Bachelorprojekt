@@ -59,6 +59,7 @@ int main(int argc, const char** argv) {
   Point2f undistPos2(0.0, 0.0);
 
   Point3f objectPos3D;
+  float abstand;
 
   try {
 
@@ -251,9 +252,10 @@ int main(int argc, const char** argv) {
       cam1.calcNewObjectRayVector(pixelPos1);
       cam2.calcNewObjectRayVector(pixelPos2);
 
-      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D);
+      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, abstand);
 
-      cout << "objectPos3D " << (int) objectPos3D.x << "\t" << (int) objectPos3D.y << "\t" << (int) objectPos3D.z << endl;
+      cout << "objectPos3D " << "\t" << (int) objectPos3D.x << "\t" << (int) objectPos3D.y << "\t" << (int) objectPos3D.z;
+      cout << "\t" << abstand << endl;
 
       /*
        * send position via UDP socket

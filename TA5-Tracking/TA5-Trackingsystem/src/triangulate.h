@@ -21,7 +21,7 @@ using namespace cv;
 #define MYEPS 1.0E-19
 #define KOORDS 2
 
-void triangulate(Point3f& cam1_p, Point3f& cam1_u, Point3f& cam2_p, Point3f& cam2_u, Point3f& position) {
+void triangulate(Point3f cam1_p, Point3f cam1_u, Point3f cam2_p, Point3f cam2_u, Point3f& position, float& distance) {
 
   /*** Interne Variablen zur Ermittlung des Verbindungsvektors und
    der Elemente des linearen Gleichungssystems ***/
@@ -116,6 +116,9 @@ void triangulate(Point3f& cam1_p, Point3f& cam1_u, Point3f& cam2_p, Point3f& cam
   for (i = 0; i <= KOORDS; i++) {
     Schnittpunkt[i] = K1_vec[i] + Skalar[1] * u_vec[i] + Verbindungsvektor_halbiert[i];
   }
+
+  /*** Berechnung des kleinsten Abstands ***/
+  distance = sqrt(pow(Verbindungsvektor[0], 2) + pow(Verbindungsvektor[1], 2) + pow(Verbindungsvektor[2], 2));
 
   position.x = Schnittpunkt[0];
   position.y = Schnittpunkt[1];
