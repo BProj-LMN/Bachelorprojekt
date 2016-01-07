@@ -254,8 +254,10 @@ int main(int argc, const char** argv) {
 
       triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, abstand);
 
-      cout << "objectPos3D " << "\t" << (int) objectPos3D.x << "\t" << (int) objectPos3D.y << "\t" << (int) objectPos3D.z;
-      cout << "\t" << abstand << endl;
+      cout << "x y z " << "\t" << (int) objectPos3D.x << "\t" << (int) objectPos3D.y << "\t" << (int) objectPos3D.z;
+      cout << "\t" << "Abstand der Geraden: " << abstand;
+      cout << "\t" << "Fehlercode: ";
+      printf("%x\n",fehler);
 
       /*
        * send position via UDP socket
