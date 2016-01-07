@@ -208,7 +208,7 @@ int main(int argc, const char** argv) {
     namedWindow("tracking 1", WINDOW_NORMAL);
     namedWindow("tracking 2", WINDOW_NORMAL);
 #else
-    namedWindow("zum Beenden ESC drücken",WINDOW_NORMAL);
+    namedWindow("zum Beenden: press ESC", WINDOW_NORMAL);
 #endif
 
     while (1) {
@@ -245,12 +245,12 @@ int main(int argc, const char** argv) {
       imshow("tracking 2", frame2);
 
       /*if (waitKey(30) >= 0) {
-        break;
-      }*/
+       break;
+       }*/
 #endif
 
-      if(StatusTracking1 == ERR || StatusTracking2 == ERR){
-      fehler = fehler & 0x01;
+      if (StatusTracking1 == ERR || StatusTracking2 == ERR) {
+        fehler = fehler & 0x01;
       }
 
       /*
@@ -271,7 +271,7 @@ int main(int argc, const char** argv) {
       cout << "x y z " << "\t" << (int) objectPos3D.x << "\t" << (int) objectPos3D.y << "\t" << (int) objectPos3D.z;
       cout << "\t" << "Abstand der Geraden: " << abstand;
       cout << "\t" << "Fehlercode: ";
-      printf("%x\n",fehler);
+      printf("%x\n", fehler);
 
       /*
        * send position via UDP socket
