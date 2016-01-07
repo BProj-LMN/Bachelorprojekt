@@ -9,6 +9,8 @@
 #ifndef SRC_OBJECTDETECTION_H_
 #define SRC_OBJECTDETECTION_H_
 
+//#define SHOW_THESHOLD // for debugging the object detection
+
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>

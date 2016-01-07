@@ -189,7 +189,7 @@ int main(int argc, const char** argv) {
     cout << "waiting for reference frame..." << endl;
     namedWindow("reference frame 1", WINDOW_AUTOSIZE);
     namedWindow("reference frame 2", WINDOW_AUTOSIZE);
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 60; i++) {
       cam1.get_newFrame(frame1);
       cam2.get_newFrame(frame2);
       imshow("reference frame 1", frame1);

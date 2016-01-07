@@ -8,7 +8,7 @@
 
 #include "ObjectDetection.h"
 
-const static int SENSITIVITY_VALUE = 35;  // threshold for theshold()
+const static int SENSITIVITY_VALUE = 35;  // threshold for threshold()
 const static int BLUR_SIZE = 10;  // for absdiff()
 
 ObjectDetection::ObjectDetection(Camera* cam) {
@@ -36,10 +36,24 @@ int ObjectDetection::detectObject(Mat frame, Point2i& pixelPosition) {
   // subtract background and create binary mask
   absdiff(refereceFrame, frame, diffImage); // output: grayscale
   threshold(diffImage, thresholdImage, SENSITIVITY_VALUE, 255, THRESH_BINARY); // output: binary
+#ifdef SHOW_THESHOLD
+  if (cam->get_cameraID() == 1) {
+    imshow("cam2 threshold 1", thresholdImage);
+  } else {
+    imshow("cam1 threshold 1", thresholdImage);
+  }
+#endif
 
   // blur and threshold again to get rid of noise
   blur(thresholdImage, thresholdImage, cv::Size(BLUR_SIZE, BLUR_SIZE)); // output: grayscale
   threshold(thresholdImage, thresholdImage, SENSITIVITY_VALUE, 255, THRESH_BINARY); // output: binary
+#ifdef SHOW_THESHOLD
+  if (cam->get_cameraID() == 1) {
+    imshow("cam2 threshold 2", thresholdImage);
+  } else {
+    imshow("cam1 threshold 2", thresholdImage);
+  }
+#endif
 
   int error = getObjectPosition(thresholdImage, pixelPosition, &objectBounding);
 
