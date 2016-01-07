@@ -207,6 +207,8 @@ int main(int argc, const char** argv) {
 #ifdef DEBUG
     namedWindow("tracking 1", WINDOW_NORMAL);
     namedWindow("tracking 2", WINDOW_NORMAL);
+#else
+    namedWindow("zum Beenden ESC drücken",WINDOW_NORMAL);
 #endif
 
     while (1) {
@@ -242,9 +244,9 @@ int main(int argc, const char** argv) {
       }
       imshow("tracking 2", frame2);
 
-      if (waitKey(30) >= 0) {
+      /*if (waitKey(30) >= 0) {
         break;
-      }
+      }*/
 #endif
 
       if(StatusTracking1 == ERR || StatusTracking2 == ERR){
@@ -284,8 +286,11 @@ int main(int argc, const char** argv) {
       position[7] = fehler;
 
       remoteInput.sendMessage(position, 7);
-      if (kbhit())
+
+      if (waitKey(0) >= 0) {
         break;
+      }
+
     }
 
     /*
