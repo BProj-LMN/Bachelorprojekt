@@ -27,11 +27,9 @@ int ObjectDetection::setReferenceFrame(Mat frame) {
 }
 /*
  * input:  grayscale frame
- * output: int array with detected position {x, y}
+ * output: Point2i with detected position
  */
 int ObjectDetection::detectObject(Mat frame, Point2i& pixelPosition) {
-  // TODO: only copy-pasted the code --> check integration !!!
-
   Mat diffImage, thresholdImage;
   Rect objectBounding = Rect(0, 0, 0, 0);
 
@@ -46,14 +44,6 @@ int ObjectDetection::detectObject(Mat frame, Point2i& pixelPosition) {
   int error = getObjectPosition(thresholdImage, pixelPosition, &objectBounding);
 
   if (0 == error) {
-    //int xpos = pixelPosition[0];
-    //int ypos = pixelPosition[1];
-    //circle(frame, Point(xpos, ypos), 30, Scalar(255, 0, 0), 1);
-
-    //rectangle(frame, objectBounding, Scalar(0, 255, 0), 2);
-
-    //imshow("final tracking", frame);
-
     return OK;
   } else {
     return ERR;
