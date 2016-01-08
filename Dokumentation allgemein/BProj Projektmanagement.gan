@@ -48,14 +48,14 @@ Die vollständige geforderte Dokumentation des Status Quo ist vorhanden und in k
 Die vollständige geforderte Dokumentation des Status Quo ist vorhanden und in korrekter Form abgegeben worden.]]></notes>
             </task>
         </task>
-        <task id="105" name="2 Integration" color="#000000" meeting="false" start="2015-10-19" duration="70" complete="50" expand="true">
+        <task id="105" name="2 Integration" color="#000000" meeting="false" start="2015-10-19" duration="70" complete="87" expand="true">
             <notes><![CDATA[Ziel:
 Das Hauptziel des Bachelorprojekts ist erfüllt. ]]></notes>
-            <task id="106" name="2.1 alle HW und SW zusammenführen" color="#8cb6ce" meeting="false" start="2015-10-19" duration="70" complete="50" expand="true">
+            <task id="106" name="2.1 alle HW und SW zusammenführen" color="#8cb6ce" meeting="false" start="2015-10-19" duration="70" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Hardware und Software arbeitet zusammen. Die Schnittstelle funktioniert. Endergebnis ist, dass die Aufgabenstellung erfüllt ist.]]></notes>
             </task>
-            <task id="107" name="2.2 Dokumentation Gesamtprojekt" color="#8cb6ce" meeting="false" start="2015-10-19" duration="70" complete="50" expand="true">
+            <task id="107" name="2.2 Dokumentation Gesamtprojekt" color="#8cb6ce" meeting="false" start="2015-10-19" duration="70" complete="75" expand="true">
                 <notes><![CDATA[Alle Teilschritte sind detailliert dokumentiert und begründet.]]></notes>
             </task>
         </task>
@@ -110,7 +110,7 @@ Die erforderlichen Schritte wurden dokumentiert.
             <notes><![CDATA[Der Meilenstein ist erreicht, sobald die Aufgabenpakete 4.1, 4.2 und 4.3 vollständig erfüllt sind. Das Ergebnis derer ist, dass der PC über die Schnittstelle mit dem Quadrocopter kommunizieren kann, diesem somit alle nötigen Steuerbefehle für den Flug übermittelt. Ferner ist ein NOT-AUS implementiert. ]]></notes>
             <depend id="58" type="2" difference="1" hardness="Strong"/>
         </task>
-        <task id="3" name="5 optisches Tracking" color="#8cb6ce" meeting="false" start="2015-10-09" duration="31" complete="60" expand="true">
+        <task id="3" name="5 optisches Tracking" color="#8cb6ce" meeting="false" start="2015-10-09" duration="31" complete="100" expand="true">
             <notes><![CDATA[Ziel:
 Die Ist-Position kann über eine Software-Schnittstelle abgerufen werden.]]></notes>
             <depend id="112" type="2" difference="4" hardness="Strong"/>
@@ -118,17 +118,17 @@ Die Ist-Position kann über eine Software-Schnittstelle abgerufen werden.]]></no
                 <notes><![CDATA[Ziel:
 Es wurde eine Software ausgewählt die zum Tracking genutzt werden soll. Sowie Grundkenntnisse zu deren Nutzung gesammelt.]]></notes>
             </task>
-            <task id="60" name="5.2 Objekt im Bild erkennen" color="#8cb6ce" meeting="false" start="2015-10-23" duration="16" complete="50" expand="true">
+            <task id="60" name="5.2 Objekt im Bild erkennen" color="#8cb6ce" meeting="false" start="2015-10-23" duration="16" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Es ist ein Programm vorhanden das den Quadrocopter auf Bildern erkennt und dessen Position im Bild bestimmt.
 Die Softwareschnittstelle ist definiert und dokumentiert.
 ]]></notes>
             </task>
-            <task id="59" name="5.3 3D-Position errechnen" color="#8cb6ce" meeting="false" start="2015-10-26" duration="15" complete="50" expand="true">
+            <task id="59" name="5.3 3D-Position errechnen" color="#8cb6ce" meeting="false" start="2015-10-26" duration="15" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Es ist ein Programm vorhanden, das die Ist-Koordinaten des Quadrocopters errechnet.]]></notes>
             </task>
-            <task id="63" name="5.4 Schnittstelle  Tracking&lt;-&gt;Regler" color="#8cb6ce" meeting="false" start="2015-11-09" duration="10" complete="50" expand="true">
+            <task id="63" name="5.4 Schnittstelle  Tracking&lt;-&gt;Regler" color="#8cb6ce" meeting="false" start="2015-11-09" duration="10" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Es ist eine Schnittstelle vorhanden, an der man die Ist-Koordinaten abrufen kann.
 Diese Schnittstelle ist dokumentiert.
