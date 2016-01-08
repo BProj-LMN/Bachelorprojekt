@@ -6,6 +6,7 @@ using namespace std;
 
 
 SerielleUebertragung::SerielleUebertragung() {
+
 	Port = L"COM7";// nötig da define von string nicht funktioniert, visual studio will LPCWSTR haben  COM PORT MUSS EINSTELLIG BLEIBEN
     hCom = CreateFile(Port, GENERIC_WRITE | GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
     serialconfig.DCBlength = sizeof (DCB); // Laenge des Blockes MUSS gesetztsein!

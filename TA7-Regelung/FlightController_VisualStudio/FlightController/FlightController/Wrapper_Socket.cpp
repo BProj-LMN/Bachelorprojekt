@@ -1,4 +1,5 @@
 #include "Wrapper_Socket.h"
+#include <time.h>
 
 Wrapper_Socket::Wrapper_Socket(){
 	Socket = new SocketClient("141.22.27.193", 1362);
@@ -11,8 +12,14 @@ Wrapper_Socket::~Wrapper_Socket(){
 	delete Socket;
 }
 
+void Wrapper_Socket::disconnect() {
+	Socket->sendMessage("exit");// remote zugriff auf tracking PC-> dort beenden
+	Sleep(100);
+}
+
 int Wrapper_Socket::connect(){
 	Socket->sendMessage("connect");
+	long zeitstart = clock()/CLOCKS_PER_SEC;
 	do{ Socket->evaluate();
 	if (_kbhit()) { // Wenn eine Taste betätigt wurde
 		char eingabe = _getch();//die gedrückte taste wird eingelesen
@@ -20,8 +27,8 @@ int Wrapper_Socket::connect(){
 		if (eingabe == ESC) {
 			return 1;
 		}
-	}
-	} while (Socket->get_message(Nachricht) == 0);	
+	  }
+	} while (Socket->get_message(Nachricht) == 0 && (((clock()/CLOCKS_PER_SEC)-zeitstart)<5));	//Nachricht erhalten oder Timeout
   if (strcmp(Nachricht, "you are connected\n") == 0) { return 0; }
  else return 1;
 
@@ -29,8 +36,8 @@ int Wrapper_Socket::connect(){
 
 int Wrapper_Socket::updateIstwerte(){
 	Socket->evaluate();
-	if (Socket->get_message(Nachricht) == 1){
-		if (Nachricht[7] & 0x01 == 0x00){
+	if (Socket->get_message(Nachricht) == 1){// bei erhaltener Nachricht
+		if (Nachricht[7] & 0x01 == 0x00){ // wenn etwas getrackt wurde
 			if (Nachricht[0] == 0xDA){
 				istX = (((int)Nachricht[1] << 8) & 0xff00 | (int)Nachricht[2] & 0x00ff) & 0x0000ffff;
 				istY = (((int)Nachricht[3] << 8) & 0xff00 | (int)Nachricht[4] & 0x00ff) & 0x0000ffff;

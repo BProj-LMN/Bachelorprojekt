@@ -25,6 +25,7 @@ public:
 	Wrapper_Socket();
 	~Wrapper_Socket();
 	int connect();
+	void disconnect();
 	int updateIstwerte();
 	unsigned int getX();
 	unsigned int getY();
