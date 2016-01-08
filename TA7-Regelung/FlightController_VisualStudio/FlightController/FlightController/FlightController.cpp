@@ -23,9 +23,6 @@ FlightControllerClass::FlightControllerClass() {
 
   Tracking = new Wrapper_Socket();
 
-  istX = 0;
-  istY = 0;
-  istZ = 0;
   landen = 0;
   Error = 0;
 

@@ -7,19 +7,19 @@
 
 #ifndef FLIGHTCONTROLLER_H
 #define	FLIGHTCONTROLLER_H
-#include "PID_Regler.h"
+
 #include <cstdlib>
 #include <iostream>
 #include <winsock2.h>
 #include <windows.h>
 #include <fstream>
 
-//#include  "PID_Regler.h"
+
 #include "defines_Regler.h"
 #include "TrajectoryClass.h"
 #include "UserInterface.h"
 #include "Wrapper_Steuerung.h"
-//#include "FlightController.h"
+#include "PID_Regler.h"
 #include "Wrapper_Socket.h"
 
 class FlightControllerClass {
@@ -36,7 +36,6 @@ public:
 private:
   void ReglerSollwertvorgabe();
 
-  double istX, istY, istZ;
   int landen;
   int Error;
   PID_Regler* reglerX;

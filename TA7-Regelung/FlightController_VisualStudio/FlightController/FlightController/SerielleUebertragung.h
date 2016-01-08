@@ -7,7 +7,7 @@
 
 #ifndef SERIELLEUEBERTRAGUNG_H
 #define	SERIELLEUEBERTRAGUNG_H
-#define COMPORT "COM7"//nicht mehr benötigt, da string nicht geht sondern über LPCWSTR
+//#define COMPORT "COM7"//nicht mehr benötigt, da string nicht geht sondern über LPCWSTR
 #include <iostream>
 #include <winsock2.h>
 #include <windows.h>
@@ -21,13 +21,11 @@ public:
     void Serialread(unsigned char* Buffer,int Bufferlaenge);
     HANDLE hCom;
 private:
-	LPCWSTR a ;//für Comport, muss in construktor zugewiesen werden
-    int hochRegelung;
+	LPCWSTR Port ;//für Comport, muss in construktor zugewiesen werden
     DCB serialconfig;
 DWORD iBytesWritten;
 DWORD BytesRead;
 
-unsigned char  Regelwerte[5] ;
 };
 
 #endif	/* SERIELLEUEBERTRAGUNG_H */
