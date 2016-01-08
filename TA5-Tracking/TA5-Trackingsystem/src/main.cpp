@@ -147,10 +147,8 @@ int main(int argc, const char** argv) {
       namedWindow("Kamera 1 mit Pattern", WINDOW_AUTOSIZE);
       namedWindow("Kamera 2 mit Pattern", WINDOW_AUTOSIZE);
 
-      VideoCapture cap1 = cam1.get_capture();
-      cap1 >> frame1;
-      VideoCapture cap2 = cam2.get_capture();
-      cap2 >> frame2;
+      cam1.get_rawFrame(frame1);
+      cam2.get_rawFrame(frame2);
 
       circle(frame1, Point(frame1.cols / 2, frame1.rows / 2), 10, Scalar(0, 255, 0), 1);
       circle(frame2, Point(frame2.cols / 2, frame2.rows / 2), 10, Scalar(0, 255, 0), 1);
