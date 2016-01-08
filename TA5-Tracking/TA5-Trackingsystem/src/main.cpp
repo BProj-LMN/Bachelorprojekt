@@ -18,7 +18,6 @@
 
 #include <iostream>
 #include <iomanip>
-#include <conio.h>
 using namespace std;
 
 #include "Socket.h"
@@ -50,9 +49,13 @@ int main(int argc, const char** argv) {
 
   Socket remoteInput(1362);
   string message;
-  char fehler = 0x00;
-  char position[MESSAGE_LEN];
-  position[0] = 0xDA;
+
+  char positionData[MESSAGE_LEN];
+  positionData[0] = 0xDA;
+  char positionDataErrorCode = 0x00;
+  int statusTracking1 = OK;
+  int statusTracking2 = OK;
+  float triangulationMinDistance;
 
   Camera cam1(0);
   Mat frame1;
@@ -66,11 +69,7 @@ int main(int argc, const char** argv) {
   Point2i pixelPos2(0, 0);
   Point2f undistPos2(0.0, 0.0);
 
-  int StatusTracking1 = OK;
-  int StatusTracking2 = OK;
-
   Point3f objectPos3D;
-  float abstand;
 
   try {
 
@@ -141,11 +140,11 @@ int main(int argc, const char** argv) {
     }
 
 #ifdef CAMERA_CALIB_CIRCLES
-    cout << "Kamerapattern wird angezeigt..." << endl;
+    cout << "Overlay zur Kamerakalibrierung wird angezeigt...\nBeenden mit ESC\n" << endl;
 
     while (1) {
-      namedWindow("Kamera 1 mit Pattern", WINDOW_AUTOSIZE);
-      namedWindow("Kamera 2 mit Pattern", WINDOW_AUTOSIZE);
+      namedWindow("Kamera 1 mit Overlay", WINDOW_AUTOSIZE);
+      namedWindow("Kamera 2 mit Overlay", WINDOW_AUTOSIZE);
 
       cam1.get_rawFrame(frame1);
       cam2.get_rawFrame(frame2);
@@ -199,7 +198,7 @@ int main(int argc, const char** argv) {
     }
     detect1.setReferenceFrame(frame1);
     detect2.setReferenceFrame(frame2);
-    cout << "reference frame set" << endl;
+    cout << "reference frame set\n" << endl;
     destroyWindow("reference frame 1");
     destroyWindow("reference frame 2");
 
@@ -211,13 +210,13 @@ int main(int argc, const char** argv) {
     namedWindow("tracking 1", WINDOW_NORMAL);
     namedWindow("tracking 2", WINDOW_NORMAL);
 #else
-    Mat destroyimg = imread("C:/Users/User/Documents/GitHub/Bachelorprojekt/TA5-Tracking/TA5-Trackingsystem/test/destroybild.jpg", 1);   // Read the file
+    Mat destroyimg = imread("test/destroybild.jpg", 1);   // Read the file
     namedWindow("zum Beenden: press ESC", WINDOW_AUTOSIZE);
     imshow("zum Beenden: press ESC", destroyimg);
 #endif
 
     while (1) {
-      fehler = ERR_RESET;
+      positionDataErrorCode = ERR_RESET;
 
       /*
        * evaluate remote input - remote control this software
@@ -226,9 +225,9 @@ int main(int argc, const char** argv) {
       bool newMessage = remoteInput.get_message(message);
 
       if (newMessage) {
+        // shut down, if requested
         if (message.compare("exit")) {
           break;
-          //break;
         }
       }
 
@@ -238,16 +237,16 @@ int main(int argc, const char** argv) {
       cam1.get_newFrame(frame1);
       cam2.get_newFrame(frame2);
 
-      StatusTracking1 = detect1.detectObject(frame1, pixelPos1);
-      StatusTracking2 = detect2.detectObject(frame2, pixelPos2);
+      statusTracking1 = detect1.detectObject(frame1, pixelPos1);
+      statusTracking2 = detect2.detectObject(frame2, pixelPos2);
 
 #ifdef DEBUG
-      if (StatusTracking1 != ERR) {
+      if (statusTracking1 != ERR) {
         circle(frame1, Point(pixelPos1.x, pixelPos1.y), 20, Scalar(255, 0, 0), 1);
       }
       imshow("tracking 1", frame1);
 
-      if (StatusTracking2 != ERR) {
+      if (statusTracking2 != ERR) {
         circle(frame2, Point(pixelPos2.x, pixelPos2.y), 20, Scalar(255, 0, 0), 1);
       }
       imshow("tracking 2", frame2);
@@ -266,35 +265,36 @@ int main(int argc, const char** argv) {
       cam1.calcNewObjectRayVector(pixelPos1);
       cam2.calcNewObjectRayVector(pixelPos2);
 
-      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D, abstand);
+      triangulate(cam1.positionVector, cam1.objectVector, cam2.positionVector, cam2.objectVector, objectPos3D,
+                  triangulationMinDistance);
 
       /*
        * send position via UDP socket
        */
-      if (StatusTracking1 == ERR || StatusTracking2 == ERR) {
-        fehler |= ERR_TRACKING_LOST;
+      if (statusTracking1 == ERR || statusTracking2 == ERR) {
+        positionDataErrorCode |= ERR_TRACKING_LOST;
       }
-      if (abstand > DIST_ERR_CAT1) {
-        fehler |= ERR_BIG_DISTANCE;
+      if (triangulationMinDistance > DIST_ERR_CAT1) {
+        positionDataErrorCode |= ERR_BIG_DISTANCE;
       }
 
-      position[1] = ((int) objectPos3D.x >> 8) & 0x000000FF;
-      position[2] = (int) objectPos3D.x & 0x000000FF;
-      position[3] = ((int) objectPos3D.y >> 8) & 0x000000FF;
-      position[4] = (int) objectPos3D.y & 0x000000FF;
-      position[5] = ((int) objectPos3D.z >> 8) & 0x000000FF;
-      position[6] = (int) objectPos3D.z & 0x000000FF;
-      position[7] = fehler;
+      positionData[1] = ((int) objectPos3D.x >> 8) & 0x000000FF;
+      positionData[2] = (int) objectPos3D.x & 0x000000FF;
+      positionData[3] = ((int) objectPos3D.y >> 8) & 0x000000FF;
+      positionData[4] = (int) objectPos3D.y & 0x000000FF;
+      positionData[5] = ((int) objectPos3D.z >> 8) & 0x000000FF;
+      positionData[6] = (int) objectPos3D.z & 0x000000FF;
+      positionData[7] = positionDataErrorCode;
 
-      remoteInput.sendMessage(position, 7);
+      remoteInput.sendMessage(positionData, 7);
 
       /*
        * Ausgabe und Abbruch
        */
-      cout << "x " << (int) objectPos3D.x << "\t y " << (int) objectPos3D.y << "\t z " << (int) objectPos3D.z;
-      cout << "\t" << "Abstand der Geraden: " << abstand;
-      cout << "\t" << "Fehlercode: ";
-      printf("0x%2x", fehler);
+      cout << "x " << (int) objectPos3D.x << "\ty " << (int) objectPos3D.y << "\tz " << (int) objectPos3D.z;
+      cout << "\t\t" << "Abstand Triangulation: " << triangulationMinDistance;
+      cout << "\t\t" << "Fehlercode: ";
+      printf("0x%2x", positionDataErrorCode);
       cout << endl;
 
       if (waitKey(30) >= 0) {
@@ -308,6 +308,8 @@ int main(int argc, const char** argv) {
      */
     destroyWindow("tracking 1");
     destroyWindow("tracking 2");
+    cout << endl;
+    cout << "--> shut down program" << endl;
     cout << "windows destroyed" << endl;
     cout << "program successful terminated" << endl;
 
