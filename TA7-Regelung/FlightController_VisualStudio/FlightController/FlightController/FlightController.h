@@ -13,6 +13,7 @@
 #include <winsock2.h>
 #include <windows.h>
 #include <fstream>
+#include <time.h>
 
 
 #include "defines_Regler.h"
@@ -35,7 +36,10 @@ public:
 
 private:
   void ReglerSollwertvorgabe();
-
+  int akkuKompenstation;
+  int hoehealt;
+  time_t zeitneu;
+  time_t zeitalt;
   int landen;
   int Error;
   PID_Regler* reglerX;

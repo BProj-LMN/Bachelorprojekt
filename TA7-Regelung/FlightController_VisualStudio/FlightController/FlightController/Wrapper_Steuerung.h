@@ -12,7 +12,7 @@ class Wrapper_Steuerung{
 public:
     Wrapper_Steuerung();
       void RechtLinks(double Regelung);
-    void HochRunter(double Regelung);
+	  void HochRunter(double Regelung, int Akkukompensation);
     void VorZurueck(double Regelung);
     int HochAktuell();
     void Steuern();

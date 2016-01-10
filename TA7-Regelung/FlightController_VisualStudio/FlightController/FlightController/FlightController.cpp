@@ -9,11 +9,11 @@
 
 FlightControllerClass::FlightControllerClass() {
   //Regler für Vor Zurück erzeugen Grenzwerte für Regelung von -127 bis 127
-  reglerX = new PID_Regler(-REGELMAX / 2, REGELMAX / 2);
+  reglerX = new PID_Regler(-30, 30);
   //Regler für Rechts Links erzeugen Grenzwerte für Regelung von -127 bis 127
-  reglerY = new PID_Regler(-REGELMAX / 2, REGELMAX / 2);
+  reglerY = new PID_Regler(-30, 30);
   //Regler für Hoch Runter erzeugen Grenzwerte für Regelung von 0 bis 254
-  reglerZ = new PID_Regler(0, 30);
+  reglerZ = new PID_Regler(-20, 20);
   //Trajektorien Klasse erzeugen
   Trajectory = new Trajectory_Class();
   //UserInterface erzeugen
@@ -23,6 +23,10 @@ FlightControllerClass::FlightControllerClass() {
 
   Tracking = new Wrapper_Socket();
 
+  akkuKompenstation = 0;
+  hoehealt = 0;
+  time(&zeitalt);
+  zeitneu = zeitalt;
   landen = 0;
   Error = 0;
 
@@ -47,16 +51,16 @@ void FlightControllerClass::ReglerSollwertvorgabe() {
 
 void FlightControllerClass::Initialisieren() {
   //Regler koeffizienten zuweisen
-  reglerX->setfactors(KPXY, KIXY, KDXY, 1);
-  reglerY->setfactors(KPXY, KIXY, KDXY, 1);
-  reglerZ->setfactors(KPZ, KIZ, KDZ, 0.005);
+  reglerX->setfactors(KPXY, KIXY, KDXY, 0.29);
+  reglerY->setfactors(KPXY, KIXY, KDXY, 0.29);
+  reglerZ->setfactors(KPZ, KIZ, KDZ, 1);
   //Um eine Verbindung mit dem Copter aufzubauen muss der Schub einmal auf Maximalausschlag und wieder zurück
   cout << "Mit dem Copter Verbindung aufbauen" << endl;
-  Steuerung->HochRunter(REGELMAX - REGLEROFFSETHR);
+  Steuerung->HochRunter(REGELMAX - REGLEROFFSETHR,0);
   Steuerung->Steuern();
   while ((!UI->EnterGedrueckt())&& (Error==0))
     ; //Warten auf Enter
-  Steuerung->HochRunter(0);
+  Steuerung->HochRunter(0,0);
   Steuerung->Steuern();
   cout << "Rechner ist mit Copter verbunden" << endl;
   if (Tracking->connect() == 0){ cout << "Mit Socket verbunden" << endl; }
@@ -70,10 +74,10 @@ void FlightControllerClass::Landeprozedur() {
 	if (Steuerung->HochAktuell() != 0) {
     //Landenprozedur
     cout << "Copter soll landen" << endl;
-    Steuerung->RechtLinks(REGLEROFFSETRL); //Stabilen Wert vorgeben
-    Steuerung->VorZurueck(REGLEROFFSETVZ); //Stabilen Wert vorgeben
-    for (landen = 0x90 - REGLEROFFSETHR ; landen > -REGLEROFFSETHR; landen--) {
-      Steuerung->HochRunter(landen);
+    Steuerung->RechtLinks(0); //Stabilen Wert vorgeben
+    Steuerung->VorZurueck(0); //Stabilen Wert vorgeben
+    for (landen = 0x90 - REGLEROFFSETHR ; landen > - REGLEROFFSETHR; landen--) {
+      Steuerung->HochRunter(landen,0);
       Sleep(60);
       Steuerung->Steuern();
     }
@@ -85,18 +89,22 @@ void FlightControllerClass::Landeprozedur() {
 }
 
 void FlightControllerClass::Startprozedur() {
-	Steuerung->RechtLinks(REGLEROFFSETRL); //Stabilen Wert vorgeben
-	Steuerung->VorZurueck(REGLEROFFSETVZ); //Stabilen Wert vorgeben
-	/*Steuerung->HochRunter(0x95);//Leichtsteigend
+	Steuerung->RechtLinks(0); //Stabilen Wert vorgeben
+	Steuerung->VorZurueck(0); //Stabilen Wert vorgeben
+	Steuerung->HochRunter(0,0);//Leichtfallend
 	Steuerung->Steuern();
 
-	while ((Tracking->getZ()<= 500) && (Error == 0)){
+	/*while ((Tracking->getZ()<= 500) && (Error == 0)){
 		Tracking->updateIstwerte();
 		UI->EnterGedrueckt();
 	}*/
-	reglerX->setSoll(2000);
-	reglerY->setSoll(2000);
+	Tracking->updateIstwerte();
+	reglerX->setSoll(Tracking->getX());
+	reglerY->setSoll(Tracking->getY());
 	reglerZ->setSoll(1000);
+
+	time(&zeitalt);
+	hoehealt = Tracking->getZ();
 
   cout << "Copter Regelung ist gestartet" << endl;
   cout << "Um den Copter landen zu lassen ESC betaetigen" << endl;
@@ -114,8 +122,21 @@ void FlightControllerClass::SollwertVorgeben() {
     //Istwerte einlesen
 	  if (Tracking->updateIstwerte() == 1){ Error = 1; }
 	  else;
+	  time(&zeitneu);
+	  int regelWertZ = (int)reglerZ->getControlValue(Tracking->getZ());
+	  if ((hoehealt > Tracking->getZ()) && (regelWertZ==20)){
+		  if (difftime(zeitneu, zeitalt) > 2) {
+			  akkuKompenstation += 20;
+			  zeitalt = zeitneu;
+		  }
+		  else;
+	  }
+	  else{
+		  zeitalt = zeitneu;
+	  }
+	  hoehealt = Tracking->getZ();
     //übergibt die Regelwerte an den puffer der Seriellen Schnittstelle
-    Steuerung->HochRunter((int) reglerZ->getControlValue(Tracking->getZ()));
+	  Steuerung->HochRunter(regelWertZ, akkuKompenstation);
 	//Steuerung->RechtLinks((int)reglerY->getControlValue(Tracking->getY()));
 	//Steuerung->VorZurueck((int)reglerX->getControlValue(Tracking->getX()));
     //Regelwerte an die Fernsteuerung senden
@@ -129,11 +150,12 @@ void FlightControllerClass::SollwertVorgeben() {
   cout << "Um Copter weiter fliegen zu lassen Enter betaetigen" << endl;
   //Wartet bis Enter betätigt wird bevor der Copter wieder losfliegt
   while (!UI->EnterGedrueckt() && (Error == 0)) {
+	  Sleep(1);
     //Istwerte einlesen
 	  if (Tracking->updateIstwerte() == 1){ Error = 1; }
 	  else;
     //übergibt die Regelwerte an den puffer der Seriellen Schnittstelle
-	  Steuerung->HochRunter((int)reglerZ->getControlValue(Tracking->getZ()));
+	  Steuerung->HochRunter((int)reglerZ->getControlValue(Tracking->getZ()), akkuKompenstation);
 	//Steuerung->RechtLinks((int)reglerY->getControlValue(Tracking->getY()));
 	//Steuerung->VorZurueck((int)reglerX->getControlValue(Tracking->getX()));
     //Regelwerte an die Fernsteuerung senden
@@ -143,6 +165,7 @@ void FlightControllerClass::SollwertVorgeben() {
 
 void FlightControllerClass::ZielAnfliegen() {
   while ((!UI->EnterGedrueckt()) && (0 == Error)) {
+	  Sleep(1);
     //Istwerte einlesen
 	  if (Tracking->updateIstwerte() == 1){ Error = 1; }
 	  else;
@@ -154,7 +177,7 @@ void FlightControllerClass::ZielAnfliegen() {
     } else;
     //Regeln
     //übergibt die Regelwerte an den puffer der Seriellen Schnittstelle
-	  Steuerung->HochRunter((int)reglerZ->getControlValue(Tracking->getZ()));
+	  Steuerung->HochRunter((int)reglerZ->getControlValue(Tracking->getZ()), akkuKompenstation);
 	Steuerung->RechtLinks((int)reglerY->getControlValue(Tracking->getY()));
 	Steuerung->VorZurueck((int)reglerX->getControlValue(Tracking->getX()));
     //Regelwerte an die Fernsteuerung senden

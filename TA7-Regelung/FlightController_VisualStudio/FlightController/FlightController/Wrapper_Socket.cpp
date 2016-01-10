@@ -55,6 +55,9 @@ int Wrapper_Socket::updateIstwerte(){
 		
 	}
 	else;
+	if ((istX > 3850) || (istX < 250)){ return 1; }
+	if ((istY > 3750) || (istY < 250)){ return 1; }
+	if ((istZ > 2550) || (istZ < 250)){ return 1; }
 	return 0;
 }
 
