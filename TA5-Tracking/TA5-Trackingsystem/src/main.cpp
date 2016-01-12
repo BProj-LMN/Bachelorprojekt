@@ -286,7 +286,7 @@ int main(int argc, const char** argv) {
       positionData[6] = (int) objectPos3D.z & 0x000000FF;
       positionData[7] = positionDataErrorCode;
 
-      remoteInput.sendMessage(positionData, 7);
+      remoteInput.sendMessage(positionData, 8);
 
       /*
        * Ausgabe und Abbruch
