@@ -105,7 +105,7 @@ int Trajectory_Class::ArrayEndReached() {
   if (checkpointIst < geradenparameter + 1) {
     return 1;
   } else {
-    return -1;
+    return 0;
   }
 
 }
