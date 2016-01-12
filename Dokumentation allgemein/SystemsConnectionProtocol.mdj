@@ -1189,10 +1189,10 @@
 									"containerExtending": false,
 									"left": 96,
 									"top": 448,
-									"width": 169,
-									"height": 121,
+									"width": 289,
+									"height": 65,
 									"autoResize": false,
-									"text": "posDataPacket:\n0xDA\nX (high byte, low byte)\nY (high byte, low byte)\nZ (high byte, low byte)\n--> 7 byte\n\nX, Y, Z: int_16",
+									"text": "Spezifikation posDataPacket:\nsiehe SystemsConnectionProtocol-Doku.md",
 									"wordWrap": true
 								}
 							],

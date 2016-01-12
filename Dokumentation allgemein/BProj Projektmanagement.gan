@@ -139,11 +139,11 @@ Diese Schnittstelle ist dokumentiert.
             <notes><![CDATA[Der dritte Meilenstein ist erreicht, wenn die Teilaufgabe 5 komplett abgeschlossen ist. Es wird also aus den Kamerabildern die aktuelle Position des Copters im Raum errechnet und über eine Schnittstelle an die Flugregelung übergeben.]]></notes>
             <depend id="75" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="4" name="6 Sollwertvorgabe" color="#000000" meeting="false" start="2015-11-09" duration="15" complete="60" expand="true">
+        <task id="4" name="6 Sollwertvorgabe" color="#000000" meeting="false" start="2015-11-09" duration="15" complete="90" expand="true">
             <notes><![CDATA[Ziel:
 Es gibt eine Möglichkeit für den Benutzer den Sollwert für den Copter vorzugeben]]></notes>
             <depend id="113" type="2" difference="4" hardness="Strong"/>
-            <task id="58" name="6.1 Start- und Landeprozedur programmieren und definieren" color="#8cb6ce" meeting="false" start="2015-11-09" duration="5" complete="50" expand="true">
+            <task id="58" name="6.1 Start- und Landeprozedur programmieren und definieren" color="#8cb6ce" meeting="false" start="2015-11-09" duration="5" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Der Hüpfer besteht aus einem langsamen Beschleunigungsvorgang und dem Abheben, einem ca. 5 sekündigen Halten auf 1 m Höhe und dem Wiederabsinken und Landen. Es muss möglich sein, diesen Ablauf vorzeitig abzubrechen. 
 Die Landeprozedur soll weitergehend auch für sich funktionieren und aufgerufen werden können. 
@@ -154,7 +154,7 @@ Die Landeprozedur soll weitergehend auch für sich funktionieren und aufgerufen 
 Es wurde eine Kurvenart für die Trajektorie ausgewählt und dessen mathematische Beschreibung, sowie die Berechnung mit Start- und Endpunkt dokumentiert. Außerdem wurde dokumentiert, wie Punkte auf der Trajektorie berechnet werden können.]]></notes>
                 <depend id="65" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="65" name="6.3 Trajektorienberechnung  programmieren" color="#8cb6ce" meeting="false" start="2015-11-16" duration="10" complete="50" expand="true">
+            <task id="65" name="6.3 Trajektorienberechnung  programmieren" color="#8cb6ce" meeting="false" start="2015-11-16" duration="10" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Es wurde ein entsprechendes Softwaremodul entwickelt, dass alle nötigen Berechnungen bezüglich der Trajektorie vornimmt.
 Die Softwareschnittstelle wurde definiert und dokumentiert.
