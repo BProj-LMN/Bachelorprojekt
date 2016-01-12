@@ -27,3 +27,4 @@ Makefile
 *.filters
 *.sln
 *.suo
+*.vcxproj.user
