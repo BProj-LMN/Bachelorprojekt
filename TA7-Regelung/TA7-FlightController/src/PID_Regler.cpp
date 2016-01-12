@@ -1,7 +1,5 @@
 #include "PID_Regler.h"
-//#include <windows.h>
-#include <iostream>
-using namespace std;
+
 
 PID_Regler::PID_Regler(double UG, double OG) {
 	untereGrenze = UG; //Untere Grenze des Reglers festlegen

@@ -15,18 +15,11 @@
 
 #include <cstdlib>
 #include <iostream>
-//#include <windows.h>
 #include <fstream>
+using namespace std;
 
-//#include  "PID_Regler.h"
-//#include "defines_Regler.h"
-//#include "TrajectoryClass.h"
-//#include "UserInterface.h"
-//#include "Wrapper_Steuerung.h"
 #include "FlightController.h"
 
-
-using namespace std;
 
 int main(int argc, char** argv) {
   FlightControllerClass flightcontroller = FlightControllerClass();

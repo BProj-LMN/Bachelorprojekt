@@ -7,12 +7,12 @@
 
 #ifndef SERIELLEUEBERTRAGUNG_H
 #define	SERIELLEUEBERTRAGUNG_H
-//#define COMPORT "COM7"//nicht mehr benötigt, da string nicht geht sondern über LPCWSTR
+
 #include <iostream>
-#include <winsock2.h>
 #include <windows.h>
 #include <fstream>
 #include <cstdlib>
+using namespace std;
 
 class SerielleUebertragung{
 public:
@@ -21,7 +21,7 @@ public:
     void Serialread(unsigned char* Buffer,int Bufferlaenge);
     HANDLE hCom;
 private:
-	LPCWSTR Port ;//für Comport, muss in construktor zugewiesen werden
+	LPCWSTR Port; // für Comport, muss Datentyp LPCWSTR haben, aus Gründen. Ändern im Quellcode vom Kontruktor!
     DCB serialconfig;
 DWORD iBytesWritten;
 DWORD BytesRead;

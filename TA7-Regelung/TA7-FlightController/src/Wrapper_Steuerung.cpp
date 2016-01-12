@@ -1,11 +1,5 @@
 #include "Wrapper_Steuerung.h"
-#include <iostream>
-#include <fstream>
-#include <cstdlib>
-#include "defines_Regler.h"
-#include "SerielleUebertragung.h"
-#include <iostream>
-using namespace std;
+
 
 Wrapper_Steuerung::Wrapper_Steuerung(){
 	Startwerte[0] = REGLEROFFSETHR;

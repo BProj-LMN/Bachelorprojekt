@@ -7,7 +7,16 @@
 
 #ifndef WRAPPER_STEUERUNG_H
 #define	WRAPPER_STEUERUNG_H
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <iostream>
+using namespace std;
+
+#include "defines_Regler.h"
 #include "SerielleUebertragung.h"
+
 class Wrapper_Steuerung{
 public:
     Wrapper_Steuerung();

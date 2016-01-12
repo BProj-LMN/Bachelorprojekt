@@ -1,8 +1,4 @@
 #include "SerielleUebertragung.h"
-#include <iostream>
-#include <fstream>
-#include <cstdlib>
-using namespace std;
 
 
 SerielleUebertragung::SerielleUebertragung() {

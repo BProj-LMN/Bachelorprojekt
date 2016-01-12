@@ -8,16 +8,18 @@
 #ifndef WRAPPER_SOCKET_H
 #define	WRAPPER_SOCKET_H
 
-#include "SocketClient.h"
+#define ESC 27
 
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
 #include <conio.h>
+#include <time.h>
 
-#define ESC 27
+#include "SocketClient.h"
 
 //using namespace std;
+
 class Wrapper_Socket{
 
 public:

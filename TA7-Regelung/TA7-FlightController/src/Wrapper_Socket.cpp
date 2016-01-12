@@ -1,5 +1,5 @@
 #include "Wrapper_Socket.h"
-#include <time.h>
+
 
 Wrapper_Socket::Wrapper_Socket(){
 	Socket = new SocketClient("141.22.27.193", 1362);

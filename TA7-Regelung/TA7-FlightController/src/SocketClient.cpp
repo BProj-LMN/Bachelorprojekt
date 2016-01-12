@@ -11,7 +11,7 @@
 #ifndef _WIN32
 #include <arpa/inet.h>
 #endif
-  #pragma warning(disable : 4996)
+#pragma warning(disable : 4996)
 
 
 SocketClient::SocketClient(char ipAddress[], int port) {

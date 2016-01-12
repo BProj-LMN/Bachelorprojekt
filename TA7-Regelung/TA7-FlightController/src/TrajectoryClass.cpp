@@ -6,7 +6,6 @@
  */
 
 #include "TrajectoryClass.h"
-#include <cmath>
 
 Trajectory_Class::Trajectory_Class() {
   // TODO Auto-generated constructor stub

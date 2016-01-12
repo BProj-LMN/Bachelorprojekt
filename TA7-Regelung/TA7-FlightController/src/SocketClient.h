@@ -13,8 +13,6 @@
 #ifndef SRC_SOCKETCLIENT_H_
 #define SRC_SOCKETCLIENT_H_
 
-
-
 #define MESSAGE_LEN 256
 
 #ifndef _WIN32

@@ -4,11 +4,13 @@
  *
  * Created on 15. November 2015, 14:56
  */
-#include <winsock2.h>
-#include <windows.h>
 
 #ifndef PID_REGLER_H
 #define	PID_REGLER_H
+
+#include <windows.h>
+#include <iostream>
+using namespace std;
 
 class PID_Regler {
 public:
