@@ -67,6 +67,8 @@ void FlightControllerClass::Initialisieren() {
   else { cout << "Socket fehler oder Socket Timeout" << endl;
   Error = 1;
   }
+  fopen_s(&Datei,"log.csv","w+");
+  fprintf(Datei, "X; Y; Z; Reglerwert X; Reglerwert Y; Reglerwert Z; throttle; pitch; roll; yaw\n");
 }
 
 void FlightControllerClass::Landeprozedur() {
@@ -85,7 +87,7 @@ void FlightControllerClass::Landeprozedur() {
   } else {
     cout << "Flug wurde abgebrochen" << endl;
   }
-
+	fclose(Datei);
 }
 
 void FlightControllerClass::Startprozedur() {
@@ -141,6 +143,8 @@ void FlightControllerClass::SollwertVorgeben() {
 		  }
 	  }*/
 	  hoehealt = Tracking->getZ();
+	  //fprintf(Datei, "Hoehe: %d\tRegelwert: %d\tSteuerung:%d\n", Tracking->getZ(), (int)regelWertZ,(int)Steuerung->HochAktuell());
+	  fprintf(Datei, "%d; %d; %d; %d; %d; %d; %d; %d; %d; %d\n", Tracking->getX(), Tracking->getX(), Tracking->getZ(), 0, 0, (int)regelWertZ, (int)Steuerung->HochAktuell(), 0, 0, 0);
 
     //übergibt die Regelwerte an den puffer der Seriellen Schnittstelle
 	  Steuerung->HochRunter(regelWertZ, akkuKompenstation);

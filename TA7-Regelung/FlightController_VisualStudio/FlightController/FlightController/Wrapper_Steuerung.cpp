@@ -41,7 +41,7 @@ void Wrapper_Steuerung::VorZurueck(double Regelung) {
 }
 
 int Wrapper_Steuerung::HochAktuell() {
-    return hochRegelung;
+    return Regelwerte[1];
 }
 
 void Wrapper_Steuerung::Steuern(){
