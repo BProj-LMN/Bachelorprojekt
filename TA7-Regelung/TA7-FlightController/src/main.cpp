@@ -1,17 +1,10 @@
-//============================================================================
-// Name        : FlightControllerEclipse.cpp
-// Author      : Kai Robin M�ller
-// Version     :
-// Copyright   : Your copyright notice
-// Description : Hello World in C++, Ansi-style
-//============================================================================
 /*
- * File:   main.cpp
- * Author: Robin
+ * main.cpp
  *
- * Created on 19. November 2015, 13:54
+ * Funktion:
+ *
+ * Autor:   Kai Robin Möller
  */
-
 
 #include <cstdlib>
 #include <iostream>
@@ -20,20 +13,18 @@ using namespace std;
 
 #include "FlightController.h"
 
-
 int main(int argc, char** argv) {
   FlightControllerClass flightcontroller = FlightControllerClass();
 
-  flightcontroller.Initialisieren();// Socket und Regler und copter Verbindung(hier COM-Port anpassen-SerielleUebertragung.cpp)
-  flightcontroller.Startprozedur(); //für den flug wichtig
+  flightcontroller.Initialisieren();  // Socket, Regler, Copter-Verbindung (COM-Port in SerielleUebertragung.cpp anpassen)
+  flightcontroller.Startprozedur();   // für den Flug wichtig
 
-  while (0==flightcontroller.getError()) { //if error leave loop
+  while (0 == flightcontroller.getError()) { // if error leave loop
     flightcontroller.SollwertVorgeben();
     flightcontroller.ZielAnfliegen();
   }
 
-  flightcontroller.Landeprozedur(); //Copter landen lassen und Socket disconnect
-  system("pause"); //visual studio spezifisch, lässt konsole offen
+  flightcontroller.Landeprozedur(); // Copter landen lassen und Socket disconnect
+  system("pause");                  // visual studio spezifisch, lässt Konsole offen
   return 0;
 }
-

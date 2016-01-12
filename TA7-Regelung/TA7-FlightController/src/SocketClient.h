@@ -31,7 +31,6 @@
 #include <iostream>
 #include <stdio.h>
 
-
 class SocketClient {
   long rc;
 

@@ -1,12 +1,13 @@
-/* 
- * File:   FlightController.h
- * Author: Robin
+/*
+ * FlightController.h
  *
- * Created on 10. Dezember 2015, 10:06
+ * Funktion:
+ *
+ * Autor:   Kai Robin Möller, Marcel Schmid
  */
 
 #ifndef FLIGHTCONTROLLER_H
-#define	FLIGHTCONTROLLER_H
+#define FLIGHTCONTROLLER_H
 
 #include <cstdlib>
 #include <iostream>
@@ -14,7 +15,6 @@
 #include <windows.h>
 #include <fstream>
 #include <time.h>
-
 
 #include "defines_Regler.h"
 #include "TrajectoryClass.h"
@@ -32,7 +32,7 @@ public:
   void Startprozedur();
   void SollwertVorgeben();
   void ZielAnfliegen();
-  int getError();// if Error -> 1
+  int getError();         // if Error -> 1
 
 private:
   void ReglerSollwertvorgabe();
@@ -52,5 +52,4 @@ private:
   Wrapper_Socket *Tracking;
 };
 
-#endif	/* FLIGHTCONTROLLER_H */
-
+#endif /* FLIGHTCONTROLLER_H */

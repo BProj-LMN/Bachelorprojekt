@@ -1,12 +1,13 @@
-/* 
- * File:   SerielleUebertragung.h
- * Author: Robin
+/*
+ * SerielleUebertragung.h
  *
- * Created on 26. November 2015, 14:54
+ * Funktion:
+ *
+ * Autor:    Kai Robin MÃ¶ller
  */
 
 #ifndef SERIELLEUEBERTRAGUNG_H
-#define	SERIELLEUEBERTRAGUNG_H
+#define SERIELLEUEBERTRAGUNG_H
 
 #include <iostream>
 #include <windows.h>
@@ -14,19 +15,18 @@
 #include <cstdlib>
 using namespace std;
 
-class SerielleUebertragung{
+class SerielleUebertragung {
 public:
-    SerielleUebertragung();
-    void Serialwrite(unsigned char* Buffer,int Bufferlaenge );
-    void Serialread(unsigned char* Buffer,int Bufferlaenge);
-    HANDLE hCom;
+  SerielleUebertragung();
+  void Serialwrite(unsigned char* Buffer, int Bufferlaenge);
+  void Serialread(unsigned char* Buffer, int Bufferlaenge);
+  HANDLE hCom;
 private:
-	LPCWSTR Port; // für Comport, muss Datentyp LPCWSTR haben, aus Gründen. Ändern im Quellcode vom Kontruktor!
-    DCB serialconfig;
-DWORD iBytesWritten;
-DWORD BytesRead;
+  LPCWSTR Port; // fÃ¼r Comport, muss Datentyp LPCWSTR haben, aus GrÃ¼nden. Ã¤ndern im Quellcode vom Kontruktor!
+  DCB serialconfig;
+  DWORD iBytesWritten;
+  DWORD BytesRead;
 
 };
 
-#endif	/* SERIELLEUEBERTRAGUNG_H */
-
+#endif /* SERIELLEUEBERTRAGUNG_H */

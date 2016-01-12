@@ -10,9 +10,9 @@
 
 #ifndef _WIN32
 #include <arpa/inet.h>
-#endif
+#else
 #pragma warning(disable : 4996)
-
+#endif
 
 SocketClient::SocketClient(char ipAddress[], int port) {
   newServerMessage = false;
@@ -81,10 +81,9 @@ void SocketClient::evaluate() {
   }
 
 #else
-  rc = recvfrom(udp_socket, message, MESSAGE_LEN, 0, (SOCKADDR*) &remote, &remoteLen);//länge des strings
+  rc = recvfrom(udp_socket, message, MESSAGE_LEN, 0, (SOCKADDR*) &remote, &remoteLen); //lï¿½nge des strings
 
-
-  if (rc != SOCKET_ERROR) {//wenn länge korrekt erfasst
+  if (rc != SOCKET_ERROR) { //wenn lï¿½nge korrekt erfasst
     newServerMessage = true;
     message[rc] = '\0';
 
@@ -96,9 +95,9 @@ void SocketClient::evaluate() {
 }
 
 bool SocketClient::get_message(char message[]) {
-	for (int i = 0 ; i < MESSAGE_LEN ; i++){
-		message[i] = this->message[i];
-	}
+  for (int i = 0; i < MESSAGE_LEN; i++) {
+    message[i] = this->message[i];
+  }
   if (newServerMessage) {
     newServerMessage = false;
     return 1;
