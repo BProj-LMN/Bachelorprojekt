@@ -1,5 +1,5 @@
 
-# DAVE binaries, logs and other stuff 
+# DAVE binaries, logs and other stuff
 solver.log
 Debug
 
@@ -15,14 +15,16 @@ dist
 build
 .dep.inc
 Makefile
-TA7-Regelung/FlightController_VisualStudio/FlightController/FlightController.opensdf
-TA7-Regelung/FlightController_VisualStudio/FlightController/FlightController/FlightController.vcxproj
-*.filters
-TA7-Regelung/FlightController_VisualStudio/FlightController/FlightController.v12.suo
-*.sln
-TA7-Regelung/FlightController_VisualStudio/FlightController/FlightController.sdf
 
-TA7-Regelung/FlightController_VisualStudio/BA_Flightcontroller/BA_Flightcontroller/BA_Flightcontroller.vcxproj
+# visual studio
+*.opensdf
+*.vcxproj
+*.filters
+*.v12.suo
+*.sln
+*.sdf
 *.opendb
-TA7-Regelung/FlightController_VisualStudio/BA_Flightcontroller/.vs/BA_Flightcontroller/v14/.suo
-TA7-Regelung/FlightController_VisualStudio/BA_Flightcontroller/BA_Flightcontroller.sdf
+*.filters
+*.sln
+*.suo
+*.vcxproj.user
