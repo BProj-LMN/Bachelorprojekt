@@ -38,38 +38,38 @@
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="1" name="1 Projektmanagement" color="#8cb6ce" meeting="false" start="2015-10-09" duration="41" complete="0" expand="true">
-            <task id="28" name="1.1 GPM Bericht 1" color="#8cb6ce" meeting="false" start="2015-10-09" duration="21" complete="0" expand="true">
+        <task id="1" name="1 Projektmanagement" color="#8cb6ce" meeting="false" start="2015-10-09" duration="41" complete="100" expand="true">
+            <task id="28" name="1.1 GPM Bericht 1" color="#8cb6ce" meeting="false" start="2015-10-09" duration="21" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Die vollständige geforderte Dokumentation des Status Quo ist vorhanden und in korrekter Form abgegeben worden.]]></notes>
             </task>
-            <task id="29" name="1.2 GPM Bericht 2" color="#8cb6ce" meeting="false" start="2015-11-16" duration="15" complete="0" priority="2" expand="true">
+            <task id="29" name="1.2 GPM Bericht 2" color="#8cb6ce" meeting="false" start="2015-11-16" duration="15" complete="100" priority="2" expand="true">
                 <notes><![CDATA[Ziel:
 Die vollständige geforderte Dokumentation des Status Quo ist vorhanden und in korrekter Form abgegeben worden.]]></notes>
             </task>
         </task>
-        <task id="105" name="2 Integration" color="#000000" meeting="false" start="2015-10-19" duration="70" complete="0" expand="true">
+        <task id="105" name="2 Integration" color="#000000" meeting="false" start="2015-10-19" duration="70" complete="87" expand="true">
             <notes><![CDATA[Ziel:
 Das Hauptziel des Bachelorprojekts ist erfüllt. ]]></notes>
-            <task id="106" name="2.1 alle HW und SW zusammenführen" color="#8cb6ce" meeting="false" start="2015-10-19" duration="70" complete="0" expand="true">
+            <task id="106" name="2.1 alle HW und SW zusammenführen" color="#8cb6ce" meeting="false" start="2015-10-19" duration="70" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Hardware und Software arbeitet zusammen. Die Schnittstelle funktioniert. Endergebnis ist, dass die Aufgabenstellung erfüllt ist.]]></notes>
             </task>
-            <task id="107" name="2.2 Dokumentation Gesamtprojekt" color="#8cb6ce" meeting="false" start="2015-10-19" duration="70" complete="0" expand="true">
+            <task id="107" name="2.2 Dokumentation Gesamtprojekt" color="#8cb6ce" meeting="false" start="2015-10-19" duration="70" complete="75" expand="true">
                 <notes><![CDATA[Alle Teilschritte sind detailliert dokumentiert und begründet.]]></notes>
             </task>
         </task>
-        <task id="2" name="3 Hardware-Setup (&amp; Kalibrierung)" color="#8cb6ce" meeting="false" start="2015-10-12" duration="9" complete="0" expand="true">
+        <task id="2" name="3 Hardware-Setup (&amp; Kalibrierung)" color="#8cb6ce" meeting="false" start="2015-10-12" duration="9" complete="100" expand="true">
             <notes><![CDATA[Ziel:
 Die Kameras stehen an einer dokumentierten Position und die Bilddaten sind per Softwareschnittstelle zugänglich.
 Ein PC ist eingerichtet für die Kameras.]]></notes>
-            <task id="25" name="3.1 Kameras an Rechner  anschließen/ installieren" color="#8cb6ce" meeting="false" start="2015-10-12" duration="5" complete="0" expand="true">
+            <task id="25" name="3.1 Kameras an Rechner  anschließen/ installieren" color="#8cb6ce" meeting="false" start="2015-10-12" duration="5" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Es wird ein Kamerabild mit nutzbaren Daten für die Bildverarbeitung geliefert. Die erforderlichen Schritte wurden dokumentiert.]]></notes>
                 <depend id="52" type="2" difference="0" hardness="Strong"/>
                 <depend id="108" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="52" name="3.2 Sichtfeld/ optimale Position, Halterungen bauen" color="#8cb6ce" meeting="false" start="2015-10-19" duration="4" complete="0" expand="true">
+            <task id="52" name="3.2 Sichtfeld/ optimale Position, Halterungen bauen" color="#8cb6ce" meeting="false" start="2015-10-19" duration="4" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Der Flugbereich wird optimal von den Kameras abgedeckt, die ein verwertbares Bild liefern. Diese befinden sich an Halterungen, die den Positionieraufwand minimieren und keine bzw. nur geringe bauliche Veränderungen des uns zur Verfügung stehenden Raumes benötigen.
 Die erforderlichen Schritte wurden dokumentiert.
@@ -81,7 +81,7 @@ Die erforderlichen Schritte wurden dokumentiert.
         <task id="108" name="M1: Kameras laufen/ Copter da" color="#ff3333" meeting="true" start="2015-10-23" duration="0" complete="0" expand="true">
             <notes><![CDATA[Der erste Meilenstein ist erreicht, wenn die Hardware vollzählig vorhanden ist und die Kameras korrekt angeschlossen sind. Diese sollen ein verwertbares Bild senden, welches die besten Resultate liefert, die nach der Auswertung von verschiedenen Kamera Positionen gefunden wurden. Die erforderlichen Schritte wurden ausreichend dokumentiert. Es ist alles Nötige vorhanden, damit das optische Tracking korrekte Eingangsgrößen bekommt.]]></notes>
         </task>
-        <task id="0" name="4 Integration Fernbedienung" color="#8cb6ce" meeting="false" start="2015-10-09" duration="16" complete="23" expand="true">
+        <task id="0" name="4 Integration Fernbedienung" color="#8cb6ce" meeting="false" start="2015-10-09" duration="16" complete="100" expand="true">
             <notes><![CDATA[Ziel:
 Der Copter lässt sich per Softwareschnittstelle ansteuern.]]></notes>
             <task id="22" name="4.1 Analyse und Recherche" color="#8cb6ce" meeting="false" start="2015-10-09" duration="6" complete="100" expand="true">
@@ -91,14 +91,14 @@ Die erforderlichen Schritte wurden dokumentiert.
 ]]></notes>
                 <depend id="111" type="2" difference="4" hardness="Strong"/>
             </task>
-            <task id="23" name="4.2 HW- und SW-Schnittstelle bauen und definieren" color="#8cb6ce" meeting="false" start="2015-10-12" duration="15" complete="0" expand="true">
+            <task id="23" name="4.2 HW- und SW-Schnittstelle bauen und definieren" color="#8cb6ce" meeting="false" start="2015-10-12" duration="15" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Die Fernbedienung setzt Steuerbefehle, die über die SW-Schnittstelle kommen, auf den Quadrocopter um.
 Die Schnittstellen wurden dokumentiert.
 ]]></notes>
                 <depend id="111" type="2" difference="4" hardness="Strong"/>
             </task>
-            <task id="61" name="4.3 NOT-AUS-Schalter" color="#8cb6ce" meeting="false" start="2015-10-26" duration="5" complete="0" expand="true">
+            <task id="61" name="4.3 NOT-AUS-Schalter" color="#8cb6ce" meeting="false" start="2015-10-26" duration="5" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Eine Not-Aus-Schalter (Hardware) an der Fernbedienung schaltet sofort die Propeller des Quadrocopters ab.
 Die erforderlichen Schritte wurden dokumentiert.
@@ -110,27 +110,25 @@ Die erforderlichen Schritte wurden dokumentiert.
             <notes><![CDATA[Der Meilenstein ist erreicht, sobald die Aufgabenpakete 4.1, 4.2 und 4.3 vollständig erfüllt sind. Das Ergebnis derer ist, dass der PC über die Schnittstelle mit dem Quadrocopter kommunizieren kann, diesem somit alle nötigen Steuerbefehle für den Flug übermittelt. Ferner ist ein NOT-AUS implementiert. ]]></notes>
             <depend id="58" type="2" difference="1" hardness="Strong"/>
         </task>
-        <task id="3" name="5 optisches Tracking" color="#8cb6ce" meeting="false" start="2015-10-09" duration="31" complete="0" expand="true">
+        <task id="3" name="5 optisches Tracking" color="#8cb6ce" meeting="false" start="2015-10-09" duration="31" complete="100" expand="true">
             <notes><![CDATA[Ziel:
 Die Ist-Position kann über eine Software-Schnittstelle abgerufen werden.]]></notes>
             <depend id="112" type="2" difference="4" hardness="Strong"/>
-            <task id="34" name="5.1 Recherche  Technologien/ Software" color="#8cb6ce" meeting="false" start="2015-10-09" duration="11" complete="0" expand="true">
+            <task id="34" name="5.1 Recherche  Technologien/ Software" color="#8cb6ce" meeting="false" start="2015-10-09" duration="11" complete="100" expand="true">
+                <notes><![CDATA[Ziel:
+Es wurde eine Software ausgewählt die zum Tracking genutzt werden soll. Sowie Grundkenntnisse zu deren Nutzung gesammelt.]]></notes>
+            </task>
+            <task id="60" name="5.2 Objekt im Bild erkennen" color="#8cb6ce" meeting="false" start="2015-10-23" duration="16" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Es ist ein Programm vorhanden das den Quadrocopter auf Bildern erkennt und dessen Position im Bild bestimmt.
 Die Softwareschnittstelle ist definiert und dokumentiert.
 ]]></notes>
             </task>
-            <task id="60" name="5.2 Objekt im Bild erkennen" color="#8cb6ce" meeting="false" start="2015-10-23" duration="16" complete="0" expand="true">
-                <notes><![CDATA[Ziel:
-Es ist ein Programm vorhanden das den Quadrocopter auf Bildern erkennt und dessen Position im Bild bestimmt.
-Die Softwareschnittstelle ist definiert und dokumentiert.
-]]></notes>
-            </task>
-            <task id="59" name="5.3 3D-Position errechnen" color="#8cb6ce" meeting="false" start="2015-10-26" duration="15" complete="0" expand="true">
+            <task id="59" name="5.3 3D-Position errechnen" color="#8cb6ce" meeting="false" start="2015-10-26" duration="15" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Es ist ein Programm vorhanden, das die Ist-Koordinaten des Quadrocopters errechnet.]]></notes>
             </task>
-            <task id="63" name="5.4 Schnittstelle  Tracking&lt;-&gt;Regler" color="#8cb6ce" meeting="false" start="2015-11-09" duration="10" complete="0" expand="true">
+            <task id="63" name="5.4 Schnittstelle  Tracking&lt;-&gt;Regler" color="#8cb6ce" meeting="false" start="2015-11-09" duration="10" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Es ist eine Schnittstelle vorhanden, an der man die Ist-Koordinaten abrufen kann.
 Diese Schnittstelle ist dokumentiert.
@@ -141,28 +139,28 @@ Diese Schnittstelle ist dokumentiert.
             <notes><![CDATA[Der dritte Meilenstein ist erreicht, wenn die Teilaufgabe 5 komplett abgeschlossen ist. Es wird also aus den Kamerabildern die aktuelle Position des Copters im Raum errechnet und über eine Schnittstelle an die Flugregelung übergeben.]]></notes>
             <depend id="75" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="4" name="6 Sollwertvorgabe" color="#000000" meeting="false" start="2015-11-09" duration="15" complete="0" expand="true">
+        <task id="4" name="6 Sollwertvorgabe" color="#000000" meeting="false" start="2015-11-09" duration="15" complete="90" expand="true">
             <notes><![CDATA[Ziel:
 Es gibt eine Möglichkeit für den Benutzer den Sollwert für den Copter vorzugeben]]></notes>
             <depend id="113" type="2" difference="4" hardness="Strong"/>
-            <task id="58" name="6.1 Start- und Landeprozedur programmieren und definieren" color="#8cb6ce" meeting="false" start="2015-11-09" duration="5" complete="0" expand="true">
+            <task id="58" name="6.1 Start- und Landeprozedur programmieren und definieren" color="#8cb6ce" meeting="false" start="2015-11-09" duration="5" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Der Hüpfer besteht aus einem langsamen Beschleunigungsvorgang und dem Abheben, einem ca. 5 sekündigen Halten auf 1 m Höhe und dem Wiederabsinken und Landen. Es muss möglich sein, diesen Ablauf vorzeitig abzubrechen. 
 Die Landeprozedur soll weitergehend auch für sich funktionieren und aufgerufen werden können. 
 ]]></notes>
             </task>
-            <task id="100" name="6.2 Recherche Trajektorie" color="#8cb6ce" meeting="false" start="2015-11-09" duration="5" complete="0" expand="true">
+            <task id="100" name="6.2 Recherche Trajektorie" color="#8cb6ce" meeting="false" start="2015-11-09" duration="5" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Es wurde eine Kurvenart für die Trajektorie ausgewählt und dessen mathematische Beschreibung, sowie die Berechnung mit Start- und Endpunkt dokumentiert. Außerdem wurde dokumentiert, wie Punkte auf der Trajektorie berechnet werden können.]]></notes>
                 <depend id="65" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="65" name="6.3 Trajektorienberechnung  programmieren" color="#8cb6ce" meeting="false" start="2015-11-16" duration="10" complete="0" expand="true">
+            <task id="65" name="6.3 Trajektorienberechnung  programmieren" color="#8cb6ce" meeting="false" start="2015-11-16" duration="10" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Es wurde ein entsprechendes Softwaremodul entwickelt, dass alle nötigen Berechnungen bezüglich der Trajektorie vornimmt.
 Die Softwareschnittstelle wurde definiert und dokumentiert.
 ]]></notes>
             </task>
-            <task id="69" name="6.4 User-Interface programmieren" color="#8cb6ce" meeting="false" start="2015-11-16" duration="5" complete="0" expand="true">
+            <task id="69" name="6.4 User-Interface programmieren" color="#8cb6ce" meeting="false" start="2015-11-16" duration="5" complete="50" expand="true">
                 <notes><![CDATA[Ziel:
 Das Userinterface ist einfach zu bedienen.
 Die Eingabe von X, Y, und Z Koordinaten ist möglich, sowie das Auslösen der Startprozedur.
@@ -172,27 +170,27 @@ Das Interface gibt Feedback über aktuelle Position des Copters und eingegebene 
 ]]></notes>
             </task>
         </task>
-        <task id="6" name="7 Regelung entwerfen" color="#000000" meeting="false" start="2015-11-16" duration="35" complete="0" expand="true">
+        <task id="6" name="7 Regelung entwerfen" color="#000000" meeting="false" start="2015-11-16" duration="35" complete="58" expand="true">
             <depend id="113" type="2" difference="4" hardness="Strong"/>
-            <task id="83" name="7.1 Recherche Regelung und Plattform auswählen" color="#8cb6ce" meeting="false" start="2015-11-16" duration="5" complete="0" expand="true">
+            <task id="83" name="7.1 Recherche Regelung und Plattform auswählen" color="#8cb6ce" meeting="false" start="2015-11-16" duration="5" complete="100" expand="true">
                 <notes><![CDATA[Ziel:
 Die Software für die Regelung des Quadrocopters steht fest und kann für die eigene Regelung verwendet und angepasst werden.]]></notes>
             </task>
-            <task id="75" name="7.2 dyn. Paramter des Copters  bestimmen" color="#8cb6ce" meeting="false" start="2015-11-27" duration="6" complete="0" expand="true">
+            <task id="75" name="7.2 dyn. Paramter des Copters  bestimmen" color="#8cb6ce" meeting="false" start="2015-11-27" duration="6" complete="50" expand="true">
                 <notes><![CDATA[Ziel:
 Die dynamischen Parameter des Quadrocopters wurden bestimmt und dokumentiert. ]]></notes>
                 <depend id="86" type="2" difference="0" hardness="Strong"/>
                 <depend id="87" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="84" name="7.3 Regler entwerfen/ simulieren" color="#000000" meeting="false" start="2015-12-07" duration="20" complete="0" expand="true">
+            <task id="84" name="7.3 Regler entwerfen/ simulieren" color="#000000" meeting="false" start="2015-12-07" duration="20" complete="50" expand="true">
                 <notes><![CDATA[Ziel:
 Der Copter bleibt in einem definierten und dokumentieren Bereich um den Sollwert]]></notes>
-                <task id="87" name="7.3.1 Höhenregelung" color="#8cb6ce" meeting="false" start="2015-12-07" duration="20" complete="0" expand="true">
+                <task id="87" name="7.3.1 Höhenregelung" color="#8cb6ce" meeting="false" start="2015-12-07" duration="20" complete="50" expand="true">
                     <notes><![CDATA[Ziel:
 3 vorgegebene Testhöhen von 0,5m 1m und 2m können mit einer Toleranz von 10cm gehalten werden. Die Position muss mindestens 10 Sekunden sicher gehalten werden. - Sagt nochmal was dazu Leute!
 Die Regelung ist entworfen und dokumentiert und kann in die anderen Programmteile eingebunden werden.]]></notes>
                 </task>
-                <task id="86" name="7.3.2 X-Y-Regelung" color="#8cb6ce" meeting="false" start="2015-12-07" duration="20" complete="0" expand="true">
+                <task id="86" name="7.3.2 X-Y-Regelung" color="#8cb6ce" meeting="false" start="2015-12-07" duration="20" complete="50" expand="true">
                     <notes><![CDATA[Ziel:
 3 von einer Person zufällig ausgewählte Orte im Raum werden sicher vom Kopter angefolgen. Die Abweichung auf der X und Y-Achse am Zielort darf maximal 10cm betragen. Die Position muss mindestens 10 Sekunden sicher gehalten werden. 
 <- Hierzu bitte auch noch was sagen!
@@ -217,11 +215,13 @@ Hierfür ist auch das User-Interface fertiggestellt.
     <allocations>
         <allocation task-id="22" resource-id="0" function="Default:0" responsible="true" load="5.0"/>
         <allocation task-id="23" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="61" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="61" resource-id="0" function="Default:0" responsible="true" load="10.0"/>
         <allocation task-id="100" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="65" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="52" resource-id="0" function="Default:0" responsible="false" load="50.0"/>
         <allocation task-id="34" resource-id="0" function="Default:0" responsible="false" load="10.0"/>
+        <allocation task-id="59" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="63" resource-id="0" function="Default:0" responsible="true" load="50.0"/>
         <allocation task-id="22" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="111" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="106" resource-id="1" function="Default:0" responsible="true" load="5.0"/>
@@ -231,15 +231,17 @@ Hierfür ist auch das User-Interface fertiggestellt.
         <allocation task-id="25" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="52" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="34" resource-id="1" function="Default:0" responsible="false" load="10.0"/>
+        <allocation task-id="59" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="113" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="83" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="75" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="87" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="86" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="28" resource-id="2" function="Default:0" responsible="false" load="50.0"/>
+        <allocation task-id="63" resource-id="2" function="Default:0" responsible="false" load="50.0"/>
         <allocation task-id="22" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="23" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
-        <allocation task-id="61" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="61" resource-id="3" function="Default:0" responsible="false" load="10.0"/>
         <allocation task-id="108" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="28" resource-id="3" function="Default:0" responsible="true" load="0.0"/>
         <allocation task-id="29" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
@@ -250,6 +252,7 @@ Hierfür ist auch das User-Interface fertiggestellt.
         <allocation task-id="60" resource-id="4" function="Default:0" responsible="true" load="5.0"/>
         <allocation task-id="59" resource-id="4" function="Default:0" responsible="true" load="5.0"/>
         <allocation task-id="63" resource-id="4" function="Default:0" responsible="true" load="5.0"/>
+        <allocation task-id="63" resource-id="4" function="Default:0" responsible="false" load="50.0"/>
     </allocations>
     <vacations/>
     <taskdisplaycolumns>

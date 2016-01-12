@@ -1,0 +1,39 @@
+package Model.APPS.CLOCK_XMC1.v4_0_6;
+
+// Import statements
+import ifx.davex.app.manifest.*
+
+abstract class CLOCK_XMC1_GUI extends AppManifest {
+	/* Begin : UI variable section */
+	 public GTab gtab_clktree_xmc1;
+	 public GImage gimage_1;
+	 public GCombo gcombo_pclkdesfrq;
+	 public GCombo gcombo_rtcclksrc;
+	 public GFloat gfloat_mclkdesfrq;
+	 public GFloat gfloat_mclkactfrq;
+	 public GFloat gfloat_pclkactfrq;
+	 public GFloat gfloat_dia_pclkactfrq;
+	 public GFloat gfloat_dia_mclkactfrq;
+	 public GFloat gfloat_dia_rtcclkfreq;
+	 public GFloat gfloat_dia_wdtclkfreq;
+	 public GLabel glabel_rtcclksrc;
+
+	 public CLOCK_XMC1_GUI(DaveEnv daveEnv){
+
+	 gtab_clktree_xmc1 = GTab(widgetName:"gtab_clktree_xmc1", text:"General Settings", enabled:true, visible:true)
+	 gimage_1 = GImage(widgetName:"gimage_1", path: "doc/ClockTree.png", enabled:true, visible:true)
+	 gcombo_pclkdesfrq = GCombo(widgetName:"gcombo_pclkdesfrq", options:["MCLK","2 x MCLK"], value:"2 x MCLK", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_rtcclksrc = GCombo(widgetName:"gcombo_rtcclksrc", options:["DCO2","External Clock"], value:"DCO2", enabled:true, visible:true, isMandatoryValue:false)
+	 gfloat_mclkdesfrq = GFloat(widgetName:"gfloat_mclkdesfrq", value:32.0, minValue:0.125, maxValue:32.0, enabled:true, visible:true, isMandatoryValue:false)
+	 gfloat_mclkactfrq = GFloat(widgetName:"gfloat_mclkactfrq", value:32, minValue:0.125, maxValue:32.00, enabled:false, visible:true, isMandatoryValue:false)
+	 gfloat_pclkactfrq = GFloat(widgetName:"gfloat_pclkactfrq", value:32, minValue:0.125, maxValue:64.00, enabled:false, visible:true, isMandatoryValue:false)
+	 gfloat_dia_pclkactfrq = GFloat(widgetName:"gfloat_dia_pclkactfrq", value:64, minValue:0, maxValue:64, enabled:false, visible:true, isMandatoryValue:false)
+	 gfloat_dia_mclkactfrq = GFloat(widgetName:"gfloat_dia_mclkactfrq", value:32, minValue:0, maxValue:32, enabled:false, visible:true, isMandatoryValue:false)
+	 gfloat_dia_rtcclkfreq = GFloat(widgetName:"gfloat_dia_rtcclkfreq", value:32.768, minValue:32.768, maxValue:32.768, enabled:false, visible:true, isMandatoryValue:false)
+	 gfloat_dia_wdtclkfreq = GFloat(widgetName:"gfloat_dia_wdtclkfreq", value:32.768, minValue:32.768, maxValue:32.768, enabled:false, visible:true, isMandatoryValue:false)
+	 glabel_rtcclksrc = GLabel(widgetName:"glabel_rtcclksrc", text:"RTC clock source:", enabled:true, visible:true)
+
+
+	 }
+	/* End : UI variable section */
+}
