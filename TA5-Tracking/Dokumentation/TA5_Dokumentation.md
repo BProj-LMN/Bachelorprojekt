@@ -89,3 +89,13 @@ w --> X
 ```
 
 Für die Euler-Transformation wurde das Schema `Rotation um Z, dann Y', dann X''` verwendet. Die Berechnung der entsprechenden Winkel ist im Matlab-Script dokumentiert.
+
+
+## Debugging und Anmerkungen
+
+#### Capture-Rule für Wirewhark
+`(ip.addr == 141.22.27.193) && (udp.port == 1362)`
+
+#### Anmerkungen
+- entferne NIE den Aus-Schalter aus deinem Programm, wenn diese nur korrekt beendet werden kann, wenn die Destuktoren ausgeführt werden.
+
