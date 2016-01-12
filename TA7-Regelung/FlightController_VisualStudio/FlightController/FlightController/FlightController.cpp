@@ -9,11 +9,11 @@
 
 FlightControllerClass::FlightControllerClass() {
   //Regler für Vor Zurück erzeugen Grenzwerte für Regelung von -127 bis 127
-  reglerX = new PID_Regler(-30, 30);
+  reglerX = new PID_Regler(-20,20);
   //Regler für Rechts Links erzeugen Grenzwerte für Regelung von -127 bis 127
-  reglerY = new PID_Regler(-30, 30);
+  reglerY = new PID_Regler(-20, 20);
   //Regler für Hoch Runter erzeugen Grenzwerte für Regelung von 0 bis 254
-  reglerZ = new PID_Regler(-20, 20);
+  reglerZ = new PID_Regler(-10, 10);
   //Trajektorien Klasse erzeugen
   Trajectory = new Trajectory_Class();
   //UserInterface erzeugen
@@ -51,8 +51,8 @@ void FlightControllerClass::ReglerSollwertvorgabe() {
 
 void FlightControllerClass::Initialisieren() {
   //Regler koeffizienten zuweisen
-  reglerX->setfactors(KPXY, KIXY, KDXY, 0.29);
-  reglerY->setfactors(KPXY, KIXY, KDXY, 0.29);
+  reglerX->setfactors(KPXY, KIXY, KDXY, 0.4);
+  reglerY->setfactors(KPXY, KIXY, KDXY, 0.4);
   reglerZ->setfactors(KPZ, KIZ, KDZ, 1);
   //Um eine Verbindung mit dem Copter aufzubauen muss der Schub einmal auf Maximalausschlag und wieder zurück
   cout << "Mit dem Copter Verbindung aufbauen" << endl;
@@ -70,7 +70,7 @@ void FlightControllerClass::Initialisieren() {
 }
 
 void FlightControllerClass::Landeprozedur() {
-	Tracking->disconnect();// Socket verbindung auflösen
+	//Tracking->disconnect();// Socket verbindung auflösen
 	if (Steuerung->HochAktuell() != 0) {
     //Landenprozedur
     cout << "Copter soll landen" << endl;
@@ -118,27 +118,34 @@ void FlightControllerClass::SollwertVorgeben() {
   //Sollwerte einlesen bis alle vorhanden sind
 
   while ((!UI->sollEinlesen()) && (Error == 0)) {
-	  Sleep(1);
+	  Sleep(100);
     //Istwerte einlesen
 	  if (Tracking->updateIstwerte() == 1){ Error = 1; }
 	  else;
-	  time(&zeitneu);
+	 time(&zeitneu);
 	  int regelWertZ = (int)reglerZ->getControlValue(Tracking->getZ());
-	  if ((hoehealt > Tracking->getZ()) && (regelWertZ==20)){
-		  if (difftime(zeitneu, zeitalt) > 2) {
-			  akkuKompenstation += 20;
+	   /*if ((hoehealt >= Tracking->getZ()) && (regelWertZ==15)){
+		  if (difftime(zeitneu, zeitalt) > 4) {
+			  akkuKompenstation += 15;
 			  zeitalt = zeitneu;
 		  }
 		  else;
 	  }
 	  else{
-		  zeitalt = zeitneu;
-	  }
+		  if ((hoehealt <= Tracking->getZ()) && (regelWertZ == -15)){
+			  if (difftime(zeitneu, zeitalt) > 4) {
+				  akkuKompenstation -= 15;
+				  zeitalt = zeitneu;
+			  }
+			  else { zeitalt = zeitneu; }
+		  }
+	  }*/
 	  hoehealt = Tracking->getZ();
+
     //übergibt die Regelwerte an den puffer der Seriellen Schnittstelle
 	  Steuerung->HochRunter(regelWertZ, akkuKompenstation);
-	//Steuerung->RechtLinks((int)reglerY->getControlValue(Tracking->getY()));
-	//Steuerung->VorZurueck((int)reglerX->getControlValue(Tracking->getX()));
+	  //Steuerung->RechtLinks((int)reglerY->getControlValue(Tracking->getY()));
+	  //Steuerung->VorZurueck((int)reglerX->getControlValue(Tracking->getX()));
     //Regelwerte an die Fernsteuerung senden
     Steuerung->Steuern();
   }

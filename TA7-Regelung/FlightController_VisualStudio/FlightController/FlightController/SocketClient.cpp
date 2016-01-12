@@ -96,8 +96,9 @@ void SocketClient::evaluate() {
 }
 
 bool SocketClient::get_message(char message[]) {
-  strcpy(message,this->message);
-
+	for (int i = 0 ; i < MESSAGE_LEN ; i++){
+		message[i] = this->message[i];
+	}
   if (newServerMessage) {
     newServerMessage = false;
     return 1;

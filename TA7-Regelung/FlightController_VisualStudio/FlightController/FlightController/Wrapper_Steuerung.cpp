@@ -25,6 +25,7 @@ void Wrapper_Steuerung::HochRunter(double Regelung,int Akkukompensation) {
 	if (Regelwerte[1]>254){ Regelwerte[1] = 254; }
 	if (Regelwerte[1]<0){ Regelwerte[1] = 0; }
     hochRegelung = Regelung;
+	//cout << (int)Regelwerte[1] << endl;
 }
 
 void Wrapper_Steuerung::RechtLinks(double Regelung) {

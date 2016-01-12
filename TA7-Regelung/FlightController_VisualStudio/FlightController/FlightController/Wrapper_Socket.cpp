@@ -37,8 +37,11 @@ int Wrapper_Socket::connect(){
 int Wrapper_Socket::updateIstwerte(){
 	Socket->evaluate();
 	if (Socket->get_message(Nachricht) == 1){// bei erhaltener Nachricht
-		if (Nachricht[7] & 0x01 == 0x00){ // wenn etwas getrackt wurde
-			if (Nachricht[0] == 0xDA){
+		//istZ = (((int)Nachricht[5] << 8) & 0xff00 | (int)Nachricht[6] & 0x00ff) & 0x0000ffff;
+		//printf("Nachricht : %d\n", istZ);
+		if ((Nachricht[7] & 0x01) == 0x00){ // wenn etwas getrackt wurde
+			if (0xDA == ((char)Nachricht[0] & 0xFF)){
+				//std::cout << "lauft" << std::endl;
 				istX = (((int)Nachricht[1] << 8) & 0xff00 | (int)Nachricht[2] & 0x00ff) & 0x0000ffff;
 				istY = (((int)Nachricht[3] << 8) & 0xff00 | (int)Nachricht[4] & 0x00ff) & 0x0000ffff;
 				istZ = (((int)Nachricht[5] << 8) & 0xff00 | (int)Nachricht[6] & 0x00ff) & 0x0000ffff;
@@ -46,7 +49,7 @@ int Wrapper_Socket::updateIstwerte(){
 					istZ = 0;
 				}
 				else {
-					return 1;
+					//return 1;
 				}
 			}
 			else { std::cout << "keine gueltige Nachricht" << std::endl; }
@@ -55,23 +58,23 @@ int Wrapper_Socket::updateIstwerte(){
 		
 	}
 	else;
-	if ((istX > 3850) || (istX < 250)){ return 1; }
+	/*if ((istX > 3850) || (istX < 250)){ return 1; }
 	if ((istY > 3750) || (istY < 250)){ return 1; }
-	if ((istZ > 2550) || (istZ < 250)){ return 1; }
+	if (istZ > 2550){ return 1; }*/
 	return 0;
 }
 
 unsigned int Wrapper_Socket::getX(){
-	//std::cout << istX << std::endl;
+	//std::cout <<"X-Koordinate"<< istX << std::endl;
 	return istX;
 }
 
 unsigned int Wrapper_Socket::getY(){
-	//std::cout << istY << std::endl;
+	//std::cout << "Y-Koordinate" << istY << std::endl;
 	return istY;
 }
 
 unsigned int Wrapper_Socket::getZ(){
-	//std::cout << istZ << std::endl;
+	//std::cout <<"Z-Koordinate"<< istZ << std::endl;
 	return istZ;
 }

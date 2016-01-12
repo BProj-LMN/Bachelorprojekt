@@ -42,6 +42,7 @@ private:
   time_t zeitalt;
   int landen;
   int Error;
+  FILE *Datei;
   PID_Regler* reglerX;
   PID_Regler* reglerY;
   PID_Regler* reglerZ;
