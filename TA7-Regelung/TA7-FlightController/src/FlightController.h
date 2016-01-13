@@ -11,10 +11,10 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <winsock2.h>
-#include <windows.h>
 #include <fstream>
 #include <time.h>
+#include <winsock2.h>
+#include <windows.h>
 
 #include "defines_Regler.h"
 #include "TrajectoryClass.h"

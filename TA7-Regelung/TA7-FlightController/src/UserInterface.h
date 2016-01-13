@@ -16,8 +16,8 @@
 
 #define OFFSET    48
 
-#include <stdio.h>
 #include <iostream>
+#include <stdio.h>
 #include <conio.h>
 
 class UserInterface {
