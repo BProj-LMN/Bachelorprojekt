@@ -13,7 +13,7 @@ FlightControllerClass::FlightControllerClass() {
   //Regler für Rechts Links erzeugen Grenzwerte für Regelung von -127 bis 127
   reglerY = new PID_Regler(-20, 20);
   //Regler für Hoch Runter erzeugen Grenzwerte für Regelung von 0 bis 254
-  reglerZ = new PID_Regler(-10, 10);
+  reglerZ = new PID_Regler(-10, 40);
   //Trajektorien Klasse erzeugen
   Trajectory = new Trajectory_Class();
   //UserInterface erzeugen
