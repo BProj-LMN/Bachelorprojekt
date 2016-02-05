@@ -7,7 +7,7 @@
  */
 
 #ifndef DEFINES_REGLER_H
-#define DEFINES_REGLER_H
+#define	DEFINES_REGLER_H
 
 #define KPXY  1.401             // Regelparameter KP für X und Y Achse
 #define KIXY  0.067             // Regelparameter KI für X und Y Achse
