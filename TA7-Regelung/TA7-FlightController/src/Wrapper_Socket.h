@@ -14,7 +14,7 @@
 #include <iostream>
 //#include <string.h>
 #include <stdio.h>
-//#include <conio.h>
+#include <conio.h>
 #include <time.h>
 
 #include "SocketClient.h"
