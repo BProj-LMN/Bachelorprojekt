@@ -54,7 +54,7 @@ void FlightControllerClass::Initialisieren() {
   // Reglerkoeffizienten zuweisen
   reglerX->setfactors(KPXY, KIXY, KDXY, 0.4);
   reglerY->setfactors(KPXY, KIXY, KDXY, 0.4);
-  reglerZ->setfactors(KPZ, KIZ, KDZ, 1);
+  reglerZ->setfactors(KPZ, KIZ, KDZ, 0.5);
   // Um eine Verbindung mit dem Copter aufzubauen muss der Schub einmal auf Maximalausschlag und wieder zurück
   cout << "Mit dem Copter Verbindung aufbauen" << endl;
   Steuerung->HochRunter(REGELMAX - REGLEROFFSETHR, 0);
