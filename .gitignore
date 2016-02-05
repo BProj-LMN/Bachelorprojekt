@@ -28,3 +28,6 @@ Makefile
 *.sln
 *.suo
 *.vcxproj.user
+TA7-Regelung/Dokumentation/Thumbs.db
+*.db
+*.db
