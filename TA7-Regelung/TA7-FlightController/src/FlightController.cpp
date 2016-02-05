@@ -108,9 +108,10 @@ void FlightControllerClass::Startprozedur() {
    UI->EnterGedrueckt();
    }
    */
+
   Tracking->updateIstwerte();
-  reglerX->setSoll(Tracking->getX());
-  reglerY->setSoll(Tracking->getY());
+  reglerX->setSoll(2000);
+  reglerY->setSoll(2000);
   reglerZ->setSoll(1000);
 
   time(&zeitalt);
@@ -160,8 +161,8 @@ void FlightControllerClass::SollwertVorgeben() {
 
     // übergibt die Regelwerte an den Puffer der Seriellen Schnittstelle
     Steuerung->HochRunter(regelWertZ, akkuKompenstation);
-    //Steuerung->RechtLinks((int)reglerY->getControlValue(Tracking->getY()));
-    //Steuerung->VorZurueck((int)reglerX->getControlValue(Tracking->getX()));
+    Steuerung->RechtLinks((int)reglerY->getControlValue(Tracking->getY()));
+    Steuerung->VorZurueck((int)reglerX->getControlValue(Tracking->getX()));
     //Regelwerte an die Fernsteuerung senden
     Steuerung->Steuern();
   }
@@ -176,7 +177,7 @@ void FlightControllerClass::SollwertVorgeben() {
   cout << "Um Copter weiter fliegen zu lassen Enter betaetigen" << endl;
   // Wartet bis Enter betätigt wird bevor der Copter wieder losfliegt
   while (!UI->EnterGedrueckt() && (Error == 0)) {
-    Sleep(1);
+    Sleep(100);
     // Istwerte einlesen
     if (Tracking->updateIstwerte() == 1) {
       Error = 1;
@@ -193,7 +194,7 @@ void FlightControllerClass::SollwertVorgeben() {
 
 void FlightControllerClass::ZielAnfliegen() {
   while ((!UI->EnterGedrueckt()) && (0 == Error)) {
-    Sleep(1);
+    Sleep(100);
 
     // Istwerte einlesen
     if (Tracking->updateIstwerte() == 1) {
