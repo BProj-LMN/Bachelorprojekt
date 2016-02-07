@@ -60,7 +60,7 @@ double PID_Regler::getControlValue(double IstValue) {
     ControlValue = untereGrenze;
   }
 
-  cout << ControlValue << endl;
+  //cout << ControlValue << endl;
 
   return ControlValue;
 }
