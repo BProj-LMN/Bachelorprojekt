@@ -10,9 +10,9 @@
 
 FlightControllerClass::FlightControllerClass() {
   // Regler für Vor Zurück erzeugen Grenzwerte für Regelung von -127 bis 127
-  reglerX = new PID_Regler(-20, 20);
+  reglerX = new PID_Regler(-10, 10);
   // Regler für Rechts Links erzeugen Grenzwerte für Regelung von -127 bis 127
-  reglerY = new PID_Regler(-20, 20);
+  reglerY = new PID_Regler(-10, 10);
   // Regler für Hoch Runter erzeugen Grenzwerte für Regelung von 0 bis 254
   reglerZ = new PID_Regler(-10, 10);
   // Trajektorien Klasse erzeugen
@@ -108,10 +108,10 @@ void FlightControllerClass::Startprozedur() {
    UI->EnterGedrueckt();
    }
    */
-
+  Sleep(200);
   Tracking->updateIstwerte();
-  reglerX->setSoll(2000);
-  reglerY->setSoll(2000);
+  reglerX->setSoll((double)Tracking->getX());
+  reglerY->setSoll((double)Tracking->getY());
   reglerZ->setSoll(1000);
 
   time(&zeitalt);
@@ -156,7 +156,7 @@ void FlightControllerClass::SollwertVorgeben() {
 
     hoehealt = Tracking->getZ();
 
-    fprintf(Datei, "%d; %d; %d; %d; %d; %d; %d; %d; %d; %d\n", Tracking->getX(), Tracking->getX(), Tracking->getZ(), 0,
+    fprintf(Datei, "%d; %d; %d; %d; %d; %d; %d; %d; %d; %d\n", Tracking->getX(), Tracking->getY(), Tracking->getZ(), 0,
             0, (int) regelWertZ, (int) Steuerung->HochAktuell(), 0, 0, 0);
 
     // übergibt die Regelwerte an den Puffer der Seriellen Schnittstelle
