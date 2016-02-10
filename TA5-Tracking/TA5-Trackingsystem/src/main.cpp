@@ -13,8 +13,8 @@
 #define ERR_BIG_DISTANCE  0x02
 #define DIST_ERR_CAT1  100
 
-//#define DEBUG
-//#define CAMERA_CALIB_CIRCLES
+#define DEBUG // show tracking image
+//#define CAMERA_CALIB_CIRCLES // show circles for calibration crosses on the wall
 
 #include <iostream>
 #include <iomanip>
@@ -242,12 +242,14 @@ int main(int argc, const char** argv) {
 
 #ifdef DEBUG
       if (statusTracking1 != ERR) {
-        circle(frame1, Point(pixelPos1.x, pixelPos1.y), 20, Scalar(255, 0, 0), 1);
+        circle(frame1, Point(pixelPos1.x, pixelPos1.y), 20, Scalar(255, 0, 0), 2);
+        circle(frame1, Point(pixelPos1.x, pixelPos1.y), 24, Scalar(0, 0, 0), 2);
       }
       imshow("tracking 1", frame1);
 
       if (statusTracking2 != ERR) {
-        circle(frame2, Point(pixelPos2.x, pixelPos2.y), 20, Scalar(255, 0, 0), 1);
+        circle(frame2, Point(pixelPos2.x, pixelPos2.y), 20, Scalar(255, 0, 0), 2);
+        circle(frame2, Point(pixelPos2.x, pixelPos2.y), 24, Scalar(0, 0, 0), 2);
       }
       imshow("tracking 2", frame2);
 #endif
