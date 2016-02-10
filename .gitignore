@@ -1,5 +1,5 @@
 
-# DAVE binaries, logs and other stuff 
+# DAVE binaries, logs and other stuff
 solver.log
 Debug
 
@@ -8,3 +8,26 @@ Debug
 Debug
 .cproject
 .project
+
+# netbeans
+nbproject
+dist
+build
+.dep.inc
+Makefile
+
+# visual studio
+*.opensdf
+*.vcxproj
+*.filters
+*.v12.suo
+*.sln
+*.sdf
+*.opendb
+*.filters
+*.sln
+*.suo
+*.vcxproj.user
+TA7-Regelung/Dokumentation/Thumbs.db
+*.db
+*.db
